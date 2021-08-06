@@ -3,6 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crypto_signal_app/constants.dart';
+import 'package:crypto_signal_app/pages/settings/terms_and_conditions_page.dart';
+import 'package:crypto_signal_app/pages/settings/privacy_policy_page.dart';
 
 class CreateAccPage extends StatefulWidget {
   const CreateAccPage({Key? key}) : super(key: key);
@@ -34,7 +36,12 @@ class _CreateAccPageState extends State<CreateAccPage> {
                     style: textStyleWhite,
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        debugPrint('testmessage');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (context) => new TermsAndConditionsPage(),
+                          ),
+                        );
                       }),
                 const TextSpan(text: ' and '),
                 TextSpan(
@@ -42,7 +49,12 @@ class _CreateAccPageState extends State<CreateAccPage> {
                     style: textStyleWhite,
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        debugPrint('messagetest');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (context) => new PrivacyPolicyPage(),
+                          ),
+                        );
                       }),
               ])),
           Container(
