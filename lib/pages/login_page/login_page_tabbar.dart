@@ -23,38 +23,40 @@ class _LoginPageTabBarState extends State<LoginPageTabBar> {
     return DefaultTabController(
       length: 2,
       child: SafeArea(
-        child: Scaffold(
-          backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
-          body: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(13.w),
-                child: Container(
-                  child: Theme(
-                    data: ThemeData(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                    ),
+        child: Theme(
+          data: appThemeData,
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
+            body: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(13.w),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(4.w),
+                          topLeft: Radius.circular(4.w),
+                        ),
+                        border: Border(
+                            left: BorderSide(color: toggleButtonBorderColor, width: 1),
+                            right: BorderSide(color: toggleButtonBorderColor, width: 1),
+                            top: BorderSide(color: toggleButtonBorderColor, width: 1),
+                            bottom: BorderSide(color: toggleButtonBorderColor, width: 1))),
+                    height: 42.h,
                     child: TabBar(
                       indicatorSize: TabBarIndicatorSize.tab,
                       unselectedLabelColor: Colors.white,
                       labelColor: textBlack,
-                      indicator: const BoxDecoration(color: Colors.white),
+                      indicator: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(4.w),
+                        topLeft: Radius.circular(4.w),
+                      ),),
                       labelPadding: EdgeInsets.zero,
                       tabs: [
                         Tab(
                           child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(4.w),
-                                  topLeft: Radius.circular(4.w),
-                                ),
-                                border: Border(
-                                    left: BorderSide(color: toggleButtonBorderColor, width: 1),
-                                    right: BorderSide(color: toggleButtonBorderColor, width: 1),
-                                    top: BorderSide(color: toggleButtonBorderColor, width: 1),
-                                    bottom: BorderSide(color: toggleButtonBorderColor, width: 1))),
                             child: const Align(
                               alignment: Alignment.center,
                               child: Text('Sign Up'),
@@ -63,16 +65,6 @@ class _LoginPageTabBarState extends State<LoginPageTabBar> {
                         ),
                         Tab(
                           child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(4.w),
-                                  topRight: Radius.circular(4.w),
-                                ),
-                                border: Border(
-                                    right: BorderSide(color: toggleButtonBorderColor, width: 1),
-                                    left: BorderSide(color: toggleButtonBorderColor, width: 1),
-                                    top: BorderSide(color: toggleButtonBorderColor, width: 1),
-                                    bottom: BorderSide(color: toggleButtonBorderColor, width: 1))),
                             child: const Align(
                               alignment: Alignment.center,
                               child: Text('Login'),
@@ -83,17 +75,17 @@ class _LoginPageTabBarState extends State<LoginPageTabBar> {
                     ),
                   ),
                 ),
-              ),
-              const Expanded(
-                child: TabBarView(
-                  physics: NeverScrollableScrollPhysics(),
-                  children: [
-                    CreateAccPage(),
-                    SignInPage(),
-                  ],
+                const Expanded(
+                  child: TabBarView(
+                    physics: NeverScrollableScrollPhysics(),
+                    children: [
+                      CreateAccPage(),
+                      SignInPage(),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

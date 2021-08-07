@@ -10,16 +10,28 @@ class PrivacyPolicyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: SingleChildScrollView(
-            child: RichText(
-                textAlign: TextAlign.start,
-                text: TextSpan(style: textStyleWhite, children: [
-                  TextSpan(text: privacyAndPolicyText),
-                ])),
+      child: Theme(
+        data: appThemeData,
+        child: Scaffold(
+          appBar: AppBar(
+            title:  Text('Privacy Policy', style: textStyleHeader,),
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            titleSpacing: 0,
+          ),
+          backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 16.w, top: 2.h),
+                child: RichText(
+                    textAlign: TextAlign.start,
+                    text: TextSpan(style: textStyleWhite, children: [
+                      TextSpan(text: privacyAndPolicyText),
+                    ])),
+              ),
+            ),
           ),
         ),
       ),
