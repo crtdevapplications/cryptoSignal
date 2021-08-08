@@ -26,24 +26,21 @@ class _SignInPageState extends State<SignInPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Form(
-              key: _signInPageFormKey,
-              child: ListView.builder(
-                shrinkWrap: true,
-                primary: false,
-                itemCount: _signInTextForms.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 12.h),
-                    child: Container(
-                      height: 56.h,
-                      decoration: BoxDecoration(
-                        color: toggleButtonBorderColor,
-                      ),
+            Theme(
+              data: textFieldThemeData,
+              child: Form(
+                key: _signInPageFormKey,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: _signInTextForms.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 12.h),
                       child: _signInTextForms[index],
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
 
@@ -51,7 +48,6 @@ class _SignInPageState extends State<SignInPage> {
             Container(
               width: double.infinity,
               height: 52.h,
-
               child: CupertinoButton(child: Text('Login', style: textButtonStyle,), padding: EdgeInsets.zero, onPressed: () {}),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12.w),
@@ -70,7 +66,6 @@ class _SignInPageState extends State<SignInPage> {
                 style: textStyleShaded,
                 children: [
                   TextSpan(text: 'Forgot password?', style: textStyleWhite, recognizer: TapGestureRecognizer()..onTap = (){ debugPrint('unlucky'); }), ])),
-
           ],
         ),
       ),

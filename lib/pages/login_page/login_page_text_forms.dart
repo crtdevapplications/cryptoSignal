@@ -6,7 +6,12 @@ import 'package:crypto_signal_app/pages/login_page/sign_in_page.dart';
 import 'package:crypto_signal_app/pages/login_page/create_acc_page.dart';
 
 class UserAcc {
-  UserAcc({required this.firstName, required this.lastName, required this.email, required this.phoneCode, required this.phoneNumber});
+  UserAcc(
+      {required this.firstName,
+      required this.lastName,
+      required this.email,
+      required this.phoneCode,
+      required this.phoneNumber});
 
   String firstName;
   String lastName;
@@ -15,10 +20,13 @@ class UserAcc {
   String phoneNumber;
 }
 
-Widget buildFirstName(){
+Widget buildFirstName() {
   return TextFormField(
-    decoration: const InputDecoration(labelText: 'First Name'),
-    validator: (String? value){
+    decoration: InputDecoration(
+      contentPadding: EdgeInsets.symmetric(vertical: 21.w, horizontal: 21.w),
+      hintText: 'First Name',
+    ),
+    validator: (String? value) {
       if (value == null || value.isEmpty) {
         return 'First Name is Required';
       }
@@ -27,10 +35,13 @@ Widget buildFirstName(){
   );
 }
 
-Widget buildLastName(){
+Widget buildLastName() {
   return TextFormField(
-    decoration: const InputDecoration(labelText: 'Last Name'),
-    validator: (String? value){
+    decoration: InputDecoration(
+      hintText: 'Last Name',
+      contentPadding: EdgeInsets.symmetric(vertical: 21.w, horizontal: 21.w),
+    ),
+    validator: (String? value) {
       if (value == null || value.isEmpty) {
         return 'Last Name is Required';
       }
@@ -39,14 +50,17 @@ Widget buildLastName(){
   );
 }
 
-Widget buildEmail(){
+Widget buildEmail() {
   return TextFormField(
-    decoration: const InputDecoration(labelText: 'Email'),
-    validator: (String? value){
+    decoration: InputDecoration(
+      hintText: 'Email',
+      contentPadding: EdgeInsets.symmetric(vertical: 21.w, horizontal: 21.w),
+    ),
+    validator: (String? value) {
       if (value == null || value.isEmpty) {
         return 'Email is Required';
       }
-      if(!emailRegExp.hasMatch(value)){
+      if (!emailRegExp.hasMatch(value)) {
         return 'Please enter a valid email Address';
       }
       return null;
@@ -54,11 +68,14 @@ Widget buildEmail(){
   );
 }
 
-Widget buildPhoneNumber(){
+Widget buildPhoneNumber() {
   return TextFormField(
     keyboardType: TextInputType.phone,
-    decoration: const InputDecoration(labelText: 'Phone'),
-    validator: (String? value){
+    decoration: InputDecoration(
+      hintText: 'Phone',
+      contentPadding: EdgeInsets.symmetric(vertical: 21.w, horizontal: 21.w),
+    ),
+    validator: (String? value) {
       if (value == null || value.isEmpty) {
         return 'Phone Number is Required';
       }
@@ -67,10 +84,13 @@ Widget buildPhoneNumber(){
   );
 }
 
-Widget buildLogin(){
+Widget buildLogin() {
   return TextFormField(
-    decoration: const InputDecoration(labelText: 'Login'),
-    validator: (String? value){
+    decoration: InputDecoration(
+      hintText: 'Login',
+      contentPadding: EdgeInsets.symmetric(vertical: 21.w, horizontal: 21.w),
+    ),
+    validator: (String? value) {
       if (value == null || value.isEmpty) {
         return 'Login Required';
       }
@@ -79,12 +99,15 @@ Widget buildLogin(){
   );
 }
 
-Widget buildPassword(){
+Widget buildPassword() {
   return TextFormField(
     keyboardType: TextInputType.visiblePassword,
     obscureText: true,
-    decoration: const InputDecoration(labelText: 'Password'),
-    validator: (String? value){
+    decoration: InputDecoration(
+      hintText: 'Password',
+      contentPadding: EdgeInsets.symmetric(vertical: 21.w, horizontal: 21.w),
+    ),
+    validator: (String? value) {
       if (value == null || value.isEmpty) {
         return 'Password is Required';
       }
@@ -92,4 +115,3 @@ Widget buildPassword(){
     },
   );
 }
-

@@ -32,7 +32,7 @@ class _LoginPageTabBarState extends State<LoginPageTabBar> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
-                  padding: EdgeInsets.all(13.w),
+                  padding: EdgeInsets.all(16.w),
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
@@ -48,6 +48,7 @@ class _LoginPageTabBarState extends State<LoginPageTabBar> {
                     child: TabBar(
                       indicatorSize: TabBarIndicatorSize.tab,
                       unselectedLabelColor: Colors.white,
+                      labelStyle: toggleButtonStyle,
                       labelColor: textBlack,
                       indicator: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(4.w),
