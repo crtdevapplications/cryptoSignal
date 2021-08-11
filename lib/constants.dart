@@ -22,6 +22,10 @@ Color textBlack = const Color.fromRGBO(26, 27, 39, 1);
 Color toggleButtonBorderColor = const Color.fromRGBO(255, 255, 255, 0.1);
 TextStyle textStyleHeader =
     TextStyle(color: textDefault, fontSize: 24, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
+TextStyle richTextHeader =
+    TextStyle(color: textDefault, fontSize: 20, fontFamily: 'DMSans', fontWeight: FontWeight.w700);
+TextStyle richTextRegular =
+    TextStyle(color: textDefault, fontSize: 16, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
 TextStyle textButtonStyle =
     TextStyle(color: textDefault, fontSize: 14, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
 TextStyle textShadedStyle =

@@ -16,6 +16,7 @@ class CreateAccPage extends StatefulWidget {
 
 class _CreateAccPageState extends State<CreateAccPage> {
   final GlobalKey<FormState> _createAccPageFormKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldMessengerState> _snackBarKey = GlobalKey<ScaffoldMessengerState>();
   final List<Widget> _createAccPageTextForms = <Widget>[
     buildFirstName(),
     buildLastName(),
@@ -128,7 +129,11 @@ class _CreateAccPageState extends State<CreateAccPage> {
                           if (!_createAccPageFormKey.currentState!.validate()) {
                             return;
                           }
-                        }}),
+                        }
+                      else{
+                          _snackBarKey.currentState?.showSnackBar(const SnackBar(content: Text('You must agree')));
+                        }
+                      }),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.w),
                     gradient: LinearGradient(
