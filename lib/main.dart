@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crypto_signal_app/pages/login_page/login_page.dart';
+import 'package:crypto_signal_app/pages/settings/settings_page.dart';
+
+import 'package:crypto_signal_app/pages/settings/notification_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,7 +21,7 @@ class MyApp extends StatelessWidget {
             DefaultWidgetsLocalizations.delegate,
             DefaultMaterialLocalizations.delegate,
           ],
-          home: LoginPage(),
+          home: SettingsPage(),
           debugShowCheckedModeBanner: false,
         ));
   }
