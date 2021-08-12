@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crypto_signal_app/constants.dart';
@@ -8,12 +9,14 @@ import 'package:crypto_signal_app/pages/settings/notification_page.dart';
 import 'package:crypto_signal_app/pages/settings/terms_and_conditions_page.dart';
 import 'package:crypto_signal_app/pages/settings/privacy_policy_page.dart';
 import 'package:crypto_signal_app/pages/settings/how_to_use_app_page.dart';
+import 'package:crypto_signal_app/pages/settings/calculate_gain_page.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
   static final Map<Widget, String> _settingsPageMenus = <Widget, String>{
     const HowToUseAppPage(): 'How to use app',
     const NotificationPage(): 'Notifications',
+    const CalculateGainPage(): 'Potential Gain Calculator',
     const TermsAndConditionsPage(): 'Terms and conditions',
     const PrivacyPolicyPage(): 'Privacy policy',
   };
@@ -80,6 +83,7 @@ class SettingsPage extends StatelessWidget {
             ),
             Spacer(),
             brokerAd(false),
+
           ],
         ),
       ),

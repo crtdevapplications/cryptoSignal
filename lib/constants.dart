@@ -28,6 +28,8 @@ TextStyle richTextRegular =
     TextStyle(color: textDefault, fontSize: 16, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
 TextStyle textButtonStyle =
     TextStyle(color: textDefault, fontSize: 14, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
+TextStyle textGainGreen =
+    TextStyle(color: textGreen, fontSize: 14, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
 TextStyle textShadedStyle =
     TextStyle(color: textShaded, fontSize: 14, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
 TextStyle textFieldStyle =

@@ -43,8 +43,12 @@ class _HowToUseAppPageState extends State<HowToUseAppPage> {
                           horizontal: 16.w,
                         ),
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(CupertinoIcons.money_dollar),
+                            Padding(
+                              padding:  EdgeInsets.only(top: 36.h, bottom: 12.h),
+                              child: Image.asset('assets/howtouseappimages/howtouseapp2.png'),
+                            ),
                             RichText(
                                 textAlign: TextAlign.center,
                                 text: TextSpan(style: richTextHeader, children: [
@@ -69,7 +73,10 @@ class _HowToUseAppPageState extends State<HowToUseAppPage> {
                         ),
                         child: Column(
                           children: [
-                            Icon(CupertinoIcons.money_dollar),
+                            Padding(
+                              padding:  EdgeInsets.only(top: 36.h, bottom: 12.h),
+                              child: Image.asset('assets/howtouseappimages/howtouseapp2.png'),
+                            ),
                             RichText(
                                 textAlign: TextAlign.center,
                                 text: TextSpan(style: richTextHeader, children: [
@@ -94,7 +101,10 @@ class _HowToUseAppPageState extends State<HowToUseAppPage> {
                         ),
                         child: Column(
                           children: [
-                            Icon(CupertinoIcons.money_dollar),
+                            Padding(
+                              padding:  EdgeInsets.only(top: 36.h, bottom: 12.h),
+                              child: Image.asset('assets/howtouseappimages/howtouseapp3.png'),
+                            ),
                             RichText(
                                 textAlign: TextAlign.center,
                                 text: TextSpan(style: richTextHeader, children: [
@@ -119,7 +129,10 @@ class _HowToUseAppPageState extends State<HowToUseAppPage> {
                         ),
                         child: Column(
                           children: [
-                            Icon(CupertinoIcons.money_dollar),
+                            Padding(
+                              padding:  EdgeInsets.only(top: 36.h, bottom: 12.h),
+                              child: Image.asset('assets/howtouseappimages/howtouseapp3.png'),
+                            ),
                             RichText(
                                 textAlign: TextAlign.center,
                                 text: TextSpan(style: richTextHeader, children: [
