@@ -12,12 +12,13 @@ class SignInPage extends StatefulWidget {
   _SignInPageState createState() => _SignInPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignInPageState extends State<SignInPage> with AutomaticKeepAliveClientMixin {
   final GlobalKey<FormState> _signInPageFormKey = GlobalKey<FormState>();
   final List<Widget> _signInTextForms = <Widget>[
     buildLogin(),
     buildPassword(),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,12 +44,21 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               ),
             ),
-
-            SizedBox(height: 2.h,),
+            SizedBox(
+              height: 2.h,
+            ),
             Container(
               width: double.infinity,
               height: 52.h,
-              child: CupertinoButton(child: Text('Login', style: textButtonStyle,), padding: EdgeInsets.zero, onPressed: () {}),
+              child: CupertinoButton(
+                  child: Text(
+                    'Login',
+                    style: textButtonStyle,
+                  ),
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
+                    _signInPageFormKey.currentState!.validate();
+                  }),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12.w),
                 gradient: LinearGradient(
@@ -61,15 +71,26 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               ),
             ),
-            SizedBox(height: 22.h,),
-            RichText(textAlign: TextAlign.center, text: TextSpan(
-                style: textStyleShaded,
-                children: [
-                  TextSpan(text: 'Forgot password?', style: textStyleWhite, recognizer: TapGestureRecognizer()..onTap = (){ debugPrint('unlucky'); }), ])),
+            SizedBox(
+              height: 22.h,
+            ),
+            RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(style: textStyleShaded, children: [
+                  TextSpan(
+                      text: 'Forgot password?',
+                      style: textStyleWhite,
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          debugPrint('unlucky');
+                        }),
+                ])),
           ],
         ),
       ),
     );
   }
-}
 
+  @override
+  bool get wantKeepAlive => true;
+}

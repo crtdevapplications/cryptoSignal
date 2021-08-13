@@ -21,28 +21,28 @@ Color textPlaceholder = const Color.fromRGBO(255, 255, 255, 0.2);
 Color textBlack = const Color.fromRGBO(26, 27, 39, 1);
 Color toggleButtonBorderColor = const Color.fromRGBO(255, 255, 255, 0.1);
 TextStyle textStyleHeader =
-    TextStyle(color: textDefault, fontSize: 24, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
+    TextStyle(color: textDefault, fontSize: 24.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
 TextStyle richTextHeader =
-    TextStyle(color: textDefault, fontSize: 20, fontFamily: 'DMSans', fontWeight: FontWeight.w700);
+    TextStyle(color: textDefault, fontSize: 20.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w700);
 TextStyle richTextRegular =
-    TextStyle(color: textDefault, fontSize: 16, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
+    TextStyle(color: textDefault, fontSize: 16.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
 TextStyle textButtonStyle =
-    TextStyle(color: textDefault, fontSize: 14, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
+    TextStyle(color: textDefault, fontSize: 14.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
 TextStyle textGainGreen =
-    TextStyle(color: textGreen, fontSize: 14, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
+    TextStyle(color: textGreen, fontSize: 14.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
 TextStyle textShadedStyle =
-    TextStyle(color: textShaded, fontSize: 14, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
+    TextStyle(color: textShaded, fontSize: 14.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
 TextStyle textFieldStyle =
-    TextStyle(color: textPlaceholder, fontSize: 14, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
-TextStyle toggleButtonStyle = const TextStyle(fontSize: 14, fontFamily: 'DMSans', fontWeight: FontWeight.w400);
+    TextStyle(color: textPlaceholder, fontSize: 14.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500, height: 2);
+TextStyle toggleButtonStyle = TextStyle(fontSize: 14.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w400);
 TextStyle textStyleShaded = TextStyle(
-  fontSize: 16,
+  fontSize: 16.sp,
   fontWeight: FontWeight.w500,
   fontFamily: 'DMSans',
   color: textShaded,
 );
 TextStyle textStyleWhite = TextStyle(
-  fontSize: 16,
+  fontSize: 16.sp,
   fontWeight: FontWeight.w500,
   fontFamily: 'DMSans',
   color: textDefault,
@@ -55,6 +55,7 @@ ThemeData appThemeData = ThemeData(
 ThemeData textFieldThemeData = ThemeData(
   textTheme: TextTheme(
     subtitle1: textButtonStyle,
+
   ),
   inputDecorationTheme: InputDecorationTheme(
     fillColor: toggleButtonBorderColor,

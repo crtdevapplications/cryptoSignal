@@ -22,13 +22,13 @@ class _LoginPageTabBarState extends State<LoginPageTabBar> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
-      child: SafeArea(
-        child: Theme(
-          data: appThemeData,
-          child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
-            body: Column(
+      child: Theme(
+        data: appThemeData,
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
+          body: SafeArea(
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
@@ -58,17 +58,17 @@ class _LoginPageTabBarState extends State<LoginPageTabBar> {
                       tabs: [
                         Tab(
                           child: Container(
-                            child: const Align(
+                            child: Align(
                               alignment: Alignment.center,
-                              child: Text('Sign Up'),
+                              child: Text('Sign Up', style: toggleButtonStyle,),
                             ),
                           ),
                         ),
                         Tab(
                           child: Container(
-                            child: const Align(
+                            child:  Align(
                               alignment: Alignment.center,
-                              child: Text('Login'),
+                              child: Text('Login', style: toggleButtonStyle),
                             ),
                           ),
                         ),

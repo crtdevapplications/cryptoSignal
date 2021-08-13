@@ -15,18 +15,18 @@ class _NotificationPageState extends State<NotificationPage> {
   bool _signalNotificationSwitchValue=true;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Theme(
-        data: appThemeData,
-        child: Scaffold(
-          appBar: AppBar(
-            title:  Text('Notifications', style: textStyleHeader,),
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            titleSpacing: 0,
-          ),
-          backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
-          body: Padding(
+    return Theme(
+      data: appThemeData,
+      child: Scaffold(
+        appBar: AppBar(
+          title:  Text('Notifications', style: textStyleHeader,),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          titleSpacing: 0,
+        ),
+        backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
+        body: SafeArea(
+          child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
               mainAxisSize: MainAxisSize.min,

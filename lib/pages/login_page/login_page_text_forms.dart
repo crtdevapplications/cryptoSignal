@@ -23,6 +23,8 @@ class UserAcc {
 
 Widget buildFirstName() {
   return TextFormField(
+    cursorHeight: 22.sp,
+    // scrollPadding: EdgeInsets.only(bottom: 200),
     decoration: InputDecoration(
       contentPadding: EdgeInsets.symmetric(vertical: 21.h, horizontal: 21.w),
       hintText: 'First Name',

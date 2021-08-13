@@ -23,35 +23,35 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Theme(
+    return Theme(
       data: appThemeData,
       child: Scaffold(
         backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.h, 12.h),
-              child: Text(
-                'Settings',
-                style: textStyleHeader,
+        body: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 12.h),
+                child: Text(
+                  'Settings',
+                  style: textStyleHeader,
+                ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(16.w, 0, 16.h, 0),
-              child: ListView.builder(
-                shrinkWrap: true,
-                primary: false,
-                itemCount: _settingsPageMenus.values.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 12.h),
-                    child: Container(
-                      decoration: BoxDecoration(color: cardBackground, borderRadius: BorderRadius.circular(16.r)),
+              Padding(
+                padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: _settingsPageMenus.values.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 12.h),
                       child: CupertinoButton(
+                        borderRadius: BorderRadius.circular(16.r),
+                        color: cardBackground,
                         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                         child: Row(
                           children: [
@@ -76,17 +76,16 @@ class SettingsPage extends StatelessWidget {
                           );
                         },
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-            Spacer(),
-            brokerAd(false),
-
-          ],
+              const Spacer(),
+              const brokerAd(false),
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 }

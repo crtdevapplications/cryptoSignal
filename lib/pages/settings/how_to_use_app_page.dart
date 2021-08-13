@@ -18,22 +18,22 @@ class _HowToUseAppPageState extends State<HowToUseAppPage> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
-      child: SafeArea(
-        child: Theme(
-          data: appThemeData,
-          child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
-            appBar: AppBar(
-              title: Text(
-                'How to use app',
-                style: textStyleHeader,
-              ),
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-              titleSpacing: 0,
+      child: Theme(
+        data: appThemeData,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
+          appBar: AppBar(
+            title: Text(
+              'How to use app',
+              style: textStyleHeader,
             ),
-            body: Column(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            titleSpacing: 0,
+          ),
+          body: SafeArea(
+            child: Column(
               children: [
                 Expanded(
                   child: TabBarView(
