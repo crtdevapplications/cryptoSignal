@@ -6,7 +6,6 @@ import 'package:crypto_signal_app/constants.dart';
 import 'package:crypto_signal_app/broker_ad_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:crypto_signal_app/pages/settings/notification_page.dart';
-import 'package:crypto_signal_app/bottom_navigation_tabbar_widget.dart';
 import 'package:crypto_signal_app/pages/settings/terms_and_conditions_page.dart';
 import 'package:crypto_signal_app/pages/settings/privacy_policy_page.dart';
 import 'package:crypto_signal_app/pages/settings/how_to_use_app_page.dart';
@@ -27,11 +26,9 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  late int _selectedNavBarIndex;
 
   @override
   void initState() {
-    _selectedNavBarIndex = 3;
     super.initState();
   }
 
@@ -40,11 +37,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     return Theme(
       data: appThemeData,
-      child: Scaffold(
-        backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
-        bottomNavigationBar: BottomNavTabbarWidget(_selectedNavBarIndex),
-        body: SafeArea(
-          child: Column(
+      child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,8 +93,6 @@ class _SettingsPageState extends State<SettingsPage> {
               const brokerAd(false),
             ],
           ),
-        ),
-      ),
     );
   }
 }

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crypto_signal_app/pages/login_page/login_page.dart';
 import 'package:crypto_signal_app/pages/settings/settings_page.dart';
+import 'package:crypto_signal_app/pages/watchlist/watchlist_page.dart';
+import 'package:crypto_signal_app/home_page.dart';
 
 import 'package:crypto_signal_app/pages/settings/notification_page.dart';
 
@@ -23,7 +25,9 @@ class MyApp extends StatelessWidget {
           ],
           home:
            // LoginPage(),
-          SettingsPage(),
+          // SettingsPage(),
+          // WatchlistPage(),
+          HomePage(),
           debugShowCheckedModeBanner: false,
         ));
   }
