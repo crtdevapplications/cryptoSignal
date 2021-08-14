@@ -25,8 +25,6 @@ class MyApp extends StatelessWidget {
           ],
           home:
            // LoginPage(),
-          // SettingsPage(),
-          // WatchlistPage(),
           HomePage(),
           debugShowCheckedModeBanner: false,
         ));
