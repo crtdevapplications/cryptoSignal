@@ -6,12 +6,13 @@ import 'package:crypto_signal_app/constants.dart';
 import 'package:crypto_signal_app/broker_ad_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:crypto_signal_app/pages/settings/notification_page.dart';
+import 'package:crypto_signal_app/bottom_navigation_tabbar_widget.dart';
 import 'package:crypto_signal_app/pages/settings/terms_and_conditions_page.dart';
 import 'package:crypto_signal_app/pages/settings/privacy_policy_page.dart';
 import 'package:crypto_signal_app/pages/settings/how_to_use_app_page.dart';
 import 'package:crypto_signal_app/pages/settings/calculate_gain_page.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
   static final Map<Widget, String> _settingsPageMenus = <Widget, String>{
     const HowToUseAppPage(): 'How to use app',
@@ -22,11 +23,26 @@ class SettingsPage extends StatelessWidget {
   };
 
   @override
+  _SettingsPageState createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  late int _selectedNavBarIndex;
+
+  @override
+  void initState() {
+    _selectedNavBarIndex = 3;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     return Theme(
       data: appThemeData,
       child: Scaffold(
         backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
+        bottomNavigationBar: BottomNavTabbarWidget(_selectedNavBarIndex),
         body: SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -45,7 +61,7 @@ class SettingsPage extends StatelessWidget {
                 child: ListView.builder(
                   shrinkWrap: true,
                   primary: false,
-                  itemCount: _settingsPageMenus.values.length,
+                  itemCount: SettingsPage._settingsPageMenus.values.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: EdgeInsets.only(bottom: 12.h),
@@ -56,7 +72,7 @@ class SettingsPage extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              _settingsPageMenus.values.toList().elementAt(index),
+                              SettingsPage._settingsPageMenus.values.toList().elementAt(index),
                               style: textButtonStyle,
                             ),
                             Spacer(),
@@ -71,7 +87,7 @@ class SettingsPage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute<void>(
-                              builder: (context) => _settingsPageMenus.keys.elementAt(index),
+                              builder: (context) => SettingsPage._settingsPageMenus.keys.elementAt(index),
                             ),
                           );
                         },

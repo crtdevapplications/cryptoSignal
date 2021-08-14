@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
             DefaultMaterialLocalizations.delegate,
           ],
           home:
-           LoginPage(),
-           // SettingsPage(),
+           // LoginPage(),
+          SettingsPage(),
           debugShowCheckedModeBanner: false,
         ));
   }

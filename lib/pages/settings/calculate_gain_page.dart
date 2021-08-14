@@ -69,6 +69,7 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                               child: TextFormField(
                                 controller: _calculateGainTextController,
                                 maxLength: 10,
+
                               ),
                             ),
                           ],

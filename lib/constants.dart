@@ -19,6 +19,7 @@ Color textFieldBorderColor = const Color.fromRGBO(255, 255, 255, 0.4);
 Color textFocused = const Color.fromRGBO(252, 252, 252, 1);
 Color textPlaceholder = const Color.fromRGBO(255, 255, 255, 0.2);
 Color textBlack = const Color.fromRGBO(26, 27, 39, 1);
+Color bottomNavBarColor = const Color.fromRGBO(122, 124, 148, 1);
 Color toggleButtonBorderColor = const Color.fromRGBO(255, 255, 255, 0.1);
 TextStyle textStyleHeader =
     TextStyle(color: textDefault, fontSize: 24.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
@@ -35,6 +36,8 @@ TextStyle textShadedStyle =
 TextStyle textFieldStyle =
     TextStyle(color: textPlaceholder, fontSize: 14.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500, height: 2);
 TextStyle toggleButtonStyle = TextStyle(fontSize: 14.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w400);
+TextStyle bottomTabBarStyle = TextStyle(
+    color: bottomNavBarColor, fontSize: 14.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w400);
 TextStyle textStyleShaded = TextStyle(
   fontSize: 16.sp,
   fontWeight: FontWeight.w500,
@@ -55,7 +58,6 @@ ThemeData appThemeData = ThemeData(
 ThemeData textFieldThemeData = ThemeData(
   textTheme: TextTheme(
     subtitle1: textButtonStyle,
-
   ),
   inputDecorationTheme: InputDecorationTheme(
     fillColor: toggleButtonBorderColor,
