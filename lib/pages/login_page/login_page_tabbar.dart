@@ -28,64 +28,63 @@ class _LoginPageTabBarState extends State<LoginPageTabBar> {
           resizeToAvoidBottomInset: true,
           backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
           body: SafeArea(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(16.w),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
+            child: GestureDetector(
+              onTap: () {FocusScope.of(context).unfocus();},
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(16.w),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(4.w),
+                            topLeft: Radius.circular(4.w),
+                          ),
+                          border: Border.all(color: toggleButtonBorderColor, width: 1)),
+                      height: 42.h,
+                      child: TabBar(
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        unselectedLabelColor: Colors.white,
+                        labelStyle: toggleButtonStyle,
+                        labelColor: textBlack,
+                        indicator: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(4.w),
                           topLeft: Radius.circular(4.w),
-                        ),
-                        border: Border(
-                            left: BorderSide(color: toggleButtonBorderColor, width: 1),
-                            right: BorderSide(color: toggleButtonBorderColor, width: 1),
-                            top: BorderSide(color: toggleButtonBorderColor, width: 1),
-                            bottom: BorderSide(color: toggleButtonBorderColor, width: 1))),
-                    height: 42.h,
-                    child: TabBar(
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      unselectedLabelColor: Colors.white,
-                      labelStyle: toggleButtonStyle,
-                      labelColor: textBlack,
-                      indicator: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(4.w),
-                        topLeft: Radius.circular(4.w),
-                      ),),
-                      labelPadding: EdgeInsets.zero,
-                      tabs: [
-                        Tab(
-                          child: Container(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text('Sign Up', style: toggleButtonStyle,),
+                        ),),
+                        labelPadding: EdgeInsets.zero,
+                        tabs: [
+                          Tab(
+                            child: Container(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text('Sign Up', style: toggleButtonStyle,),
+                              ),
                             ),
                           ),
-                        ),
-                        Tab(
-                          child: Container(
-                            child:  Align(
-                              alignment: Alignment.center,
-                              child: Text('Login', style: toggleButtonStyle),
+                          Tab(
+                            child: Container(
+                              child:  Align(
+                                alignment: Alignment.center,
+                                child: Text('Login', style: toggleButtonStyle),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Expanded(
+                    child: TabBarView(
+                      physics: NeverScrollableScrollPhysics(),
+                      children: [
+                        CreateAccPage(),
+                        SignInPage(),
                       ],
                     ),
                   ),
-                ),
-                const Expanded(
-                  child: TabBarView(
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      CreateAccPage(),
-                      SignInPage(),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

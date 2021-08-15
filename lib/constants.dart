@@ -36,8 +36,9 @@ TextStyle textGainGreen =
 TextStyle textShadedStyle =
     TextStyle(color: textShaded, fontSize: 14.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
 TextStyle textFieldStyle =
-    TextStyle(color: textPlaceholder, fontSize: 14.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500, height: 2);
+    TextStyle(color: textPlaceholder, fontSize: 14.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500,);
 TextStyle toggleButtonStyle = TextStyle(fontSize: 14.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w400);
+TextStyle errorStyle = TextStyle(fontSize: 12.sp, color: const Color.fromRGBO(167, 43, 47, 1), fontFamily: 'DMSans',  fontWeight: FontWeight.w600);
 TextStyle bottomTabBarStyle = TextStyle(
     color: bottomNavBarColor, fontSize: 14.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w400);
 TextStyle textStyleShaded = TextStyle(
@@ -52,7 +53,6 @@ TextStyle textStyleWhite = TextStyle(
   fontFamily: 'DMSans',
   color: textDefault,
 );
-List<bool> selectedLoginPageType = <bool>[true, false];
 ThemeData appThemeData = ThemeData(
   splashColor: Colors.transparent,
   highlightColor: Colors.transparent,
@@ -63,7 +63,7 @@ ThemeData textFieldThemeData = ThemeData(
   ),
   inputDecorationTheme: InputDecorationTheme(
     fillColor: toggleButtonBorderColor,
-    // errorStyle: textButtonStyle,
+    // errorStyle: errorStyle,
     filled: true,
     enabledBorder: OutlineInputBorder(
       borderSide: BorderSide(

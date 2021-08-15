@@ -29,7 +29,7 @@ class _CreateAccPageState extends State<CreateAccPage> with AutomaticKeepAliveCl
   Widget build(BuildContext context) {
     return Container(
       child: SingleChildScrollView(
-        physics: ClampingScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -73,12 +73,12 @@ class _CreateAccPageState extends State<CreateAccPage> with AutomaticKeepAliveCl
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Row(
                     children: [
                       Checkbox(
                           checkColor: textShaded,
-                          fillColor: MaterialStateProperty.all(checkboxColor),
+                          fillColor: isChecked == false ? MaterialStateProperty.all(const Color.fromRGBO(167, 43, 47, 1)) : MaterialStateProperty.all(checkboxColor),
                           splashRadius: 0,
                           value: isChecked,
                           activeColor: toggleButtonBorderColor,
@@ -132,7 +132,6 @@ class _CreateAccPageState extends State<CreateAccPage> with AutomaticKeepAliveCl
                               return;
                             }
                           } else {
-                            _snackBarKey.currentState?.showSnackBar(const SnackBar(content: Text('You must agree')));
                           }
                         }),
                     decoration: BoxDecoration(

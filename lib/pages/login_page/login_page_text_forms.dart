@@ -6,27 +6,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:crypto_signal_app/pages/login_page/sign_in_page.dart';
 import 'package:crypto_signal_app/pages/login_page/create_acc_page.dart';
 
-class UserAcc {
-  UserAcc(
-      {required this.firstName,
-      required this.lastName,
-      required this.email,
-      required this.phoneCode,
-      required this.phoneNumber});
-
-  String firstName;
-  String lastName;
-  String email;
-  String phoneCode;
-  String phoneNumber;
-}
-
 Widget buildFirstName() {
   return TextFormField(
     cursorHeight: 22.sp,
     // scrollPadding: EdgeInsets.only(bottom: 200),
     decoration: InputDecoration(
-      contentPadding: EdgeInsets.symmetric(vertical: 21.h, horizontal: 21.w),
+      contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
       hintText: 'First Name',
     ),
     validator: (String? value) {
@@ -40,9 +25,10 @@ Widget buildFirstName() {
 
 Widget buildLastName() {
   return TextFormField(
+    cursorHeight: 22.sp,
     decoration: InputDecoration(
       hintText: 'Last Name',
-      contentPadding: EdgeInsets.symmetric(vertical: 21.h, horizontal: 21.w),
+      contentPadding:EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
     ),
     validator: (String? value) {
       if (value == null || value.isEmpty) {
@@ -55,9 +41,10 @@ Widget buildLastName() {
 
 Widget buildEmail() {
   return TextFormField(
+    cursorHeight: 22.sp,
     decoration: InputDecoration(
       hintText: 'Email',
-      contentPadding: EdgeInsets.symmetric(vertical: 21.h, horizontal: 21.w),
+      contentPadding:EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
     ),
     validator: (String? value) {
       if (value == null || value.isEmpty) {
@@ -73,10 +60,11 @@ Widget buildEmail() {
 
 Widget buildPhoneNumber() {
   return TextFormField(
+    cursorHeight: 22.sp,
     keyboardType: TextInputType.phone,
     decoration: InputDecoration(
       hintText: 'Phone',
-      contentPadding: EdgeInsets.symmetric(vertical: 21.h, horizontal: 21.w),
+      contentPadding:EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
     ),
     validator: (String? value) {
       if (value == null || value.isEmpty) {
@@ -89,9 +77,10 @@ Widget buildPhoneNumber() {
 
 Widget buildLogin() {
   return TextFormField(
+    cursorHeight: 22.sp,
     decoration: InputDecoration(
       hintText: 'Login',
-      contentPadding: EdgeInsets.symmetric(vertical: 21.h, horizontal: 21.w),
+      contentPadding:EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
     ),
     validator: (String? value) {
       if (value == null || value.isEmpty) {
@@ -114,15 +103,16 @@ class _buildPasswordState extends State<buildPassword> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 56.h,
       child: Stack(
         children: [
           TextFormField(
+            cursorHeight: 22.sp,
             keyboardType: TextInputType.visiblePassword,
             obscureText: obscurePass,
             decoration: InputDecoration(
+              hintStyle: textFieldStyle,
               hintText: 'Password',
-              contentPadding: EdgeInsets.symmetric(vertical: 21.h, horizontal: 21.w),
+              contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
             ),
             validator: (String? value) {
               if (value == null || value.isEmpty) {
@@ -134,7 +124,7 @@ class _buildPasswordState extends State<buildPassword> {
           Align(
             alignment: Alignment.centerRight,
             child: CupertinoButton(
-              minSize: 24.r,
+              padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 15.w),
               child: SvgPicture.asset('assets/passwordeye.svg'),
               onPressed: () {
                 setState(() {
@@ -155,38 +145,3 @@ class _buildPasswordState extends State<buildPassword> {
   }
 }
 
-
-Widget buildPassword1() {
-  bool obscurePass = true;
-  return Container(
-    height: 56.h,
-    child: Stack(
-      children: [
-        TextFormField(
-          keyboardType: TextInputType.visiblePassword,
-          obscureText: obscurePass,
-          decoration: InputDecoration(
-            hintText: 'Password',
-            contentPadding: EdgeInsets.symmetric(vertical: 21.h, horizontal: 21.w),
-          ),
-          validator: (String? value) {
-            if (value == null || value.isEmpty) {
-              return 'Password is Required';
-            }
-            return null;
-          },
-        ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: CupertinoButton(
-            minSize: 24.r,
-            child: SvgPicture.asset('assets/passwordeye.svg'),
-            onPressed: () {
-              obscurePass = false;
-            },
-          ),
-        ),
-      ],
-    ),
-  );
-}
