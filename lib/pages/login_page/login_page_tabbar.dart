@@ -12,79 +12,85 @@ class LoginPageTabBar extends StatefulWidget {
   _LoginPageTabBarState createState() => _LoginPageTabBarState();
 }
 
-class _LoginPageTabBarState extends State<LoginPageTabBar> {
+class _LoginPageTabBarState extends State<LoginPageTabBar> with TickerProviderStateMixin  {
+  late TabController _tabController;
   @override
   void initState() {
+
+    _tabController = TabController(vsync: this, length: 2, initialIndex: 0,);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Theme(
-        data: appThemeData,
-        child: Scaffold(
-          resizeToAvoidBottomInset: true,
-          backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
-          body: SafeArea(
-            child: GestureDetector(
-              onTap: () {FocusScope.of(context).unfocus();},
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(16.w),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(4.w),
-                            topLeft: Radius.circular(4.w),
-                          ),
-                          border: Border.all(color: toggleButtonBorderColor, width: 1)),
-                      height: 42.h,
-                      child: TabBar(
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        unselectedLabelColor: Colors.white,
-                        labelStyle: toggleButtonStyle,
-                        labelColor: textBlack,
-                        indicator: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(4.w),
-                          topLeft: Radius.circular(4.w),
-                        ),),
-                        labelPadding: EdgeInsets.zero,
-                        tabs: [
-                          Tab(
-                            child: Container(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text('Sign Up', style: toggleButtonStyle,),
-                              ),
+    return Theme(
+      data: appThemeData,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
+        body: SafeArea(
+          child: GestureDetector(
+            onTap: () {FocusScope.of(context).unfocus();},
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: Container(
+                    decoration:  BoxDecoration(
+                        borderRadius:  BorderRadius.circular(4.w),
+                        border: Border.all(color: toggleButtonBorderColor, width: 1)),
+                    height: 42.h,
+                    child: TabBar(
+                      controller: _tabController,
+                      onTap: (index){
+                        setState(() {
+                        });
+                      },
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      unselectedLabelColor: Colors.white,
+                      labelStyle: toggleButtonStyle,
+                      labelColor: textBlack,
+                      indicator: _tabController.index == 0 ? BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(4.w),
+                        topLeft: Radius.circular(4.w),
+                      ),) : BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(4.w),
+                        topRight: Radius.circular(4.w),
+                      ),),
+                      labelPadding: EdgeInsets.zero,
+                      tabs: [
+                        Tab(
+                          child: Container(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text('Sign Up', style: toggleButtonStyle,),
                             ),
                           ),
-                          Tab(
-                            child: Container(
-                              child:  Align(
-                                alignment: Alignment.center,
-                                child: Text('Login', style: toggleButtonStyle),
-                              ),
+                        ),
+                        Tab(
+                          child: Container(
+                            child:  Align(
+                              alignment: Alignment.center,
+                              child: Text('Login', style: toggleButtonStyle),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const Expanded(
-                    child: TabBarView(
-                      physics: NeverScrollableScrollPhysics(),
-                      children: [
-                        CreateAccPage(),
-                        SignInPage(),
+                        ),
                       ],
                     ),
                   ),
-                ],
-              ),
+                ),
+                 Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      CreateAccPage(),
+                      SignInPage(),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),

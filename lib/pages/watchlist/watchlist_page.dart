@@ -93,42 +93,48 @@ class _WatchlistPageState extends State<WatchlistPage> {
       );
     } else {
       return Padding(
-        padding: EdgeInsets.only(left: 16.w, right: 15.w, top: 12.h),
+        padding: EdgeInsets.only(top: 12.h),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Watchlist',
-                  style: textStyleHeader,
-                ),
-                const Spacer(),
-                CupertinoButton(
-                  child: Container(
-                    color: Colors.transparent,
-                    child: SvgPicture.asset('assets/plus.svg', color: Colors.white, height: 24.r,
-                      width: 24.r,),
+            Padding(
+              padding: EdgeInsets.only(left: 16.w, right: 11.w,),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Watchlist',
+                    style: textStyleHeader,
                   ),
-                  onPressed: () { Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (context) => const AddToWatchlistPage(),
+                  const Spacer(),
+                  CupertinoButton(
+                    child: Container(
+                      color: Colors.transparent,
+                      child: SvgPicture.asset('assets/plus.svg', color: Colors.white, height: 24.r,
+                        width: 24.r,),
                     ),
-                  );},
-                  padding: EdgeInsets.zero,
-                )
-              ],
+                    onPressed: () { Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (context) => const AddToWatchlistPage(),
+                      ),
+                    );},
+                    padding: EdgeInsets.zero,
+                  )
+                ],
+              ),
             ),
             SizedBox(
               height: 12.h,
             ),
-            WatchedCryptoWidget('btc', true, 32210.93, 0.085000),
+            Padding(
+              padding:  EdgeInsets.only(left: 16.w, right: 15.w,),
+              child: WatchedCryptoWidget('btc', true, 32210.93, 0.085000,),
+            ),
           ],
         ),
       );
