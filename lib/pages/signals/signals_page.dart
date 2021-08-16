@@ -1,3 +1,4 @@
+import 'package:crypto_signal_app/pages/signals/signals_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,7 @@ class _SignalsPageState extends State<SignalsPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text('Good evening Elon', style: textStyleHeader),
+              SignalsWidget('btc', DateTime.now(), true, 29727.4, 32386.52, 8.95, 40000, 28000),
             ],
           ),
     );

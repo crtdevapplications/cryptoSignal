@@ -21,7 +21,6 @@ class AlertCryptoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80.h,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.transparent,

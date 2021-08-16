@@ -19,10 +19,21 @@ Color checkboxColor = const Color.fromRGBO(71, 71, 81, 1);
 Color textFieldBorderColor = const Color.fromRGBO(255, 255, 255, 0.4);
 Color textFocused = const Color.fromRGBO(252, 252, 252, 1);
 Color svgPicturesColor = const Color.fromRGBO(30, 30, 32, 1);
+Color signalWidgetShaded = const Color.fromRGBO(252, 252, 252, 0.64);
 Color textPlaceholder = const Color.fromRGBO(255, 255, 255, 0.2);
 Color textBlack = const Color.fromRGBO(26, 27, 39, 1);
 Color bottomNavBarColor = const Color.fromRGBO(122, 124, 148, 1);
 Color toggleButtonBorderColor = const Color.fromRGBO(255, 255, 255, 0.1);
+TextStyle textStyleSignalDefault  =
+TextStyle(color: textDefault, fontSize: 22.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
+TextStyle textStyleSignalGreen  =
+TextStyle(color: textGreen, fontSize: 22.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
+TextStyle textStyleSignalRed  =
+TextStyle(color: textRed, fontSize: 22.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
+TextStyle textStyleSignalShaded  =
+TextStyle(color: signalWidgetShaded, fontSize: 14.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
+TextStyle textStyleSignalWidget =
+TextStyle(color: signalWidgetShaded, fontSize: 12.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
 TextStyle textStyleHeader =
     TextStyle(color: textDefault, fontSize: 24.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
 TextStyle richTextHeader =
@@ -65,6 +76,12 @@ ThemeData textFieldThemeData = ThemeData(
     fillColor: toggleButtonBorderColor,
     // errorStyle: errorStyle,
     filled: true,
+    disabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: toggleButtonBorderColor,
+        width: 1.0,
+      ),
+    ),
     enabledBorder: OutlineInputBorder(
       borderSide: BorderSide(
         color: toggleButtonBorderColor,

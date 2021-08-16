@@ -45,9 +45,9 @@ class _NotificationPageState extends State<NotificationPage> {
                       trailing: Switch(
                         splashRadius: 0,
                         activeTrackColor: Colors.white,
-                        inactiveTrackColor: textPlaceholder,
+                        inactiveTrackColor: Color.fromRGBO(196, 196, 196, 1),
                         value: _signalNotificationSwitchValue,
-                        thumbColor: MaterialStateProperty.all(Color.fromRGBO(84, 122, 255, 1)),
+                        thumbColor: _signalNotificationSwitchValue == false ?  MaterialStateProperty.all(Color.fromRGBO(196, 196, 196, 1)): MaterialStateProperty.all(Color.fromRGBO(84, 122, 255, 1)),
                         onChanged: (bool value){
                           setState(() {
                             _signalNotificationSwitchValue = value;
@@ -72,8 +72,8 @@ class _NotificationPageState extends State<NotificationPage> {
                       trailing: Switch(
                         splashRadius: 0,
                         activeTrackColor: Colors.white,
-                        thumbColor: MaterialStateProperty.all(Color.fromRGBO(84, 122, 255, 1)),
-                        inactiveTrackColor: textPlaceholder,
+                        thumbColor: _allNotificationSwitchValue == false ?  MaterialStateProperty.all(Color.fromRGBO(196, 196, 196, 1)): MaterialStateProperty.all(Color.fromRGBO(84, 122, 255, 1)),
+                        inactiveTrackColor: Color.fromRGBO(196, 196, 196, 1),
                         value: _allNotificationSwitchValue,
                         onChanged: (bool value){
                           setState(() {

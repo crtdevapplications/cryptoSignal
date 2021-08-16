@@ -11,7 +11,6 @@ import 'package:crypto_signal_app/pages/settings/terms_and_conditions_page.dart'
 import 'package:crypto_signal_app/pages/settings/privacy_policy_page.dart';
 import 'package:crypto_signal_app/pages/settings/how_to_use_app_page.dart';
 import 'package:crypto_signal_app/pages/settings/calculate_gain_page.dart';
-
 import 'add_to_alerts_page.dart';
 
 class AlertsPage extends StatefulWidget {
