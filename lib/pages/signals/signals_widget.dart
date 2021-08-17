@@ -227,19 +227,19 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                     BoxDecoration(shape: BoxShape.circle, color: const Color.fromRGBO(255, 91, 91, 1)),
                               ),
                               Spacer(),
-                              if(widget.goingUp)
-                              Container(
-                                height: 8.r,
-                                width: 8.r,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle, color: const Color.fromRGBO(252, 252, 252, 1)),
-                              )
+                              if (widget.goingUp)
+                                Container(
+                                  height: 8.r,
+                                  width: 8.r,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle, color: const Color.fromRGBO(252, 252, 252, 1)),
+                                )
                               else
                                 Container(
                                   height: 8.r,
                                   width: 8.r,
-                                  decoration:
-                                  BoxDecoration(shape: BoxShape.circle, color: const Color.fromRGBO(51, 182, 255, 1)),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle, color: const Color.fromRGBO(51, 182, 255, 1)),
                                 ),
                               Container(
                                 height: 1.h,
@@ -281,13 +281,13 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                     ? const Color.fromRGBO(0, 255, 41, 1)
                                     : const Color.fromRGBO(255, 91, 91, 1),
                               ),
-                              if(widget.goingUp)
-                              Container(
-                                height: 8.r,
-                                width: 8.r,
-                                decoration:
-                                    BoxDecoration(shape: BoxShape.circle, color: const Color.fromRGBO(51, 182, 255, 1)),
-                              )
+                              if (widget.goingUp)
+                                Container(
+                                  height: 8.r,
+                                  width: 8.r,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle, color: const Color.fromRGBO(51, 182, 255, 1)),
+                                )
                               else
                                 Container(
                                   height: 8.r,
@@ -320,21 +320,23 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                     ),
                     Spacer(),
                     if (widget.goingUp == true)
-                    Text(
-                      'Entry Price',
-                      style: textStyleSignalWidget,
-                    )
+                      Text(
+                        'Entry Price',
+                        style: textStyleSignalWidget,
+                      )
                     else
                       Text(
                         'Current Price',
                         style: textStyleSignalWidget,
                       ),
-                    SizedBox(width: MediaQuery.of(context).size.width /16,),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 16,
+                    ),
                     if (widget.goingUp == true)
-                    Text(
-                      'Current Price',
-                      style: textStyleSignalWidget,
-                    )
+                      Text(
+                        'Current Price',
+                        style: textStyleSignalWidget,
+                      )
                     else
                       Text(
                         'Entry Price',

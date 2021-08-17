@@ -36,6 +36,10 @@ TextStyle textStyleSignalWidget =
 TextStyle(color: signalWidgetShaded, fontSize: 12.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
 TextStyle textStyleHeader =
     TextStyle(color: textDefault, fontSize: 24.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
+TextStyle textStyleHeaderGreen =
+    TextStyle(color: textGreen, fontSize: 24.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
+TextStyle textStyleHeaderRed =
+    TextStyle(color: textRed, fontSize: 24.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w500);
 TextStyle richTextHeader =
     TextStyle(color: textDefault, fontSize: 20.sp, fontFamily: 'DMSans', fontWeight: FontWeight.w700);
 TextStyle richTextRegular =
