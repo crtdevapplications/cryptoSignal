@@ -15,22 +15,24 @@ import 'package:intl/intl.dart';
 
 class SignalsWidget extends StatefulWidget {
   String cryptoName;
-   DateTime date;
-   bool goingUp;
-   double aboveLimit;
-   double belowLimit;
-   double entryPrice;
-   double currentPrice;
-   double percentChange;
-  SignalsWidget(this.cryptoName, this.date, this.goingUp, this.entryPrice, this.currentPrice, this.percentChange, this.aboveLimit, this.belowLimit, {Key? key}) : super(key: key);
+  DateTime date;
+  bool goingUp;
+  double aboveLimit;
+  double belowLimit;
+  double entryPrice;
+  double currentPrice;
+  double percentChange;
+
+  SignalsWidget(this.cryptoName, this.date, this.goingUp, this.entryPrice, this.currentPrice, this.percentChange,
+      this.aboveLimit, this.belowLimit,
+      {Key? key})
+      : super(key: key);
 
   @override
   _SignalsWidgetState createState() => _SignalsWidgetState();
 }
 
 class _SignalsWidgetState extends State<SignalsWidget> {
-
-
   @override
   void initState() {
     super.initState();
@@ -54,7 +56,7 @@ class _SignalsWidgetState extends State<SignalsWidget> {
             Row(
               children: [
                 SvgPicture.asset(
-                  'assets/cryptoicons/'+widget.cryptoName+'.svg',
+                  'assets/cryptoicons/' + widget.cryptoName + '.svg',
                   height: 48.r,
                   width: 48.r,
                 ),
@@ -70,18 +72,20 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                       Row(
                         children: [
                           Text(
-                            widget.cryptoName.toUpperCase()+'/USD',
+                            widget.cryptoName.toUpperCase() + '/USD',
                             style: textStyleSignalDefault,
                           ),
-                          SizedBox(width: 8.w,),
+                          SizedBox(
+                            width: 8.w,
+                          ),
                           if (widget.goingUp == true)
                             Text(
-                              widget.percentChange.toString()+'%',
+                              widget.percentChange.toString() + '%',
                               style: textStyleSignalGreen,
                             )
                           else
                             Text(
-                              '-'+widget.percentChange.toString()+'%',
+                              '-' + widget.percentChange.toString() + '%',
                               style: textStyleSignalRed,
                             ),
                           Spacer(),
@@ -143,7 +147,7 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '\$'+widget.belowLimit.toString(),
+                        '\$' + widget.belowLimit.toString(),
                         style: TextStyle(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w500,
@@ -151,26 +155,48 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                             color: Color.fromRGBO(255, 91, 91, 1)),
                       ),
                       Spacer(),
-                      Text(
-                        '\$'+widget.entryPrice.toString(),
-                        style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'DMSans',
-                            color: Color.fromRGBO(252, 252, 252, 1)),
+                      if (widget.goingUp == true)
+                        Text(
+                          '\$' + widget.entryPrice.toString(),
+                          style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'DMSans',
+                              color: Color.fromRGBO(252, 252, 252, 1)),
+                        )
+                      else
+                        Text(
+                          '\$' + widget.currentPrice.toString(),
+                          style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'DMSans',
+                              color: Color.fromRGBO(51, 182, 255, 1)),
+                        ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 8,
                       ),
+                      if (widget.goingUp == true)
+                        Text(
+                          '\$' + widget.currentPrice.toString(),
+                          style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'DMSans',
+                              color: Color.fromRGBO(51, 182, 255, 1)),
+                        )
+                      else
+                        Text(
+                          '\$' + widget.entryPrice.toString(),
+                          style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'DMSans',
+                              color: Color.fromRGBO(252, 252, 252, 1)),
+                        ),
                       Spacer(),
                       Text(
-                        '\$'+widget.currentPrice.toString(),
-                        style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'DMSans',
-                            color: Color.fromRGBO(51, 182, 255, 1)),
-                      ),
-                      Spacer(),
-                      Text(
-                        '\$'+widget.aboveLimit.toString(),
+                        '\$' + widget.aboveLimit.toString(),
                         style: TextStyle(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w500,
@@ -201,15 +227,23 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                     BoxDecoration(shape: BoxShape.circle, color: const Color.fromRGBO(255, 91, 91, 1)),
                               ),
                               Spacer(),
+                              if(widget.goingUp)
                               Container(
                                 height: 8.r,
                                 width: 8.r,
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle, color: const Color.fromRGBO(252, 252, 252, 1)),
-                              ),
+                              )
+                              else
+                                Container(
+                                  height: 8.r,
+                                  width: 8.r,
+                                  decoration:
+                                  BoxDecoration(shape: BoxShape.circle, color: const Color.fromRGBO(51, 182, 255, 1)),
+                                ),
                               Container(
                                 height: 1.h,
-                                width: 15.w,
+                                width: MediaQuery.of(context).size.width / 24,
                                 color: widget.goingUp == true
                                     ? const Color.fromRGBO(0, 255, 41, 1)
                                     : const Color.fromRGBO(255, 91, 91, 1),
@@ -223,7 +257,7 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                       borderRadius: BorderRadius.circular(16.w)),
                                   child: widget.goingUp == true
                                       ? Text(
-                                          widget.percentChange.toString()+'\% gain',
+                                          widget.percentChange.toString() + '\% gain',
                                           style: TextStyle(
                                             fontSize: 10.sp,
                                             color: const Color.fromRGBO(73, 75, 87, 1),
@@ -232,7 +266,7 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                           ),
                                         )
                                       : Text(
-                                          '-'+widget.percentChange.toString()+'\% loss',
+                                          '-' + widget.percentChange.toString() + '\% loss',
                                           style: TextStyle(
                                             fontSize: 10.sp,
                                             color: const Color.fromRGBO(73, 75, 87, 1),
@@ -242,17 +276,25 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                         )),
                               Container(
                                 height: 1.h,
-                                width: 15.w,
+                                width: MediaQuery.of(context).size.width / 24,
                                 color: widget.goingUp == true
                                     ? const Color.fromRGBO(0, 255, 41, 1)
                                     : const Color.fromRGBO(255, 91, 91, 1),
                               ),
+                              if(widget.goingUp)
                               Container(
                                 height: 8.r,
                                 width: 8.r,
                                 decoration:
                                     BoxDecoration(shape: BoxShape.circle, color: const Color.fromRGBO(51, 182, 255, 1)),
-                              ),
+                              )
+                              else
+                                Container(
+                                  height: 8.r,
+                                  width: 8.r,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle, color: const Color.fromRGBO(252, 252, 252, 1)),
+                                ),
                               Spacer(),
                               Container(
                                 height: 8.r,
@@ -277,15 +319,27 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                       style: textStyleSignalWidget,
                     ),
                     Spacer(),
+                    if (widget.goingUp == true)
                     Text(
                       'Entry Price',
                       style: textStyleSignalWidget,
-                    ),
-                    Spacer(),
+                    )
+                    else
+                      Text(
+                        'Current Price',
+                        style: textStyleSignalWidget,
+                      ),
+                    SizedBox(width: MediaQuery.of(context).size.width /16,),
+                    if (widget.goingUp == true)
                     Text(
-                      '   Current Price',
+                      'Current Price',
                       style: textStyleSignalWidget,
-                    ),
+                    )
+                    else
+                      Text(
+                        'Entry Price',
+                        style: textStyleSignalWidget,
+                      ),
                     Spacer(),
                     Text(
                       'Take Profit',
