@@ -43,13 +43,13 @@ class _SignalsPageState extends State<SignalsPage>  with TickerProviderStateMixi
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 16.w, right: 15.w,),
+                  padding: EdgeInsets.only(left: 16.w, right: 16.w,),
                   child: Text('Good evening Elon', style: textStyleHeader),
                 ),
                 SizedBox(height: 20.h,),
                 SizedBox(height: 12.h,),
                 Padding(
-                  padding: EdgeInsets.only(left: 16.w, right: 15.w,),
+                  padding: EdgeInsets.only(left: 16.w, right: 16.w,),
                   child: Container(
                     decoration:  BoxDecoration(
                         borderRadius:  BorderRadius.circular(4.w),

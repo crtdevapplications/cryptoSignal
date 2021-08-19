@@ -33,7 +33,7 @@ class _WatchlistPageState extends State<WatchlistPage> {
   Widget build(BuildContext context) {
     if (temporalBool == true) {
       return Padding(
-        padding: EdgeInsets.only(left: 16.w, right: 15.w, top: 12.h),
+        padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 12.h),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +132,7 @@ class _WatchlistPageState extends State<WatchlistPage> {
               height: 12.h,
             ),
             Padding(
-              padding:  EdgeInsets.only(left: 16.w, right: 15.w,),
+              padding:  EdgeInsets.only(left: 16.w, right: 16.w,),
               child: WatchedCryptoWidget('btc', true, 32210.93, 0.085000,),
             ),
           ],

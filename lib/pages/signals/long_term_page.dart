@@ -140,7 +140,7 @@ class _LongTermPageState extends State<LongTermPage> {
               height: 10.h,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 15.w, bottom: 12.h),
+              padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
               child: Container(
                 height: 72.h,
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 19.h),
@@ -170,7 +170,7 @@ class _LongTermPageState extends State<LongTermPage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 15.w, bottom: 12.h),
+              padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
               child: CupertinoButton(
                 padding: EdgeInsets.zero,
                 onPressed: () {
