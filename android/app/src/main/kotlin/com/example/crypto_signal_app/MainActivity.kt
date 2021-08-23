@@ -1,4 +1,4 @@
-package com.example.crypto_signal_app
+package com.crypto.signal
 
 import io.flutter.embedding.android.FlutterActivity
 

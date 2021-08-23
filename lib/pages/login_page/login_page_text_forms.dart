@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crypto_signal_app/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:crypto_signal_app/user.dart';
 import 'package:crypto_signal_app/pages/login_page/sign_in_page.dart';
 import 'package:crypto_signal_app/pages/login_page/create_acc_page.dart';
+
+List<String> signUpList = <String>[];
+List<String> loginList = <String>[];
 
 Widget buildFirstName() {
   return TextFormField(
@@ -19,6 +23,9 @@ Widget buildFirstName() {
         return 'First Name is Required';
       }
       return null;
+    },
+    onSaved: (String? value) {
+      signUpList.add(value.toString());
     },
   );
 }
@@ -35,6 +42,9 @@ Widget buildLastName() {
         return 'Last Name is Required';
       }
       return null;
+    },
+    onSaved: (String? value) {
+      signUpList.add(value.toString());
     },
   );
 }
@@ -55,6 +65,9 @@ Widget buildEmail() {
       }
       return null;
     },
+    onSaved: (String? value) {
+      signUpList.add(value.toString());
+    },
   );
 }
 
@@ -72,6 +85,9 @@ Widget buildPhoneNumber() {
       }
       return null;
     },
+    onSaved: (String? value) {
+      signUpList.add(value.toString());
+    },
   );
 }
 
@@ -87,6 +103,9 @@ Widget buildLogin() {
         return 'Login Required';
       }
       return null;
+    },
+    onSaved: (String? value) {
+      loginList.add(value.toString());
     },
   );
 }
@@ -107,6 +126,9 @@ class _buildPasswordState extends State<buildPassword> {
         children: [
           TextFormField(
             cursorHeight: 22.sp,
+            onSaved: (String? value) {
+              loginList.add(value.toString());
+            },
             keyboardType: TextInputType.visiblePassword,
             obscureText: obscurePass,
             decoration: InputDecoration(

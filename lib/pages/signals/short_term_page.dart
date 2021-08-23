@@ -34,7 +34,8 @@ class _ShortTermPageState extends State<ShortTermPage> {
           Padding(
             padding: EdgeInsets.only(
               left: 16.w,
-            ),            child: Row(
+            ),
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -43,8 +44,14 @@ class _ShortTermPageState extends State<ShortTermPage> {
                   'Free signal',
                   style: textStyleHeader,
                 ),
-                Spacer(),
-                CupertinoButton(child: SvgPicture.asset('assets/questionmark.svg', height: 24.r, width: 24.r, color: bottomNavBarColor,), onPressed: (){})
+                CupertinoButton(
+                    child: SvgPicture.asset(
+                      'assets/questionmark.svg',
+                      height: 24.r,
+                      width: 24.r,
+                      color: bottomNavBarColor,
+                    ),
+                    onPressed: () {})
               ],
             ),
           ),

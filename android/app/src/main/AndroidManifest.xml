@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.crypto_signal_app">
+    package="com.crypto.signal">
    <application
         android:label="crypto_signal_app"
         android:icon="@mipmap/ic_launcher">

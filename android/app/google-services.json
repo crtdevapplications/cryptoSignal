@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "212534630059",
+    "project_id": "cryptosignal-9f732",
+    "storage_bucket": "cryptosignal-9f732.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212534630059:android:ae248f56821246824249ee",
+        "android_client_info": {
+          "package_name": "com.crypto.signal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "212534630059-akdp08gi8c4iqe381d92ru9rgvv9bei8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ2o9RxQNb8JeOFjZxRWSYL6nHv1XF5D8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "212534630059-akdp08gi8c4iqe381d92ru9rgvv9bei8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

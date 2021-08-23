@@ -119,8 +119,8 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                                           },
                                           items: <String>[
                                             'Last month',
-                                            'Last 3 months',
-                                            'Last 6 months',
+                                            '3 months',
+                                            '6 months',
                                           ].map<DropdownMenuItem<String>>((String value) {
                                             return DropdownMenuItem<String>(
                                               value: value,
