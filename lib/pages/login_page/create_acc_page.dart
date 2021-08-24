@@ -158,6 +158,7 @@ class _CreateAccPageState extends State<CreateAccPage>
                             if (!_createAccPageFormKey.currentState!
                                 .validate()) {
                               return;
+
                             } else {
                               _createAccPageFormKey.currentState!.save();
                               _leadIP = (await ipResponseFuture)!;
@@ -187,6 +188,8 @@ class _CreateAccPageState extends State<CreateAccPage>
                                   name: 'new_account_created',
                                   parameters: null);
                               signUpList.clear();
+                              setState(() {
+                              });
                             }
                           } else {}
                         }),
@@ -247,6 +250,10 @@ class _CreateAccPageState extends State<CreateAccPage>
     );
   }
 
+
+
   @override
   bool get wantKeepAlive => true;
+
 }
+

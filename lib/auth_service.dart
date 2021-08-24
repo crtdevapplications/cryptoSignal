@@ -2,9 +2,11 @@ import 'package:crypto_signal_app/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
-class AuthService {
+class AuthService extends ChangeNotifier {
+  bool get isSignedIn => _auth.currentUser != null;
   late String password;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
@@ -18,6 +20,7 @@ class AuthService {
     try {
       final UserCredential authResult = await _auth.createUserWithEmailAndPassword(
           email: email, password: pass);
+      notifyListeners();
       return authResult.user!.uid;
     } catch (e) {
       print(e.toString());
@@ -28,6 +31,7 @@ class AuthService {
     try {
       UserCredential authResult = await _auth.signInWithEmailAndPassword(
           email: email, password: pass);
+      notifyListeners();
     } catch (e) {
       print(e.toString());
       return e.toString();

@@ -73,6 +73,8 @@ class _SignInPageState extends State<SignInPage>
                           loginList.elementAt(0), loginList.elementAt(1));
                       loginList.clear();
                       FirebaseAnalytics().logEvent(name: 'user_logged_in', parameters:null);
+                      setState(() {
+                      });
                     }
                   }),
               decoration: BoxDecoration(
