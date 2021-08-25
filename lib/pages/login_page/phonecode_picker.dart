@@ -91,13 +91,7 @@ class _PhonecodePickerState extends State<PhonecodePicker> {
                           minVerticalPadding: 0,
                           horizontalTitleGap: 16,
                           onTap: () {
-                            Navigator.of(context).pop(PhoneCode(
-                                num_code: list2[index].num_code,
-                                alpha_2_code: list2[index].alpha_2_code,
-                                alpha_3_code: list2[index].alpha_3_code,
-                                en_short_name: list2[index].en_short_name,
-                                nationality: list2[index].nationality,
-                                dial_code: list2[index].dial_code));
+                            Navigator.of(context).pop(<String>[list2[index].alpha_2_code, list2[index].dial_code]);
                           },
                           trailing: Text(
                             list2[index].dial_code,
@@ -180,8 +174,8 @@ class _PhonecodePickerState extends State<PhonecodePicker> {
   }
 }
 
-Future<void> showPhonePickerBottomSheet(BuildContext context) async {
-  await showModalBottomSheet<void>(
+Future<List<String>?> showPhonePickerBottomSheet(BuildContext context) async {
+  return await showModalBottomSheet<List<String>>(
       isScrollControlled: true,
       backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
       context: context,
