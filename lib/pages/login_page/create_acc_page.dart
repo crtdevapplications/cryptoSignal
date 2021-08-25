@@ -10,6 +10,7 @@ import 'package:crypto_signal_app/pages/settings/privacy_policy_page.dart';
 import 'package:crypto_signal_app/pages/login_page/login_page_text_forms.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:phone_number/phone_number.dart';
 import '../../auth_service.dart';
 import '../../user.dart';
 import 'package:http/http.dart' as http;
@@ -45,6 +46,7 @@ class _CreateAccPageState extends State<CreateAccPage>
     ipResponseFuture = _authService.getIP();
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +160,6 @@ class _CreateAccPageState extends State<CreateAccPage>
                             if (!_createAccPageFormKey.currentState!
                                 .validate()) {
                               return;
-
                             } else {
                               _createAccPageFormKey.currentState!.save();
                               _leadIP = (await ipResponseFuture)!;
@@ -188,8 +189,7 @@ class _CreateAccPageState extends State<CreateAccPage>
                                   name: 'new_account_created',
                                   parameters: null);
                               signUpList.clear();
-                              setState(() {
-                              });
+                              setState(() {});
                             }
                           } else {}
                         }),
@@ -250,10 +250,6 @@ class _CreateAccPageState extends State<CreateAccPage>
     );
   }
 
-
-
   @override
   bool get wantKeepAlive => true;
-
 }
-

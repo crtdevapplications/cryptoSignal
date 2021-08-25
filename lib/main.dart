@@ -1,4 +1,5 @@
 import 'package:crypto_signal_app/auth_service.dart';
+import 'package:crypto_signal_app/pages/login_page/phonecode_picker.dart';
 import 'package:crypto_signal_app/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,8 @@ class MyApp extends StatelessWidget {
                 ],
                 home: Consumer<AuthService>(
                   builder: (_, auth, __) =>
-                      auth.isSignedIn ? HomePage() :  LoginPage() ,
+                      auth.isSignedIn ? LoginPage() :  LoginPage() ,
+                      // auth.isSignedIn ? HomePage() :  LoginPage() ,
                 ),
                 debugShowCheckedModeBanner: false,
               ),

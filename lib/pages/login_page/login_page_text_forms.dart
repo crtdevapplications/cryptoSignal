@@ -1,3 +1,4 @@
+import 'package:crypto_signal_app/pages/login_page/phonecode_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:crypto_signal_app/user.dart';
 import 'package:crypto_signal_app/pages/login_page/sign_in_page.dart';
 import 'package:crypto_signal_app/pages/login_page/create_acc_page.dart';
+import 'package:phone_number/phone_number.dart';
+
+import '../../phonecode.dart';
 
 List<String> signUpList = <String>[];
 List<String> loginList = <String>[];
@@ -35,7 +39,7 @@ Widget buildLastName() {
     cursorHeight: 22.sp,
     decoration: InputDecoration(
       hintText: 'Last Name',
-      contentPadding:EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
+      contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
     ),
     validator: (String? value) {
       if (value == null || value.isEmpty) {
@@ -54,7 +58,7 @@ Widget buildEmail() {
     cursorHeight: 22.sp,
     decoration: InputDecoration(
       hintText: 'Email',
-      contentPadding:EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
+      contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
     ),
     validator: (String? value) {
       if (value == null || value.isEmpty) {
@@ -71,24 +75,90 @@ Widget buildEmail() {
   );
 }
 
-Widget buildPhoneNumber() {
-  return TextFormField(
-    cursorHeight: 22.sp,
-    keyboardType: TextInputType.phone,
-    decoration: InputDecoration(
-      hintText: 'Phone',
-      contentPadding:EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
-    ),
-    validator: (String? value) {
-      if (value == null || value.isEmpty) {
-        return 'Phone Number is Required';
-      }
-      return null;
-    },
-    onSaved: (String? value) {
-      signUpList.add(value.toString());
-    },
-  );
+class buildPhoneNumber extends StatefulWidget {
+  const buildPhoneNumber({Key? key}) : super(key: key);
+
+  @override
+  _buildPhoneNumberState createState() => _buildPhoneNumberState();
+}
+
+class _buildPhoneNumberState extends State<buildPhoneNumber> {
+  bool correctNumber = false;
+  String countryCode = 'ru';
+  String countryDialCode = '+7';
+
+  @override
+  void initState() {
+    getUserCode();
+    super.initState();
+  }
+
+  void getUserCode() async {
+    countryCode = await PhoneNumberUtil().carrierRegionCode();
+    countryDialCode = list.where((element) => element.alpha_2_code.toLowerCase() == countryCode).first.dial_code;
+    setState(() {
+    });
+    print(countryCode);
+    print(countryDialCode);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        TextFormField(
+          cursorHeight: 22.sp,
+          onChanged: (value) async {
+            bool isValid = await PhoneNumberUtil().validate(value, countryCode.toUpperCase());
+            correctNumber = isValid;
+          },
+          keyboardType: TextInputType.phone,
+          decoration: InputDecoration(
+            hintText: 'Phone',
+            contentPadding:
+                EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
+          ),
+          validator: (String? value) {
+            if (value == null || value.isEmpty) {
+              return 'Phone Number is Required';
+            }
+            if (value.isNotEmpty && !correctNumber) {
+              return 'Please enter correct number';
+
+            }
+            return null;
+          },
+          onSaved: (String? value) {
+            signUpList.add(value.toString());
+          },
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: CupertinoButton(
+            padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 15.w),
+            child: Container(
+              width: 76.w,
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/flags/' + countryCode + '.png',
+                    width: 20.r,
+                    height: 20.r,
+                  ),
+                  SvgPicture.asset('assets/dropdown.svg'),
+                  Text(countryDialCode, style: textButtonStyle,),
+                ],
+              ),
+            ),
+            onPressed: () async {
+              // PhoneCode phoneCode = await
+              showPhonePickerBottomSheet(context);
+            },
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 Widget buildLogin() {
@@ -96,7 +166,7 @@ Widget buildLogin() {
     cursorHeight: 22.sp,
     decoration: InputDecoration(
       hintText: 'Login',
-      contentPadding:EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
+      contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
     ),
     validator: (String? value) {
       if (value == null || value.isEmpty) {
@@ -119,6 +189,7 @@ class buildPassword extends StatefulWidget {
 
 class _buildPasswordState extends State<buildPassword> {
   bool obscurePass = true;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -134,7 +205,8 @@ class _buildPasswordState extends State<buildPassword> {
             decoration: InputDecoration(
               hintStyle: textFieldStyle,
               hintText: 'Password',
-              contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
             ),
             validator: (String? value) {
               if (value == null || value.isEmpty) {
@@ -152,11 +224,9 @@ class _buildPasswordState extends State<buildPassword> {
                 setState(() {
                   if (obscurePass == true) {
                     obscurePass = false;
+                  } else {
+                    obscurePass = true;
                   }
-                  else
-                    {
-                      obscurePass = true;
-                    }
                 });
               },
             ),
@@ -166,4 +236,3 @@ class _buildPasswordState extends State<buildPassword> {
     );
   }
 }
-
