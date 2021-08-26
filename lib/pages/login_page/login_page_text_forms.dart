@@ -8,12 +8,12 @@ import 'package:crypto_signal_app/user.dart';
 import 'package:crypto_signal_app/pages/login_page/sign_in_page.dart';
 import 'package:crypto_signal_app/pages/login_page/create_acc_page.dart';
 import 'package:libphonenumber/libphonenumber.dart';
-import 'package:phonenumbers_core/core.dart';
 
 import '../../phonecode.dart';
 
 List<String> signUpList = <String>[];
 List<String> loginList = <String>[];
+List<String> choosedCountry = ['RU', '+7'];
 
 Widget buildFirstName() {
   return TextFormField(
@@ -85,13 +85,19 @@ class buildPhoneNumber extends StatefulWidget {
 
 class _buildPhoneNumberState extends State<buildPhoneNumber> {
   bool correctNumber = false;
-  List<String> choosedCountry = ['RU', '+7'];
+  String textFieldValue = '';
+
 
   @override
   void initState() {
     super.initState();
   }
-
+  @override
+  void setState(VoidCallback fn) async {
+    bool? isValid =  await PhoneNumberUtil.isValidPhoneNumber(phoneNumber: textFieldValue, isoCode: choosedCountry.elementAt(0));
+    correctNumber = isValid!;
+    super.setState(fn);
+  }
 
 
   @override
@@ -102,6 +108,7 @@ class _buildPhoneNumberState extends State<buildPhoneNumber> {
           cursorHeight: 22.sp,
           onChanged: (value) async {
             bool? isValid =  await PhoneNumberUtil.isValidPhoneNumber(phoneNumber: value, isoCode: choosedCountry.elementAt(0));
+            textFieldValue = value;
             correctNumber = isValid!;
           },
           keyboardType: TextInputType.phone,
@@ -142,9 +149,11 @@ class _buildPhoneNumberState extends State<buildPhoneNumber> {
               ),
             ),
             onPressed: () async {
-              choosedCountry = (await showPhonePickerBottomSheet(context))!;
+              List<String>? choosedCountryTest = await showPhonePickerBottomSheet(context);
+              if(choosedCountryTest != null){
+                choosedCountry = choosedCountryTest;
+              }
               setState(() {
-
               });
             },
           ),
