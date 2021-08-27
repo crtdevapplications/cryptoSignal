@@ -1,4 +1,5 @@
 import 'package:crypto_signal_app/home_page.dart';
+import 'package:crypto_signal_app/loading_widget.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -23,6 +24,7 @@ class CreateAccPage extends StatefulWidget {
 
 class _CreateAccPageState extends State<CreateAccPage>
     with AutomaticKeepAliveClientMixin {
+  bool isLoading = false;
   final AuthService _authService = AuthService();
   late String _password;
   late String _uid;
@@ -49,7 +51,7 @@ class _CreateAccPageState extends State<CreateAccPage>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return isLoading == true ? const LoadingWidget() : Container(
       child: SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
         child: Column(
@@ -154,43 +156,8 @@ class _CreateAccPageState extends State<CreateAccPage>
                           style: textButtonStyle,
                         ),
                         padding: EdgeInsets.zero,
-                        onPressed: () async {
-                          if (isChecked == true) {
-                            if (!_createAccPageFormKey.currentState!
-                                .validate()) {
-                              return;
-                            } else {
-                              _createAccPageFormKey.currentState!.save();
-                              _leadIP = (await ipResponseFuture)!;
-                              await _authService
-                                  .registerWithEmail(
-                                      signUpList.elementAt(2), _password)
-                                  .then((value) => _uid = value);
-                              AppUser user = AppUser(
-                                  firstName: signUpList.elementAt(0),
-                                  lastName: signUpList.elementAt(1),
-                                  email: signUpList.elementAt(2),
-                                  phoneNumber: signUpList.elementAt(3),
-                                  countryPhoneCode: choosedCountry.elementAt(1),
-                                  password: _password,
-                                  affiliateID: '7771777',
-                                  offerID: '1737',
-                                  countryISO: choosedCountry.elementAt(0),
-                                  landDomain: 'domain.com',
-                                  uid: _uid,
-                                  leadIP: _leadIP,
-                                  dateTime: DateTime.now());
-                              addUser(user);
-                              await _authService.updateUserData(user, _uid);
-                              //email = ssfw@er.ru
-                              //password = cc2t+5W%6T
-                              FirebaseAnalytics().logEvent(
-                                  name: 'new_account_created',
-                                  parameters: null);
-                              signUpList.clear();
-                              setState(() {});
-                            }
-                          } else {}
+                        onPressed: ()  {
+                           createAccPageActions(isChecked);
                         }),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.w),
@@ -247,6 +214,47 @@ class _CreateAccPageState extends State<CreateAccPage>
         ),
       ),
     );
+  }
+
+  void createAccPageActions(bool isChecked) async{
+    if (isChecked == true) {
+      if (!_createAccPageFormKey.currentState!
+          .validate()) {
+        return;
+      } else {
+        setState(() { isLoading = true; });
+        _createAccPageFormKey.currentState!.save();
+        _leadIP = (await ipResponseFuture)!;
+        await _authService
+            .registerWithEmail(
+            signUpList.elementAt(2), _password)
+            .then((value) => _uid = value);
+        AppUser user = AppUser(
+            firstName: signUpList.elementAt(0),
+            lastName: signUpList.elementAt(1),
+            email: signUpList.elementAt(2),
+            phoneNumber: signUpList.elementAt(3),
+            countryPhoneCode: choosedCountry.elementAt(1),
+            password: _password,
+            affiliateID: '7771777',
+            offerID: '1737',
+            countryISO: choosedCountry.elementAt(0),
+            landDomain: 'domain.com',
+            uid: _uid,
+            leadIP: _leadIP,
+            dateTime: DateTime.now());
+        addUser(user);
+        await _authService.updateUserData(user, _uid);
+        //email = ssfw@er.ru
+        //password = cc2t+5W%6T
+        FirebaseAnalytics().logEvent(
+            name: 'new_account_created',
+            parameters: null);
+        signUpList.clear();
+
+      }
+    } else {}
+
   }
 
   @override

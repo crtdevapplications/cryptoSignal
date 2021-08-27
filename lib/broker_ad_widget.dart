@@ -3,18 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crypto_signal_app/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 
-class brokerAd extends StatelessWidget {
+class brokerAd extends StatefulWidget {
   final bool rounded;
   const brokerAd(this.rounded, {Key? key}) : super(key: key);
 
+  @override
+  _brokerAdState createState() => _brokerAdState();
+}
 
+class _brokerAdState extends State<brokerAd> {
+  bool showAd = true;
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return showAd == false ? Container() :  Container(
       decoration: BoxDecoration(
-          borderRadius: rounded == true ? BorderRadius.circular(12.w) : BorderRadius.circular(0.w),
+          borderRadius: widget.rounded == true ? BorderRadius.circular(12.w) : BorderRadius.circular(0.w),
           gradient: LinearGradient(
               begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [buttonGradientStart, buttonGradientEnd])),
       child: Padding(

@@ -40,8 +40,8 @@ class MyApp extends StatelessWidget {
                 ],
                 home: Consumer<AuthService>(
                   builder: (_, auth, __) =>
-                      auth.isSignedIn ? LoginPage() :  LoginPage() ,
-                      // auth.isSignedIn ? HomePage() :  LoginPage() ,
+                      // auth.isSignedIn ? LoginPage() :  LoginPage() ,
+            auth.isSignedIn ? HomePage() :  LoginPage() ,
                 ),
                 debugShowCheckedModeBanner: false,
               ),
