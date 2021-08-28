@@ -1,9 +1,11 @@
+import 'package:crypto_signal_app/auth_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crypto_signal_app/constants.dart';
 import 'package:crypto_signal_app/pages/login_page/sign_in_page.dart';
 import 'package:crypto_signal_app/pages/login_page/create_acc_page.dart';
+import 'package:provider/provider.dart';
 
 class LoginPageTabBar extends StatefulWidget {
   const LoginPageTabBar({Key? key}) : super(key: key);
@@ -81,15 +83,15 @@ class _LoginPageTabBarState extends State<LoginPageTabBar> with TickerProviderSt
                   ),
                 ),
                  Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      CreateAccPage(),
-                      SignInPage(),
-                    ],
+                  child:  TabBarView(
+                      controller: _tabController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        CreateAccPage(),
+                        SignInPage(),
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
           ),

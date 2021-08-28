@@ -78,6 +78,7 @@ ThemeData textFieldThemeData = ThemeData(
   ),
   inputDecorationTheme: InputDecorationTheme(
     fillColor: toggleButtonBorderColor,
+
     // errorStyle: errorStyle,
     filled: true,
     disabledBorder: OutlineInputBorder(

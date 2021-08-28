@@ -38,10 +38,14 @@ class MyApp extends StatelessWidget {
                   DefaultWidgetsLocalizations.delegate,
                   DefaultMaterialLocalizations.delegate,
                 ],
-                home: Consumer<AuthService>(
-                  builder: (_, auth, __) =>
-                      // auth.isSignedIn ? LoginPage() :  LoginPage() ,
-            auth.isSignedIn ? HomePage() :  LoginPage() ,
+                home: Builder(
+                  builder: (context) {
+                    return Consumer<AuthService>(
+                      builder: (_, auth, __) =>
+                              auth.isSignedIn ?  HomePage() : LoginPage() ,
+                          // auth.isSignedIn ? HomePage() :  LoginPage(),
+                    );
+                  }
                 ),
                 debugShowCheckedModeBanner: false,
               ),

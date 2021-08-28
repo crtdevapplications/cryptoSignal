@@ -7,6 +7,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crypto_signal_app/constants.dart';
 import 'package:crypto_signal_app/pages/login_page/login_page_text_forms.dart';
+import 'package:provider/provider.dart';
 
 import '../../auth_service.dart';
 
@@ -20,7 +21,6 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage>
     with AutomaticKeepAliveClientMixin {
   final GlobalKey<FormState> _signInPageFormKey = GlobalKey<FormState>();
-  final AuthService _authService = AuthService();
   late String _uid;
   final List<Widget> _signInTextForms = <Widget>[
     buildLogin(),
@@ -29,6 +29,7 @@ class _SignInPageState extends State<SignInPage>
 
   @override
   Widget build(BuildContext context) {
+    final AuthService _authService = Provider.of<AuthService>(context);
     return Container(
       child: Padding(
         padding: EdgeInsets.fromLTRB(13.w, 16.h, 19.w, 0),

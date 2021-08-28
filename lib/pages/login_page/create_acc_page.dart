@@ -1,5 +1,4 @@
 import 'package:crypto_signal_app/home_page.dart';
-import 'package:crypto_signal_app/loading_widget.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -11,6 +10,7 @@ import 'package:crypto_signal_app/pages/settings/privacy_policy_page.dart';
 import 'package:crypto_signal_app/pages/login_page/login_page_text_forms.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 import '../../auth_service.dart';
 import '../../user.dart';
 import 'package:http/http.dart' as http;
@@ -24,15 +24,14 @@ class CreateAccPage extends StatefulWidget {
 
 class _CreateAccPageState extends State<CreateAccPage>
     with AutomaticKeepAliveClientMixin {
+
   bool isLoading = false;
-  final AuthService _authService = AuthService();
   late String _password;
   late String _uid;
   late String _leadIP;
+  late AuthService _authService;
   late final Future<String?> ipResponseFuture;
   final GlobalKey<FormState> _createAccPageFormKey = GlobalKey<FormState>();
-  final GlobalKey<ScaffoldMessengerState> _snackBarKey =
-      GlobalKey<ScaffoldMessengerState>();
   final List<Widget> _createAccPageTextForms = <Widget>[
     buildFirstName(),
     buildLastName(),
@@ -43,192 +42,195 @@ class _CreateAccPageState extends State<CreateAccPage>
 
   @override
   void initState() {
-    _password = _authService.generatePassword();
-    ipResponseFuture = _authService.getIP();
+    _password = generatePassword();
+    ipResponseFuture = getIP();
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return isLoading == true ? const LoadingWidget() : Container(
-      child: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(13.w, 16.h, 19.w, 0),
+    _authService = Provider.of<AuthService>(context);
+    return Container(
+            child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 3.w),
-                        child: Text(
-                          'Create a free account',
-                          style: textStyleHeader,
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(13.w, 16.h, 19.w, 0),
+                    child: Column(
+                      children: [
+                        Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 3.w),
+                              child: Text(
+                                'Create a free account',
+                                style: textStyleHeader,
+                              ),
+                            )),
+                        SizedBox(height: 12.h),
+                        Theme(
+                          data: textFieldThemeData,
+                          child: Form(
+                            key: _createAccPageFormKey,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              primary: false,
+                              itemCount: _createAccPageTextForms.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(bottom: 12.h),
+                                  child: _createAccPageTextForms[index],
+                                );
+                              },
+                            ),
+                          ),
                         ),
-                      )),
-                  SizedBox(height: 12.h),
-                  Theme(
-                    data: textFieldThemeData,
-                    child: Form(
-                      key: _createAccPageFormKey,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: _createAccPageTextForms.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: EdgeInsets.only(bottom: 12.h),
-                            child: _createAccPageTextForms[index],
-                          );
-                        },
-                      ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                left: 3.w,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: [
-                      Checkbox(
-                          checkColor: textShaded,
-                          fillColor: isChecked == false
-                              ? MaterialStateProperty.all(
-                                  const Color.fromRGBO(167, 43, 47, 1))
-                              : MaterialStateProperty.all(checkboxColor),
-                          splashRadius: 0,
-                          value: isChecked,
-                          activeColor: toggleButtonBorderColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4.w)),
-                          materialTapTargetSize:
-                              MaterialTapTargetSize.shrinkWrap,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isChecked = value!;
-                            });
-                          }),
-                      RichText(
-                        text: TextSpan(children: [
-                          TextSpan(
-                              text:
-                                  'I agree to receive a call from broker partner',
-                              style: textShadedStyle,
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 3.w,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          children: [
+                            Checkbox(
+                                checkColor: textShaded,
+                                fillColor: isChecked == false
+                                    ? MaterialStateProperty.all(
+                                        const Color.fromRGBO(167, 43, 47, 1))
+                                    : MaterialStateProperty.all(checkboxColor),
+                                splashRadius: 0,
+                                value: isChecked,
+                                activeColor: toggleButtonBorderColor,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4.w)),
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
+                                onChanged: (bool? value) {
                                   setState(() {
-                                    if (isChecked == true)
-                                      isChecked = false;
-                                    else
-                                      isChecked = true;
+                                    isChecked = value!;
                                   });
                                 }),
-                        ]),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(13.w, 0, 19.w, 0),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 34.h,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    height: 52.h,
-                    child: CupertinoButton(
-                        child: Text(
-                          'Sign Up',
-                          style: textButtonStyle,
+                            RichText(
+                              text: TextSpan(children: [
+                                TextSpan(
+                                    text:
+                                        'I agree to receive a call from broker partner',
+                                    style: textShadedStyle,
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        setState(() {
+                                          if (isChecked == true)
+                                            isChecked = false;
+                                          else
+                                            isChecked = true;
+                                        });
+                                      }),
+                              ]),
+                            ),
+                          ],
                         ),
-                        padding: EdgeInsets.zero,
-                        onPressed: ()  {
-                           createAccPageActions(isChecked);
-                        }),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.w),
-                      gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        colors: [
-                          buttonGradientStart,
-                          buttonGradientEnd,
-                        ],
-                      ),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: 34.h,
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(13.w, 0, 19.w, 0),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 34.h,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: 52.h,
+                          child: CupertinoButton(
+                              child: Text(
+                                'Sign Up',
+                                style: textButtonStyle,
+                              ),
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
+                                createAccPageActions(isChecked);
+                              }),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.w),
+                            gradient: LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors: [
+                                buttonGradientStart,
+                                buttonGradientEnd,
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 34.h,
+                        ),
+                        RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(style: textStyleShaded, children: [
+                              const TextSpan(
+                                  text:
+                                      'By pressing Sign Up you agree to our\n'),
+                              TextSpan(
+                                  text: 'Terms and Conditions',
+                                  style: textStyleWhite,
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute<void>(
+                                          builder: (context) =>
+                                              const TermsAndConditionsPage(),
+                                        ),
+                                      );
+                                    }),
+                              const TextSpan(text: ' and '),
+                              TextSpan(
+                                  text: 'Privacy Policy',
+                                  style: textStyleWhite,
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute<void>(
+                                          builder: (context) =>
+                                              const PrivacyPolicyPage(),
+                                        ),
+                                      );
+                                    }),
+                            ])),
+                      ],
+                    ),
                   ),
-                  RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(style: textStyleShaded, children: [
-                        const TextSpan(
-                            text: 'By pressing Sign Up you agree to our\n'),
-                        TextSpan(
-                            text: 'Terms and Conditions',
-                            style: textStyleWhite,
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute<void>(
-                                    builder: (context) =>
-                                        const TermsAndConditionsPage(),
-                                  ),
-                                );
-                              }),
-                        const TextSpan(text: ' and '),
-                        TextSpan(
-                            text: 'Privacy Policy',
-                            style: textStyleWhite,
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute<void>(
-                                    builder: (context) =>
-                                        const PrivacyPolicyPage(),
-                                  ),
-                                );
-                              }),
-                      ])),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
-  void createAccPageActions(bool isChecked) async{
+  void createAccPageActions(bool isChecked) async {
     if (isChecked == true) {
-      if (!_createAccPageFormKey.currentState!
-          .validate()) {
+      if (!_createAccPageFormKey.currentState!.validate()) {
         return;
       } else {
-        setState(() { isLoading = true; });
+        setState(() {
+          isLoading = true;
+        });
         _createAccPageFormKey.currentState!.save();
         _leadIP = (await ipResponseFuture)!;
-        await _authService
-            .registerWithEmail(
-            signUpList.elementAt(2), _password)
-            .then((value) => _uid = value);
+        try {
+          await _authService
+              .registerWithEmail(signUpList.elementAt(2), _password)
+              .then((value) => _uid = value);
+        } catch (e) {}
         AppUser user = AppUser(
             firstName: signUpList.elementAt(0),
             lastName: signUpList.elementAt(1),
@@ -247,14 +249,11 @@ class _CreateAccPageState extends State<CreateAccPage>
         await _authService.updateUserData(user, _uid);
         //email = ssfw@er.ru
         //password = cc2t+5W%6T
-        FirebaseAnalytics().logEvent(
-            name: 'new_account_created',
-            parameters: null);
+        FirebaseAnalytics()
+            .logEvent(name: 'new_account_created', parameters: null);
         signUpList.clear();
-
       }
     } else {}
-
   }
 
   @override

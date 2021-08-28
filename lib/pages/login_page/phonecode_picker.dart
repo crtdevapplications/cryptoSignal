@@ -65,6 +65,7 @@ class _PhonecodePickerState extends State<PhonecodePicker> {
                             ),
                           ),
                           TextField(
+                            autofocus: true,
                             onChanged: (value) {
                               filterSearchResults(value);
                             },
@@ -156,7 +157,7 @@ class _PhonecodePickerState extends State<PhonecodePicker> {
     if (query.isNotEmpty) {
       List<PhoneCode> dummyListData = [];
       dummySearchList.forEach((item) {
-        if (item.en_short_name.toLowerCase().contains(query)) {
+        if (item.en_short_name.toLowerCase().contains(query) || item.alpha_3_code.toLowerCase().contains(query)) {
           dummyListData.add(item);
         }
       });
@@ -190,7 +191,7 @@ Future<List<String>?> showPhonePickerBottomSheet(BuildContext context) async {
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Container(
-            height: MediaQuery.of(context).size.height / 3,
+            height: MediaQuery.of(context).size.height / 2.5,
             child: PhonecodePicker(),
           ),
         );

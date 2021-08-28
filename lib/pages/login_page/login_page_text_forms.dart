@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crypto_signal_app/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:ui' as ui;
 import 'package:crypto_signal_app/user.dart';
 import 'package:crypto_signal_app/pages/login_page/sign_in_page.dart';
 import 'package:crypto_signal_app/pages/login_page/create_acc_page.dart';
@@ -90,6 +91,10 @@ class _buildPhoneNumberState extends State<buildPhoneNumber> {
 
   @override
   void initState() {
+    String userLocale = ui.window.locale.countryCode!;
+    if(userLocale.isNotEmpty || userLocale != ''){
+      choosedCountry = [userLocale, list.where((element) => element.alpha_2_code == userLocale).first.dial_code];
+    }
     super.initState();
   }
   @override
@@ -102,63 +107,65 @@ class _buildPhoneNumberState extends State<buildPhoneNumber> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        TextFormField(
-          cursorHeight: 22.sp,
-          onChanged: (value) async {
-            bool? isValid =  await PhoneNumberUtil.isValidPhoneNumber(phoneNumber: value, isoCode: choosedCountry.elementAt(0));
-            textFieldValue = value;
-            correctNumber = isValid!;
-          },
-          keyboardType: TextInputType.phone,
-          decoration: InputDecoration(
-            hintText: 'Phone',
-            contentPadding:
-                EdgeInsets.fromLTRB(66.w, 18.h, 18.w, 18.h),
-          ),
-          validator: (String? value) {
-            // bool isValid = PhoneNumber.parse(choosedCountry.elementAt(1)+value!).isValid;
-            if (value == null || value.isEmpty) {
-              return 'Phone Number is Required';
-            }
-            if (value.isNotEmpty && !correctNumber) {
-              return 'Please enter correct number';
-            }
-            return null;
-          },
-          onSaved: (String? value) {
-            signUpList.add(value.toString());
-          },
-        ),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: CupertinoButton(
-            padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 15.w),
-            child: Container(
-              width: 44.w,
-              child: Row(
-                children: [
-                  Image.asset(
-                    'assets/flags/' + choosedCountry.elementAt(0).toLowerCase() + '.png',
-                    width: 20.r,
-                    height: 20.r,
-                  ),
-                  SvgPicture.asset('assets/dropdown.svg'),
-                ],
+    return TextFormField(
+      onTap: (){},
+      cursorHeight: 22.sp,
+      onChanged: (value) async {
+        bool? isValid =  await PhoneNumberUtil.isValidPhoneNumber(phoneNumber: value, isoCode: choosedCountry.elementAt(0));
+        textFieldValue = value;
+        correctNumber = isValid!;
+      },
+      keyboardType: TextInputType.phone,
+      decoration: InputDecoration(
+        prefixIcon:   CupertinoButton(
+          padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 15.w),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset(
+                'assets/flags/' + choosedCountry.elementAt(0).toLowerCase() + '.png',
+                width: 20.r,
+                height: 20.r,
               ),
-            ),
-            onPressed: () async {
-              List<String>? choosedCountryTest = await showPhonePickerBottomSheet(context);
-              if(choosedCountryTest != null){
-                choosedCountry = choosedCountryTest;
-              }
-              setState(() {
-              });
-            },
+              Align(child: SvgPicture.asset('assets/dropdown.svg')),
+              Padding(
+                padding:  EdgeInsets.only(top: 1.h),
+                child: Text(choosedCountry.elementAt(1).toLowerCase(), style: textButtonStyle,),
+              )
+            ],
           ),
+          onPressed: () async {
+            List<String>? choosedCountryTest = await showPhonePickerBottomSheet(context);
+            if(choosedCountryTest != null){
+              choosedCountry = choosedCountryTest;
+            }
+            setState(() {
+            });
+          },
         ),
-      ],
+        prefixIconConstraints: BoxConstraints(
+          minWidth: 20.r,
+          minHeight: 20.r,
+        ),
+        hintText: 'Phone',
+        contentPadding:
+            EdgeInsets.fromLTRB(18.w, 18.h, 18.w, 18.h),
+      ),
+      validator: (String? value) {
+        // bool isValid = PhoneNumber.parse(choosedCountry.elementAt(1)+value!).isValid;
+        if (value == null || value.isEmpty) {
+          return 'Phone Number is Required';
+        }
+        if (value.isNotEmpty && !correctNumber) {
+          return 'Please enter correct number';
+        }
+        return null;
+      },
+      onSaved: (String? value) {
+        signUpList.add(value.toString());
+      },
     );
   }
 }
