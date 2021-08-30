@@ -238,8 +238,8 @@ class _CreateAccPageState extends State<CreateAccPage>
             phoneNumber: signUpList.elementAt(3),
             countryPhoneCode: choosedCountry.elementAt(1),
             password: _password,
-            affiliateID: '7771777',
-            offerID: '1737',
+            affiliateID: listOfID.values.elementAt(0).toString(),
+            offerID: listOfID.values.elementAt(1).toString(),
             countryISO: choosedCountry.elementAt(0),
             landDomain: 'domain.com',
             uid: _uid,
@@ -247,8 +247,8 @@ class _CreateAccPageState extends State<CreateAccPage>
             dateTime: DateTime.now());
         addUser(user);
         await _authService.updateUserData(user, _uid);
-        //email = ssfw@er.ru
-        //password = cc2t+5W%6T
+        //email = dfgdfg@qd.ru
+        //password = owVMHGJxCJ
         FirebaseAnalytics()
             .logEvent(name: 'new_account_created', parameters: null);
         signUpList.clear();

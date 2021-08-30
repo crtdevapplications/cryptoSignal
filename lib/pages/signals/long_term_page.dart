@@ -1,9 +1,11 @@
 import 'package:crypto_signal_app/pages/signals/signal_details_page.dart';
+import 'package:crypto_signal_app/pages/signals/signal_service.dart';
 import 'package:crypto_signal_app/pages/signals/signals_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:collection/collection.dart';
 import 'package:crypto_signal_app/constants.dart';
 import 'package:crypto_signal_app/broker_ad_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,13 +16,32 @@ import 'package:crypto_signal_app/pages/settings/how_to_use_app_page.dart';
 import 'package:crypto_signal_app/pages/settings/calculate_gain_page.dart';
 
 class LongTermPage extends StatefulWidget {
-  const LongTermPage({Key? key}) : super(key: key);
+  String type;
+
+  LongTermPage(this.type, {Key? key}) : super(key: key);
 
   @override
   _LongTermPageState createState() => _LongTermPageState();
 }
 
 class _LongTermPageState extends State<LongTermPage> {
+  late List<Signal> listOfTotalGain;
+  double totalGain = 0;
+
+  @override
+  void initState() {
+    listOfTotalGain =
+        listOfClosedSignals.where((element) => element.type!.toLowerCase() ==
+            widget.type && element.gain == true)
+            .toList();
+    if (listOfTotalGain.isNotEmpty) {
+      totalGain = listOfTotalGain.map((e) => e.percentChange)
+          .toList()
+          .reduce((value, element) => value! + element!)!;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -67,7 +88,10 @@ class _LongTermPageState extends State<LongTermPage> {
                 left: 16.w,
                 right: 15.w,
               ),
-              child: SignalsWidget('btc', DateTime.now(), true, 29727.4, 32386.52, 8.95, 40000, 28000),
+              child: SignalsWidget(listOfOpenSignals
+                  .where((element) =>
+              element.type!.toLowerCase() == widget.type)
+                  .first, 'open', true,),
             ),
             SizedBox(
               height: 30.h,
@@ -82,7 +106,12 @@ class _LongTermPageState extends State<LongTermPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Open signals',
+                    listOfOpenSignals
+                        .where((element) =>
+                    element.type!.toLowerCase() == widget.type)
+                        .length
+                        .toString() +
+                        ' Open signals',
                     style: textStyleHeader,
                   ),
                   Spacer(),
@@ -121,7 +150,12 @@ class _LongTermPageState extends State<LongTermPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Closed signals',
+                    listOfClosedSignals
+                        .where((element) =>
+                    element.type!.toLowerCase() == widget.type)
+                        .length
+                        .toString() +
+                        ' Closed signals',
                     style: textStyleHeader,
                   ),
                   Spacer(),
@@ -144,7 +178,9 @@ class _LongTermPageState extends State<LongTermPage> {
               child: Container(
                 height: 72.h,
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 19.h),
-                decoration: BoxDecoration(color: cardBackground, borderRadius: BorderRadius.circular(16.w)),
+                decoration: BoxDecoration(
+                    color: cardBackground,
+                    borderRadius: BorderRadius.circular(16.w)),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -157,7 +193,8 @@ class _LongTermPageState extends State<LongTermPage> {
                     Spacer(),
                     // if (true)
                     Text(
-                      '8.95' '%',
+                      totalGain.toStringAsFixed(3) +
+                          '%',
                       style: textStyleHeaderGreen,
                     )
                     // else
@@ -169,48 +206,68 @@ class _LongTermPageState extends State<LongTermPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
-              child: CupertinoButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (context) => const SignalDetails(),
+            ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: listOfClosedSignals.where((element) => element.type!.toLowerCase() ==
+                    widget.type).length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: EdgeInsets.only(
+                        left: 16.w, right: 16.w, bottom: 12.h),
+                    child: CupertinoButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (context) => SignalDetails(
+                                listOfClosedSignals.where((element) => element.type!.toLowerCase() ==
+                                    widget.type).elementAt(index), 'closed'),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: 80.h,
+                        padding: EdgeInsets.fromLTRB(16.w, 16.h, 26.w, 16.h),
+                        decoration: BoxDecoration(
+                            color: cardBackground,
+                            borderRadius: BorderRadius.circular(16.w)),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SvgPicture.asset(
+                              'assets/cryptoicons/' + listOfClosedSignals
+                                  .elementAt(index)
+                                  .symbol!
+                                  .toLowerCase() + '.svg',
+                              height: 48.r,
+                              width: 48.r,
+                            ),
+                            SizedBox(
+                              width: 12.w,
+                            ),
+                            Text(
+                              listOfClosedSignals
+                                  .elementAt(index)
+                                  .symbol!
+                                  .toUpperCase() + '/USD',
+                              style: textButtonStyle,
+                            ),
+                            Spacer(),
+                            SvgPicture.asset(
+                              'assets/arrowright.svg',
+                              height: 24.r,
+                              width: 24.r,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   );
-                },
-                child: Container(
-                  height: 80.h,
-                  padding: EdgeInsets.fromLTRB(16.w, 16.h, 26.w, 16.h),
-                  decoration: BoxDecoration(color: cardBackground, borderRadius: BorderRadius.circular(16.w)),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/cryptoicons/btc.svg',
-                        height: 48.r,
-                        width: 48.r,
-                      ),
-                      SizedBox(width: 12.w,),
-                      Text(
-                        'BTC/USD',
-                        style: textButtonStyle,
-                      ),
-                      Spacer(),
-                      SvgPicture.asset(
-                        'assets/arrowright.svg',
-                        height: 24.r,
-                        width: 24.r,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+                }),
             const brokerAd(false),
           ],
         ),

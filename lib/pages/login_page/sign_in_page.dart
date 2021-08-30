@@ -70,12 +70,15 @@ class _SignInPageState extends State<SignInPage>
                       return;
                     } else {
                       _signInPageFormKey.currentState!.save();
-                      await _authService.signInWithEmail(
-                          loginList.elementAt(0), loginList.elementAt(1));
+                      await _authService
+                          .signInWithEmail(
+                              loginList.elementAt(0), loginList.elementAt(1))
+                          .then((value) => _uid = value);
+                      await _authService.getUserData(_uid);
                       loginList.clear();
-                      FirebaseAnalytics().logEvent(name: 'user_logged_in', parameters:null);
-                      setState(() {
-                      });
+                      FirebaseAnalytics()
+                          .logEvent(name: 'user_logged_in', parameters: null);
+                      setState(() {});
                     }
                   }),
               decoration: BoxDecoration(

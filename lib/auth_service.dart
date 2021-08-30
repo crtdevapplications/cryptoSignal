@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:crypto_signal_app/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:math';
@@ -11,19 +13,19 @@ class AuthService extends ChangeNotifier {
   bool isLoading = false;
   late String password;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection('users');
 
   Stream<User?> get firebaseUser {
     return _auth.authStateChanges();
   }
 
-
   Future<String> registerWithEmail(String email, String pass) async {
     try {
       isLoading = true;
       notifyListeners();
-      final UserCredential authResult = await _auth.createUserWithEmailAndPassword(
-          email: email, password: pass);
+      final UserCredential authResult = await _auth
+          .createUserWithEmailAndPassword(email: email, password: pass);
       notifyListeners();
       return authResult.user!.uid;
     } catch (e, s) {
@@ -31,13 +33,15 @@ class AuthService extends ChangeNotifier {
       rethrow;
     }
   }
-  Future signInWithEmail(String email, String pass) async{
+
+  Future<String> signInWithEmail(String email, String pass) async {
     try {
       isLoading = true;
       notifyListeners();
-      UserCredential authResult = await _auth.signInWithEmailAndPassword(
-          email: email, password: pass);
+      UserCredential authResult =
+          await _auth.signInWithEmailAndPassword(email: email, password: pass);
       notifyListeners();
+      return authResult.user!.uid;
     } catch (e, s) {
       FirebaseCrashlytics.instance.recordError(e, s);
       rethrow;
@@ -45,24 +49,28 @@ class AuthService extends ChangeNotifier {
   }
 
   Future? updateUserData(AppUser user, String uid) async {
-
     return await userCollection.doc(uid).set({
-      'first name': user.firstName,
-      'last name': user.lastName,
+      'first_name': user.firstName,
+      'last_name': user.lastName,
       'email': user.email,
       'password': user.password,
-      'country phone code': user.countryPhoneCode,
-      'phone number': user.phoneNumber,
-      'country ISO': user.countryISO,
-      'lead IP': user.leadIP,
-      'land domain': user.landDomain,
-      'affiliate ID': user.affiliateID,
-      'offer ID': user.offerID,
-      'date time': user.dateTime
+      'country_phone_code': user.countryPhoneCode,
+      'phone_number': user.phoneNumber,
+      'country_ISO': user.countryISO,
+      'lead_IP': user.leadIP,
+      'land_domain': user.landDomain,
+      'affiliate_ID': user.affiliateID,
+      'offer_ID': user.offerID,
+      'date_time': user.dateTime
     });
   }
 
+  Future? getUserData(String uid) async {
+    var snapshot = await userCollection.doc(uid).get();
+    Object? objectFromFirestore = snapshot.data();
+  }
 }
+
 Future<String?> getIP() async {
   try {
     const url = 'https://api.ipify.org';
@@ -79,11 +87,12 @@ Future<String?> getIP() async {
     return null;
   }
 }
+
 String generatePassword({
   bool letter = true,
   bool isNumber = true,
   bool isSpecial = true,
-})  {
+}) {
   const int length = 10;
   const String letterLowerCase = 'abcdefghijklmnopqrstuvwxyz';
   const String letterUpperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

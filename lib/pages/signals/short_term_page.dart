@@ -1,3 +1,4 @@
+import 'package:crypto_signal_app/pages/signals/signal_service.dart';
 import 'package:crypto_signal_app/pages/signals/signals_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -63,7 +64,7 @@ class _ShortTermPageState extends State<ShortTermPage> {
               left: 16.w,
               right: 15.w,
             ),
-            child: SignalsWidget('btc', DateTime.now(), true, 29727.4, 32386.52, 8.95, 40000, 28000),
+            child: SignalsWidget(listOfOpenSignals.where((element) => element.type!.toLowerCase() == 'short').first, 'open', true),
           ),
           Spacer(),
           brokerAd(false),

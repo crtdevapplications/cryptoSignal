@@ -71,17 +71,17 @@ class _AlertEditPageState extends State<AlertEditPage> {
                     SizedBox(
                       height: 12.h,
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                      ),
-                      child: AlertCryptoWidget(
-                        'btc',
-                        true,
-                        32210.93,
-                        0.085000,
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.symmetric(
+                    //     horizontal: 16.w,
+                    //   ),
+                    //   child: AlertCryptoWidget(
+                    //     'btc',
+                    //     true,
+                    //     32210.93,
+                    //     0.085000,
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 32.h,
                     ),

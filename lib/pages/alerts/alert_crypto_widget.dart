@@ -1,3 +1,4 @@
+import 'package:crypto_signal_app/pages/signals/signal_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +14,8 @@ import 'package:crypto_signal_app/pages/settings/calculate_gain_page.dart';
 import 'package:crypto_signal_app/pages/watchlist/add_to_watchlist_page.dart';
 
 class AlertCryptoWidget extends StatelessWidget {
-  String cryptoCode;
-  bool goingUp;
-  double price;
-  double percentageChanged;
-  AlertCryptoWidget(this.cryptoCode, this.goingUp, this.price, this.percentageChanged, {Key? key,}) : super(key: key);
+  Signal signal;
+  AlertCryptoWidget(this.signal, {Key? key,}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,15 +28,15 @@ class AlertCryptoWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SvgPicture.asset('assets/cryptoicons/'+cryptoCode+'.svg', height: 48.r, width: 48.r,),
+          SvgPicture.asset('assets/cryptoicons/'+signal.symbol!.toLowerCase()+'.svg', height: 48.r, width: 48.r,),
           SizedBox(width: 12.w,),
           Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(cryptoCode.toUpperCase()+'/USD', style: textStyleHeader,),
-              Text(cryptoCode+'/US Dollar', style: textButtonStyle,),
+              Text(signal.symbol!.toUpperCase()+'/USD', style: textStyleHeader,),
+              Text(signal.symbol!+'/US Dollar', style: textButtonStyle,),
             ],
           ),
           const Spacer(),
@@ -47,8 +45,8 @@ class AlertCryptoWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('\$'+price.toString(), style: textButtonStyle,),
-              Text(percentageChanged.toStringAsFixed(6)+'%', style: goingUp == true ? textGainGreen : textButtonStyle,),
+              Text('\$'+signal.currentPrice.toString(), style: textButtonStyle,),
+              Text(signal.percentChange!.toStringAsFixed(6)+'%', style: signal.gain == true ? textGainGreen : textButtonStyle,),
             ],
           )
         ],

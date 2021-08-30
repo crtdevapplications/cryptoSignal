@@ -1,4 +1,5 @@
 import 'package:crypto_signal_app/pages/alerts/alert_crypto_widget.dart';
+import 'package:crypto_signal_app/pages/signals/signal_service.dart';
 import 'package:crypto_signal_app/pages/signals/signals_widget.dart';
 import 'package:crypto_signal_app/pages/watchlist/watched_crypto_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +16,10 @@ import 'package:crypto_signal_app/pages/settings/how_to_use_app_page.dart';
 import 'package:crypto_signal_app/pages/settings/calculate_gain_page.dart';
 
 class SignalDetails extends StatefulWidget {
-  const SignalDetails({Key? key}) : super(key: key);
+  Signal signal;
+  String status;
+   SignalDetails(this.signal, this.status, {Key? key}) : super(key: key);
+
 
   @override
   _SignalDetailsState createState() => _SignalDetailsState();
@@ -65,7 +69,7 @@ class _SignalDetailsState extends State<SignalDetails> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(height: 32.h,),
-                  AlertCryptoWidget('btc', true, 32210.93, 0.085000),
+                  AlertCryptoWidget(widget.signal),
                   SizedBox(height: 32.h,),
                   Container(
                     height: 72.h,
@@ -77,20 +81,15 @@ class _SignalDetailsState extends State<SignalDetails> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          'Status',
+                         'Status',
                           style: textButtonStyle,
                         ),
                         Spacer(),
                         // if (true)
                         Text(
-                          'OPEN',
+                          widget.status.toUpperCase(),
                           style: textStyleHeader,
                         )
-                        // else
-                        //   Text(
-                        //     'CLOSED',
-                        //     style: textStyleHeader,
-                        //   )
                       ],
                     ),
                   ),
@@ -109,16 +108,16 @@ class _SignalDetailsState extends State<SignalDetails> {
                           style: textButtonStyle,
                         ),
                         Spacer(),
-                        // if (true)
+                        if (widget.signal.gain == true)
                         Text(
-                          '8.95' '%',
+                          widget.signal.percentChange!.toStringAsFixed(3) + '%',
                           style: textStyleHeaderGreen,
                         )
-                        // else
-                        //   Text(
-                        //     '-' '8.95' '%',
-                        //     style: textStyleHeaderRed,
-                        //   )
+                        else
+                          Text(
+                            '-' +  widget.signal.percentChange!.toStringAsFixed(3) + '%',
+                            style: textStyleHeaderRed,
+                          )
                       ],
                     ),
                   ),
@@ -127,7 +126,7 @@ class _SignalDetailsState extends State<SignalDetails> {
                   SizedBox(height: 12.h,),
                   brokerAd(true),
                   SizedBox(height: 32.h,),
-                  SignalsWidget('btc', DateTime.now(), true, 29727.4, 32386.52, 8.95, 40000, 28000),
+                  SignalsWidget(widget.signal, widget.status, false),
                   SizedBox(height: 32.h,),
                 ],
               ),
