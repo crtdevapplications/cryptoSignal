@@ -21,6 +21,7 @@ class _NotificationPageState extends State<NotificationPage> {
         appBar: AppBar(
           title:  Text('Notifications', style: textStyleHeader,),
           elevation: 0,
+          brightness: Brightness.dark,
           backgroundColor: Colors.transparent,
           titleSpacing: 0,
         ),

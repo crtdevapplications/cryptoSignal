@@ -40,6 +40,7 @@ class AuthService extends ChangeNotifier {
       notifyListeners();
       UserCredential authResult =
           await _auth.signInWithEmailAndPassword(email: email, password: pass);
+      await getUserData(authResult.user!.uid);
       notifyListeners();
       return authResult.user!.uid;
     } catch (e, s) {
@@ -65,9 +66,26 @@ class AuthService extends ChangeNotifier {
     });
   }
 
-  Future? getUserData(String uid) async {
+  Future<AppUser> getUserData(String uid) async {
     var snapshot = await userCollection.doc(uid).get();
-    Object? objectFromFirestore = snapshot.data();
+    var object = snapshot.data();
+    Map<String, dynamic> mapes = object as Map<String, dynamic>;
+    AppUser appUsr = AppUser(
+        firstName: mapes["first_name"].toString(),
+        lastName: mapes["last_name"].toString(),
+        email: mapes["email"].toString(),
+        password: mapes["password"].toString(),
+        countryPhoneCode: mapes["country_phone_code"].toString(),
+        phoneNumber: mapes["phone_number"].toString(),
+        countryISO: mapes["country_ISO"].toString(),
+        leadIP: mapes["lead_IP"].toString(),
+        landDomain: mapes["land_domain"].toString(),
+        affiliateID: mapes["affiliate_ID"].toString(),
+        offerID: mapes["offer_ID"].toString(),
+        dateTime: mapes["date_time"].toDate() as DateTime,
+        uid: uid);
+    addUser(appUsr);
+    return appUsr;
   }
 }
 

@@ -1,9 +1,11 @@
 import 'package:crypto_signal_app/auth_service.dart';
+import 'package:crypto_signal_app/onboarding.dart';
 import 'package:crypto_signal_app/pages/login_page/phonecode_picker.dart';
 import 'package:crypto_signal_app/pages/signals/signal_service.dart';
 import 'package:crypto_signal_app/remote_config_service.dart';
 import 'dart:convert';
 import 'package:crypto_signal_app/user.dart';
+import 'package:crypto_signal_app/user_preference.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,10 +29,13 @@ void main() async {
   await Hive.initFlutter();
   final RemoteConfig remoteConfig = RemoteConfig.instance;
   await setUpRemoteConfig(remoteConfig);
-  listOfID = jsonDecode(remoteConfig.getString('aivix_id')) as Map<String, dynamic>;
+  listOfID =
+      jsonDecode(remoteConfig.getString('aivix_id')) as Map<String, dynamic>;
   signalsFromFirestore = remoteConfig.getString('signals');
   Hive.registerAdapter(AppUserAdapter());
+  Hive.registerAdapter(UserPreferenceAdapter());
   await Hive.openBox<AppUser>('appuser');
+  await Hive.openBox<UserPreference>('userpreference');
   runApp(MyApp());
 }
 
@@ -47,14 +52,16 @@ class MyApp extends StatelessWidget {
                   DefaultWidgetsLocalizations.delegate,
                   DefaultMaterialLocalizations.delegate,
                 ],
-                home: Builder(
-                  builder: (context) {
-                    return Consumer<AuthService>(
-                      builder: (_, auth, __) =>
-                              auth.isSignedIn ?  HomePage() : LoginPage() ,
-                    );
-                  }
-                ),
+                home: Builder(builder: (context) {
+                  return Hive.box<UserPreference>('userpreference')
+                          .values
+                          .isEmpty
+                      ? Onboarding()
+                      : Consumer<AuthService>(
+                          builder: (_, auth, __) =>
+                              auth.isSignedIn ? HomePage() : LoginPage(),
+                        );
+                }),
                 debugShowCheckedModeBanner: false,
               ),
             ));

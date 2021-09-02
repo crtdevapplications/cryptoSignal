@@ -33,6 +33,7 @@ class _SignalDetailsState extends State<SignalDetails> {
       child: Scaffold(
         backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
         appBar: AppBar(
+          brightness: Brightness.dark,
           actions: [
             CupertinoButton(
                 child: SvgPicture.asset(

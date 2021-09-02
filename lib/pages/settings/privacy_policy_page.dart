@@ -16,6 +16,7 @@ class PrivacyPolicyPage extends StatelessWidget {
           title:  Text('Privacy Policy', style: textStyleHeader,),
           elevation: 0,
           backgroundColor: Colors.transparent,
+          brightness: Brightness.dark,
           titleSpacing: 0,
         ),
         backgroundColor: const Color.fromRGBO(20, 20, 34, 1),

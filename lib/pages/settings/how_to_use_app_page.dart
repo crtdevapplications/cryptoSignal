@@ -1,3 +1,4 @@
+import 'package:crypto_signal_app/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,6 +30,7 @@ class _HowToUseAppPageState extends State<HowToUseAppPage> {
               style: textStyleHeader,
             ),
             elevation: 0,
+            brightness: Brightness.dark,
             backgroundColor: Colors.transparent,
             titleSpacing: 0,
           ),
@@ -47,7 +49,7 @@ class _HowToUseAppPageState extends State<HowToUseAppPage> {
                           children: [
                             Padding(
                               padding:  EdgeInsets.only(top: 36.h, bottom: 12.h),
-                              child: Image.asset('assets/howtouseappimages/howtouseapp2.png'),
+                              child: Image.asset('assets/howtouseappimages/howtouseapp1.png'),
                             ),
                             RichText(
                                 textAlign: TextAlign.center,
@@ -131,7 +133,7 @@ class _HowToUseAppPageState extends State<HowToUseAppPage> {
                           children: [
                             Padding(
                               padding:  EdgeInsets.only(top: 36.h, bottom: 12.h),
-                              child: Image.asset('assets/howtouseappimages/howtouseapp3.png'),
+                              child: Image.asset('assets/howtouseappimages/howtouseapp4.png'),
                             ),
                             RichText(
                                 textAlign: TextAlign.center,
@@ -204,7 +206,15 @@ class _HowToUseAppPageState extends State<HowToUseAppPage> {
                           style: textButtonStyle,
                         ),
                         padding: EdgeInsets.zero,
-                        onPressed: () {}),
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (context) => HomePage(),
+                            ),
+                          );
+
+                        }),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.w),
                       gradient: LinearGradient(

@@ -31,6 +31,7 @@ class _AddToAlertsPageState extends State<AddToAlertsPage> {
             style: textStyleHeader,
           ),
           elevation: 0,
+          brightness: Brightness.dark,
           backgroundColor: Colors.transparent,
           titleSpacing: 0,
         ),

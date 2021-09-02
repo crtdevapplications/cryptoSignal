@@ -3,6 +3,7 @@ import 'package:crypto_signal_app/pages/settings/terms_and_conditions_page.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crypto_signal_app/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -39,6 +40,7 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
               style: textStyleHeader,
             ),
             elevation: 0,
+            brightness: Brightness.dark,
             backgroundColor: Colors.transparent,
             titleSpacing: 0,
           ),

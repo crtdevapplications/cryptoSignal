@@ -32,6 +32,7 @@ class _AddToWatchlistPageState extends State<AddToWatchlistPage> {
             ),
             elevation: 0,
             backgroundColor: Colors.transparent,
+            brightness: Brightness.dark,
             titleSpacing: 0,
           ),
           body: SafeArea(

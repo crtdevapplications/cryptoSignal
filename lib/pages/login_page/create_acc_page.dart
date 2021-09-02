@@ -1,5 +1,6 @@
 import 'package:crypto_signal_app/home_page.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,6 @@ class CreateAccPage extends StatefulWidget {
 
 class _CreateAccPageState extends State<CreateAccPage>
     with AutomaticKeepAliveClientMixin {
-
   bool isLoading = false;
   late String _password;
   late String _uid;

@@ -10,6 +10,7 @@ import 'package:crypto_signal_app/pages/login_page/login_page_text_forms.dart';
 import 'package:provider/provider.dart';
 
 import '../../auth_service.dart';
+import '../../user.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -74,7 +75,8 @@ class _SignInPageState extends State<SignInPage>
                           .signInWithEmail(
                               loginList.elementAt(0), loginList.elementAt(1))
                           .then((value) => _uid = value);
-                      await _authService.getUserData(_uid);
+                      // AppUser appUser  = await _authService.getUserData(_uid);
+                      // addUser(appUser);
                       loginList.clear();
                       FirebaseAnalytics()
                           .logEvent(name: 'user_logged_in', parameters: null);

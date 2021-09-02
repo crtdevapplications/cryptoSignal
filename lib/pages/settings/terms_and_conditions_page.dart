@@ -15,6 +15,7 @@ class TermsAndConditionsPage extends StatelessWidget {
         appBar: AppBar(
           title:  Text('Terms and Conditions', style: textStyleHeader,),
           elevation: 0,
+          brightness: Brightness.dark,
           backgroundColor: Colors.transparent,
           titleSpacing: 0,
 
