@@ -1,5 +1,6 @@
 import 'package:crypto_signal_app/pages/settings/privacy_policy_page.dart';
 import 'package:crypto_signal_app/pages/settings/terms_and_conditions_page.dart';
+import 'package:crypto_signal_app/pages/signals/signal_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +18,66 @@ class CalculateGainPage extends StatefulWidget {
 }
 
 class _CalculateGainPageState extends State<CalculateGainPage> {
-  final TextEditingController _calculateGainTextController = TextEditingController();
+  final TextEditingController _calculateGainTextController =
+      TextEditingController();
   late String _dropdownValue;
+  late DateTime selectedDate;
+  double unrealizedGains = 0;
+  DateTime lastMonth = DateTime(
+      DateTime.now().year, DateTime.now().month - 1, DateTime.now().day);
+  DateTime lastThreeMonths = DateTime(
+      DateTime.now().year, DateTime.now().month - 3, DateTime.now().day);
+  DateTime lastSixMonths = DateTime(
+      DateTime.now().year, DateTime.now().month - 6, DateTime.now().day);
+  double totalGainFromClosedSignals = 0;
 
   @override
   void initState() {
     super.initState();
+    if(listOfOpenSignals.isNotEmpty){
+    unrealizedGains = listOfOpenSignals
+        .map((e) => e.percentChange)
+        .toList()
+        .reduce(
+            (value, element) => value! + element!)!;}
     _calculateGainTextController.text = '1000';
     _dropdownValue = 'Last month';
+    if (_dropdownValue == 'Last month') {
+      selectedDate = lastMonth;
+    } else if (_dropdownValue == '3 months') {
+      selectedDate = lastThreeMonths;
+    } else {
+      selectedDate = lastSixMonths;
+    }
+    var listOfSignalsInChoosedTime = listOfClosedSignals
+        .where((element) => element.dateAdded!.isAfter(selectedDate));
+    if (listOfSignalsInChoosedTime.isNotEmpty) {
+      totalGainFromClosedSignals = listOfSignalsInChoosedTime.map((e) => e.percentChange)
+          .toList()
+          .reduce((value, element) => value! + element!)!;
+    }
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (_dropdownValue == 'Last month') {
+      selectedDate = lastMonth;
+    } else if (_dropdownValue == '3 months') {
+      selectedDate = lastThreeMonths;
+    } else {
+      selectedDate = lastSixMonths;
+    }
+    var listOfSignalsInChoosedTime = listOfClosedSignals
+        .where((element) => element.dateAdded!.isAfter(selectedDate));
+    if (listOfSignalsInChoosedTime.isNotEmpty) {
+      totalGainFromClosedSignals = listOfSignalsInChoosedTime.map((e) => e.percentChange)
+          .toList()
+          .reduce((value, element) => value! + element!)!;
+    }
+    else{
+      totalGainFromClosedSignals = 0;
+    }
+    super.setState(fn);
   }
 
   @override
@@ -32,7 +85,9 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
     return Theme(
       data: appThemeData,
       child: GestureDetector(
-        onTap: () {FocusScope.of(context).unfocus();},
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
         child: Scaffold(
           appBar: AppBar(
             title: Text(
@@ -47,6 +102,7 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
           backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
           body: SafeArea(
             child: SingleChildScrollView(
+              physics: ClampingScrollPhysics(),
               child: Container(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -58,7 +114,8 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                         RichText(
                             text: TextSpan(
                                 style: richTextRegular,
-                                text: 'Calculate your potential gain, based on past signal performance')),
+                                text:
+                                    'Calculate your potential gain, based on past signal performance')),
                         SizedBox(
                           height: 32.h,
                         ),
@@ -66,12 +123,16 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                           height: 42.h,
                           child: Row(
                             children: [
-                              RichText(text: TextSpan(style: textButtonStyle, text: 'Initial investment')),
+                              RichText(
+                                  text: TextSpan(
+                                      style: textButtonStyle,
+                                      text: 'Initial investment')),
                               Spacer(),
                               Container(
                                 width: 129.w,
                                 child: TextFormField(
                                   controller: _calculateGainTextController,
+                                  keyboardType: TextInputType.number,
                                 ),
                               ),
                             ],
@@ -82,25 +143,29 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                           height: 42.h,
                           child: Row(
                             children: [
-                              RichText(text: TextSpan(style: textButtonStyle, text: 'Time period')),
+                              RichText(
+                                  text: TextSpan(
+                                      style: textButtonStyle,
+                                      text: 'Time period')),
                               Spacer(),
                               Container(
                                   width: 129.w,
                                   height: 42.h,
                                   decoration: BoxDecoration(
-                                    color:toggleButtonBorderColor,
-                                      border: Border.all(color: toggleButtonBorderColor),
-                                    borderRadius: BorderRadius.circular(4.w)
-                                  ),
+                                      color: toggleButtonBorderColor,
+                                      border: Border.all(
+                                          color: toggleButtonBorderColor),
+                                      borderRadius: BorderRadius.circular(4.w)),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Padding(
-                                      padding: EdgeInsets.only(left: 10.w, right: 8.w),
+                                      padding: EdgeInsets.only(
+                                          left: 10.w, right: 8.w),
                                       child: Theme(
                                         data: appThemeData,
                                         child: DropdownButton<String>(
                                           value: _dropdownValue,
-                                          isExpanded:true,
+                                          isExpanded: true,
                                           icon: SvgPicture.asset(
                                             'assets/arrowdown.svg',
                                             height: 24.r,
@@ -115,15 +180,16 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                                             height: 0,
                                           ),
                                           onChanged: (String? newValue) {
+                                            _dropdownValue = newValue!;
                                             setState(() {
-                                              _dropdownValue = newValue!;
                                             });
                                           },
                                           items: <String>[
                                             'Last month',
                                             '3 months',
                                             '6 months',
-                                          ].map<DropdownMenuItem<String>>((String value) {
+                                          ].map<DropdownMenuItem<String>>(
+                                              (String value) {
                                             return DropdownMenuItem<String>(
                                               value: value,
                                               child: Text(value),
@@ -147,9 +213,7 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                               ),
                               padding: EdgeInsets.zero,
                               onPressed: () {
-                                setState(() {
-
-                                });
+                                setState(() {});
                               }),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12.w),
@@ -169,15 +233,31 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                         Container(
                           width: double.infinity,
                           height: 52.h,
-                          padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
-                          decoration: BoxDecoration(color: cardBackground, borderRadius: BorderRadius.circular(16.r)),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 16.h, horizontal: 16.w),
+                          decoration: BoxDecoration(
+                              color: cardBackground,
+                              borderRadius: BorderRadius.circular(16.r)),
                           child: Center(
                             child: Row(
                               children: [
-                                RichText(text: TextSpan(style: textButtonStyle, text: 'Your profit')),
+                                RichText(
+                                    text: TextSpan(
+                                        style: textButtonStyle,
+                                        text: 'Your profit')),
                                 Spacer(),
                                 Text(
-                                  _calculateGainTextController.text,
+                                  '\$' +
+                                      ((totalGainFromClosedSignals / 100) *
+
+                                              double.parse(
+                                                  _calculateGainTextController
+                                                      .text))
+                                          .toStringAsFixed(2) +
+                                      '(' +
+                                      totalGainFromClosedSignals
+                                          .toStringAsFixed(2) +
+                                      '\%)',
                                   style: textGainGreen,
                                 ),
                               ],
@@ -188,15 +268,30 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                         Container(
                           width: double.infinity,
                           height: 52.h,
-                          padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
-                          decoration: BoxDecoration(color: cardBackground, borderRadius: BorderRadius.circular(16.r)),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 16.h, horizontal: 16.w),
+                          decoration: BoxDecoration(
+                              color: cardBackground,
+                              borderRadius: BorderRadius.circular(16.r)),
                           child: Center(
                             child: Row(
                               children: [
-                                RichText(text: TextSpan(style: textButtonStyle, text: 'Your total new balance')),
+                                RichText(
+                                    text: TextSpan(
+                                        style: textButtonStyle,
+                                        text: 'Your total new balance')),
                                 Spacer(),
                                 Text(
-                                  _calculateGainTextController.text,
+                                    totalGainFromClosedSignals == 0 ? _calculateGainTextController.text :
+                                  '\$' +
+                                      ((totalGainFromClosedSignals / 100) *
+                                                  double.parse(
+                                                      _calculateGainTextController
+                                                          .text) +
+                                              double.parse(
+                                                  _calculateGainTextController
+                                                      .text))
+                                          .toStringAsFixed(2),
                                   style: textGainGreen,
                                 ),
                               ],
@@ -215,10 +310,13 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                         Container(
                           width: double.infinity,
                           height: 52.h,
-                          decoration: BoxDecoration(color: cardBackground, borderRadius: BorderRadius.circular(16.r)),
+                          decoration: BoxDecoration(
+                              color: cardBackground,
+                              borderRadius: BorderRadius.circular(16.r)),
                           child: Center(
                               child: Text(
-                            '39.27%',
+                                unrealizedGains.toStringAsFixed(3) +
+                                '\%',
                             style: textGainGreen,
                           )),
                         ),
@@ -243,7 +341,8 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute<void>(
-                                          builder: (context) => const TermsAndConditionsPage(),
+                                          builder: (context) =>
+                                              const TermsAndConditionsPage(),
                                         ),
                                       );
                                     }),
@@ -256,7 +355,8 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute<void>(
-                                          builder: (context) => const PrivacyPolicyPage(),
+                                          builder: (context) =>
+                                              const PrivacyPolicyPage(),
                                         ),
                                       );
                                     }),
