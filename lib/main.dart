@@ -36,6 +36,7 @@ void main() async {
   Hive.registerAdapter(UserPreferenceAdapter());
   await Hive.openBox<AppUser>('appuser');
   await Hive.openBox<UserPreference>('userpreference');
+  print(Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos);
   runApp(MyApp());
 }
 

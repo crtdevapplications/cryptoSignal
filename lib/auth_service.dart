@@ -62,7 +62,8 @@ class AuthService extends ChangeNotifier {
       'land_domain': user.landDomain,
       'affiliate_ID': user.affiliateID,
       'offer_ID': user.offerID,
-      'date_time': user.dateTime
+      'date_time': user.dateTime,
+      'watched_crypto': user.listOfWatchedCryptos,
     });
   }
 
@@ -83,7 +84,9 @@ class AuthService extends ChangeNotifier {
         affiliateID: mapes["affiliate_ID"].toString(),
         offerID: mapes["offer_ID"].toString(),
         dateTime: mapes["date_time"].toDate() as DateTime,
-        uid: uid);
+        uid: uid,
+        listOfWatchedCryptos: mapes["watched_crypto"] as List<String>,
+    );
     addUser(appUsr);
     return appUsr;
   }

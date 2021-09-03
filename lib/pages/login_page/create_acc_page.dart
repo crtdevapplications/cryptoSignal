@@ -244,11 +244,13 @@ class _CreateAccPageState extends State<CreateAccPage>
             landDomain: 'domain.com',
             uid: _uid,
             leadIP: _leadIP,
-            dateTime: DateTime.now());
+            dateTime: DateTime.now(),
+            listOfWatchedCryptos: <String>[],
+        );
         addUser(user);
         await _authService.updateUserData(user, _uid);
-        //email = dfgdfg@qd.ru
-        //password = owVMHGJxCJ
+        //email = test@test.com
+        //password = gXrlVVO=pz
         FirebaseAnalytics()
             .logEvent(name: 'new_account_created', parameters: null);
         signUpList.clear();

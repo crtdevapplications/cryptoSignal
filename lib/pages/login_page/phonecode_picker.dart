@@ -51,27 +51,25 @@ class _PhonecodePickerState extends State<PhonecodePicker> {
                     padding: EdgeInsets.only(bottom: 8.h),
                     child: Container(
                       height: 42.h,
-                      child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: CupertinoButton(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 16.h, horizontal: 15.w),
-                              child: SvgPicture.asset(
-                                'assets/loupe.svg',
-                              ),
-                              onPressed: () {},
+                      child: TextField(
+                        autofocus: true,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
+                          hintText: 'Search country',
+                          suffixIcon: CupertinoButton(
+                            child: SvgPicture.asset(
+                              'assets/loupe.svg',
                             ),
-                          ),
-                          TextField(
-                            autofocus: true,
-                            onChanged: (value) {
-                              filterSearchResults(value);
+                            onPressed: () {
+                              setState(() {
+                              });
                             },
-                            controller: editingController,
                           ),
-                        ],
+                        ),
+                        onChanged: (value) {
+                          filterSearchResults(value);
+                        },
+                        controller: editingController,
                       ),
                     ),
                   )),
