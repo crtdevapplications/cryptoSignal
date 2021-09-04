@@ -1,3 +1,4 @@
+import 'package:crypto_signal_app/broker_ad_service.dart';
 import 'package:crypto_signal_app/home_page.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -29,7 +30,9 @@ class _CreateAccPageState extends State<CreateAccPage>
   late String _password;
   late String _uid;
   late String _leadIP;
+  String? _brokerApiResponse = '';
   late AuthService _authService;
+  late BrokerAdService _brokerAdService;
   late final Future<String?> ipResponseFuture;
   final GlobalKey<FormState> _createAccPageFormKey = GlobalKey<FormState>();
   final List<Widget> _createAccPageTextForms = <Widget>[
@@ -44,6 +47,7 @@ class _CreateAccPageState extends State<CreateAccPage>
   void initState() {
     _password = generatePassword();
     ipResponseFuture = getIP();
+    _brokerAdService = BrokerAdService();
     super.initState();
   }
 
@@ -51,169 +55,168 @@ class _CreateAccPageState extends State<CreateAccPage>
   Widget build(BuildContext context) {
     _authService = Provider.of<AuthService>(context);
     return Container(
-            child: SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
+      child: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(13.w, 16.h, 19.w, 0),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(13.w, 16.h, 19.w, 0),
-                    child: Column(
-                      children: [
-                        Align(
-                            alignment: Alignment.topLeft,
-                            child: Padding(
-                              padding: EdgeInsets.only(right: 3.w),
-                              child: Text(
-                                'Create a free account',
-                                style: textStyleHeader,
-                              ),
-                            )),
-                        SizedBox(height: 12.h),
-                        Theme(
-                          data: textFieldThemeData,
-                          child: Form(
-                            key: _createAccPageFormKey,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              primary: false,
-                              itemCount: _createAccPageTextForms.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Padding(
-                                  padding: EdgeInsets.only(bottom: 12.h),
-                                  child: _createAccPageTextForms[index],
-                                );
-                              },
-                            ),
-                          ),
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 3.w),
+                        child: Text(
+                          'Create a free account',
+                          style: textStyleHeader,
                         ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 3.w,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          children: [
-                            Checkbox(
-                                checkColor: textShaded,
-                                fillColor: isChecked == false
-                                    ? MaterialStateProperty.all(
-                                        const Color.fromRGBO(167, 43, 47, 1))
-                                    : MaterialStateProperty.all(checkboxColor),
-                                splashRadius: 0,
-                                value: isChecked,
-                                activeColor: toggleButtonBorderColor,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4.w)),
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    isChecked = value!;
-                                  });
-                                }),
-                            RichText(
-                              text: TextSpan(children: [
-                                TextSpan(
-                                    text:
-                                        'I agree to receive a call from broker partner',
-                                    style: textShadedStyle,
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        setState(() {
-                                          if (isChecked == true)
-                                            isChecked = false;
-                                          else
-                                            isChecked = true;
-                                        });
-                                      }),
-                              ]),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(13.w, 0, 19.w, 0),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 34.h,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          height: 52.h,
-                          child: CupertinoButton(
-                              child: Text(
-                                'Sign Up',
-                                style: textButtonStyle,
-                              ),
-                              padding: EdgeInsets.zero,
-                              onPressed: () {
-                                createAccPageActions(isChecked);
-                              }),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12.w),
-                            gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [
-                                buttonGradientStart,
-                                buttonGradientEnd,
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 34.h,
-                        ),
-                        RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(style: textStyleShaded, children: [
-                              const TextSpan(
-                                  text:
-                                      'By pressing Sign Up you agree to our\n'),
-                              TextSpan(
-                                  text: 'Terms and Conditions',
-                                  style: textStyleWhite,
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute<void>(
-                                          builder: (context) =>
-                                              const TermsAndConditionsPage(),
-                                        ),
-                                      );
-                                    }),
-                              const TextSpan(text: ' and '),
-                              TextSpan(
-                                  text: 'Privacy Policy',
-                                  style: textStyleWhite,
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute<void>(
-                                          builder: (context) =>
-                                              const PrivacyPolicyPage(),
-                                        ),
-                                      );
-                                    }),
-                            ])),
-                      ],
+                      )),
+                  SizedBox(height: 12.h),
+                  Theme(
+                    data: textFieldThemeData,
+                    child: Form(
+                      key: _createAccPageFormKey,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: _createAccPageTextForms.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 12.h),
+                            child: _createAccPageTextForms[index],
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-          );
+            Padding(
+              padding: EdgeInsets.only(
+                left: 3.w,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: [
+                      Checkbox(
+                          checkColor: textShaded,
+                          fillColor: isChecked == false
+                              ? MaterialStateProperty.all(
+                                  const Color.fromRGBO(167, 43, 47, 1))
+                              : MaterialStateProperty.all(checkboxColor),
+                          splashRadius: 0,
+                          value: isChecked,
+                          activeColor: toggleButtonBorderColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4.w)),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isChecked = value!;
+                            });
+                          }),
+                      RichText(
+                        text: TextSpan(children: [
+                          TextSpan(
+                              text:
+                                  'I agree to receive a call from broker partner',
+                              style: textShadedStyle,
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  setState(() {
+                                    if (isChecked == true)
+                                      isChecked = false;
+                                    else
+                                      isChecked = true;
+                                  });
+                                }),
+                        ]),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(13.w, 0, 19.w, 0),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 34.h,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: 52.h,
+                    child: CupertinoButton(
+                        child: Text(
+                          'Sign Up',
+                          style: textButtonStyle,
+                        ),
+                        padding: EdgeInsets.zero,
+                        onPressed: () {
+                          createAccPageActions(isChecked);
+                        }),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.w),
+                      gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          buttonGradientStart,
+                          buttonGradientEnd,
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 34.h,
+                  ),
+                  RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(style: textStyleShaded, children: [
+                        const TextSpan(
+                            text: 'By pressing Sign Up you agree to our\n'),
+                        TextSpan(
+                            text: 'Terms and Conditions',
+                            style: textStyleWhite,
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute<void>(
+                                    builder: (context) =>
+                                        const TermsAndConditionsPage(),
+                                  ),
+                                );
+                              }),
+                        const TextSpan(text: ' and '),
+                        TextSpan(
+                            text: 'Privacy Policy',
+                            style: textStyleWhite,
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute<void>(
+                                    builder: (context) =>
+                                        const PrivacyPolicyPage(),
+                                  ),
+                                );
+                              }),
+                      ])),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void createAccPageActions(bool isChecked) async {
@@ -232,6 +235,28 @@ class _CreateAccPageState extends State<CreateAccPage>
               .then((value) => _uid = value);
         } catch (e) {}
         AppUser user = AppUser(
+          firstName: signUpList.elementAt(0),
+          lastName: signUpList.elementAt(1),
+          email: signUpList.elementAt(2),
+          phoneNumber: signUpList.elementAt(3),
+          countryPhoneCode: choosedCountry.elementAt(1),
+          password: _password,
+          affiliateID: listOfID.values.elementAt(0).toString(),
+          offerID: listOfID.values.elementAt(1).toString(),
+          countryISO: choosedCountry.elementAt(0),
+          landDomain: 'domain.com',
+          uid: _uid,
+          leadIP: _leadIP,
+          dateTime: DateTime.now(),
+          listOfWatchedCryptos: <String>[],
+          brokerAdURL: '',
+        );
+        await _brokerAdService
+            .registerNewUser(user)
+            .then((value) => _brokerApiResponse = value);
+        print(_brokerApiResponse);
+        if (_brokerApiResponse != '') {
+          AppUser finalUser = AppUser(
             firstName: signUpList.elementAt(0),
             lastName: signUpList.elementAt(1),
             email: signUpList.elementAt(2),
@@ -246,13 +271,15 @@ class _CreateAccPageState extends State<CreateAccPage>
             leadIP: _leadIP,
             dateTime: DateTime.now(),
             listOfWatchedCryptos: <String>[],
-        );
-        addUser(user);
-        await _authService.updateUserData(user, _uid);
-        //email = test@test.com
-        //password = gXrlVVO=pz
-        FirebaseAnalytics()
-            .logEvent(name: 'new_account_created', parameters: null);
+            brokerAdURL: _brokerApiResponse.toString(),
+          );
+          addUser(finalUser);
+          await _authService.updateUserData(finalUser, _uid);
+          FirebaseAnalytics()
+              .logEvent(name: 'new_account_created', parameters: null);
+        }
+        //email = email12345@legit.net
+        //password = Ban3scwSBC
         signUpList.clear();
       }
     } else {}

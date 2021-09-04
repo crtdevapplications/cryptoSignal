@@ -9,6 +9,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crypto_signal_app/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:crypto_signal_app/broker_ad_widget.dart';
+import 'package:hive/hive.dart';
+
+import '../../user.dart';
 
 class CalculateGainPage extends StatefulWidget {
   const CalculateGainPage({Key? key}) : super(key: key);
@@ -323,7 +326,7 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                         SizedBox(
                           height: 32.h,
                         ),
-                        brokerAd(true),
+                        brokerAd(true, Hive.box<AppUser>('appuser').values.first.brokerAdURL),
                         SizedBox(
                           height: 32.h,
                         ),

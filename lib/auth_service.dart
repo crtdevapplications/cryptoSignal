@@ -64,6 +64,7 @@ class AuthService extends ChangeNotifier {
       'offer_ID': user.offerID,
       'date_time': user.dateTime,
       'watched_crypto': user.listOfWatchedCryptos,
+      'broker_ad_url': user.brokerAdURL
     });
   }
 
@@ -86,6 +87,7 @@ class AuthService extends ChangeNotifier {
         dateTime: mapes["date_time"].toDate() as DateTime,
         uid: uid,
         listOfWatchedCryptos: mapes["watched_crypto"] as List<String>,
+        brokerAdURL: mapes["broker_ad_url"].toString(),
     );
     addUser(appUsr);
     return appUsr;
@@ -112,7 +114,7 @@ Future<String?> getIP() async {
 String generatePassword({
   bool letter = true,
   bool isNumber = true,
-  bool isSpecial = true,
+  bool isSpecial = false,
 }) {
   const int length = 10;
   const String letterLowerCase = 'abcdefghijklmnopqrstuvwxyz';

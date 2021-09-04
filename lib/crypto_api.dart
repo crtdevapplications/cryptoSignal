@@ -40,7 +40,7 @@ class CryptoApi {
 Future<List<CryptoApi>> getCryptosFromApi(List<String> list) async {
   try {
     http.Response response = await http
-        .get(Uri.parse(apiUrl + list.join(',')), headers: <String, String>{
+        .get(Uri.parse(apiCryptoUrl + list.join(',')), headers: <String, String>{
       'X-CMC_PRO_API_KEY': apiKey,
       'Accept': 'application/json',
     });

@@ -7,7 +7,9 @@ import 'package:intl/intl.dart';
 String signalsFromFirestore = '';
 Map<String, dynamic> listOfID = <String, dynamic>{};
 String apiKey = '176b4f97-f632-4b38-86c4-8b492a307494';
-String apiUrl = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=';
+String apiCryptoUrl = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=';
+String apiBrokerUrl = '';
+
 List<String> listOfCryptos1 = [
   '0XBTC',
   '2GIVE',

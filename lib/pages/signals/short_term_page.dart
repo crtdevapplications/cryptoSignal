@@ -12,6 +12,9 @@ import 'package:crypto_signal_app/pages/settings/terms_and_conditions_page.dart'
 import 'package:crypto_signal_app/pages/settings/privacy_policy_page.dart';
 import 'package:crypto_signal_app/pages/settings/how_to_use_app_page.dart';
 import 'package:crypto_signal_app/pages/settings/calculate_gain_page.dart';
+import 'package:hive/hive.dart';
+
+import '../../user.dart';
 
 class ShortTermPage extends StatefulWidget {
   const ShortTermPage({Key? key}) : super(key: key);
@@ -67,7 +70,7 @@ class _ShortTermPageState extends State<ShortTermPage> {
             child: SignalsWidget(listOfOpenSignals.where((element) => element.type!.toLowerCase() == 'short').first, 'open', true),
           ),
           Spacer(),
-          brokerAd(false),
+          brokerAd(false, Hive.box<AppUser>('appuser').values.first.brokerAdURL),
         ],
       ),
     );

@@ -10,6 +10,9 @@ import 'package:crypto_signal_app/pages/settings/terms_and_conditions_page.dart'
 import 'package:crypto_signal_app/pages/settings/privacy_policy_page.dart';
 import 'package:crypto_signal_app/pages/settings/how_to_use_app_page.dart';
 import 'package:crypto_signal_app/pages/settings/calculate_gain_page.dart';
+import 'package:hive/hive.dart';
+
+import '../../user.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -90,7 +93,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
               const Spacer(),
-              const brokerAd(false),
+              brokerAd(false, Hive.box<AppUser>('appuser').values.first.brokerAdURL),
             ],
           ),
     );

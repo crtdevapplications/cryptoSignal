@@ -32,6 +32,7 @@ void main() async {
   await setUpRemoteConfig(remoteConfig);
   listOfID =
       jsonDecode(remoteConfig.getString('aivix_id')) as Map<String, dynamic>;
+  apiBrokerUrl = listOfID.values.elementAt(2).toString();
   signalsFromFirestore = remoteConfig.getString('signals');
   Hive.registerAdapter(AppUserAdapter());
   Hive.registerAdapter(UserPreferenceAdapter());

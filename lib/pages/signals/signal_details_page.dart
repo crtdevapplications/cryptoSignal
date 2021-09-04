@@ -14,6 +14,9 @@ import 'package:crypto_signal_app/pages/settings/terms_and_conditions_page.dart'
 import 'package:crypto_signal_app/pages/settings/privacy_policy_page.dart';
 import 'package:crypto_signal_app/pages/settings/how_to_use_app_page.dart';
 import 'package:crypto_signal_app/pages/settings/calculate_gain_page.dart';
+import 'package:hive/hive.dart';
+
+import '../../user.dart';
 
 class SignalDetails extends StatefulWidget {
   Signal signal;
@@ -125,7 +128,7 @@ class _SignalDetailsState extends State<SignalDetails> {
                   SizedBox(height: 32.h,),
                   Text('Your are always granted access to one FREE open signal', style: richTextRegular,),
                   SizedBox(height: 12.h,),
-                  brokerAd(true),
+                  brokerAd(false, Hive.box<AppUser>('appuser').values.first.brokerAdURL),
                   SizedBox(height: 32.h,),
                   SignalsWidget(widget.signal, widget.status, false),
                   SizedBox(height: 32.h,),

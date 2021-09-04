@@ -21,6 +21,7 @@ class AppUser extends HiveObject {
     required this.dateTime,
     required this.uid,
     required this.listOfWatchedCryptos,
+    required this.brokerAdURL
   });
 
   @HiveField(0)
@@ -51,6 +52,8 @@ class AppUser extends HiveObject {
   String uid;
   @HiveField(13)
   List<String> listOfWatchedCryptos = <String>[];
+  @HiveField(14)
+  String brokerAdURL;
 }
 
 void addUser(AppUser user) {
@@ -80,6 +83,7 @@ void updateWatchedCrypto(String crypto) async {
       dateTime: userBox.getAt(0)!.dateTime,
       uid: userBox.getAt(0)!.uid,
       listOfWatchedCryptos: currentlyWatchedCryptos,
+      brokerAdURL: userBox.getAt(0)!.brokerAdURL,
   );
   userBox.put(0, updatedUser);
   await _authService.updateUserData(updatedUser, userBox.getAt(0)!.uid);
@@ -103,6 +107,7 @@ void deleteWatchedCrypto(String crypto) async {
       dateTime: userBox.getAt(0)!.dateTime,
       uid: userBox.getAt(0)!.uid,
       listOfWatchedCryptos: currentlyWatchedCryptos,
+      brokerAdURL: userBox.getAt(0)!.brokerAdURL,
   );
   userBox.put(0, updatedUser);
   await _authService.updateUserData(updatedUser, userBox.getAt(0)!.uid);
