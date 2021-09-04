@@ -70,7 +70,7 @@ class _SignalsPageState extends State<SignalsPage>
                     TextSpan(text: ' night '),
                   if (currentTime > 7 && currentTime < 11)
                     TextSpan(text: ' morning '),
-                  if (currentTime > 11 && currentTime < 19)
+                  if (currentTime >= 11 && currentTime < 19)
                     TextSpan(text: ' day '),
                   if (currentTime > 19 && currentTime <= 23)
                     TextSpan(text: ' evening '),

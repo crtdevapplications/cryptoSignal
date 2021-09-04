@@ -1,4 +1,5 @@
 import 'package:crypto_signal_app/auth_service.dart';
+import 'package:crypto_signal_app/crypto_api.dart';
 import 'package:crypto_signal_app/onboarding.dart';
 import 'package:crypto_signal_app/pages/login_page/phonecode_picker.dart';
 import 'package:crypto_signal_app/pages/signals/signal_service.dart';
@@ -36,7 +37,6 @@ void main() async {
   Hive.registerAdapter(UserPreferenceAdapter());
   await Hive.openBox<AppUser>('appuser');
   await Hive.openBox<UserPreference>('userpreference');
-  print(Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos);
   runApp(MyApp());
 }
 

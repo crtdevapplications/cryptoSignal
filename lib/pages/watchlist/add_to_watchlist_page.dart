@@ -182,7 +182,7 @@ class _AddToWatchlistPageState extends State<AddToWatchlistPage> {
                                   setState(() {});
                                 }
                                 else{
-                                  print('To many cryptos for u');
+                                  print('Too many cryptos for u');
                                   setState(() {});
                                 }
                               })

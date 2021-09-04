@@ -1,3 +1,4 @@
+import 'package:crypto_signal_app/crypto_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +6,8 @@ import 'package:intl/intl.dart';
 
 String signalsFromFirestore = '';
 Map<String, dynamic> listOfID = <String, dynamic>{};
+String apiKey = '176b4f97-f632-4b38-86c4-8b492a307494';
+String apiUrl = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=';
 List<String> listOfCryptos1 = [
   '0XBTC',
   '2GIVE',
@@ -951,6 +954,11 @@ TextStyle textButtonStyle = TextStyle(
     fontWeight: FontWeight.w500);
 TextStyle textGainGreen = TextStyle(
     color: textGreen,
+    fontSize: 14.sp,
+    fontFamily: 'DMSans',
+    fontWeight: FontWeight.w500);
+TextStyle textGainRed = TextStyle(
+    color: textRed,
     fontSize: 14.sp,
     fontFamily: 'DMSans',
     fontWeight: FontWeight.w500);

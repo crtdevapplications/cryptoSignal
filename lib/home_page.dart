@@ -1,3 +1,4 @@
+import 'package:crypto_signal_app/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +8,9 @@ import 'package:crypto_signal_app/pages/watchlist/watchlist_page.dart';
 import 'package:crypto_signal_app/pages/settings/settings_page.dart';
 import 'package:crypto_signal_app/pages/alerts/alerts_page.dart';
 import 'package:crypto_signal_app/pages/signals/signals_page.dart';
+import 'package:hive/hive.dart';
+
+import 'crypto_api.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,10 +23,11 @@ class _HomePageState extends State<HomePage> {
   late int _selectedIndex;
   List<StatefulWidget> listOfPages = [const SignalsPage(), const WatchlistPage(), const AlertsPage(), const SettingsPage()];
   @override
-  void initState() {
+  void initState()  {
     _selectedIndex = 0;
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {

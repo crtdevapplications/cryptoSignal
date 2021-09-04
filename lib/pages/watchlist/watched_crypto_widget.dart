@@ -1,3 +1,4 @@
+import 'package:crypto_signal_app/crypto_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +14,8 @@ import 'package:crypto_signal_app/pages/settings/calculate_gain_page.dart';
 import 'package:crypto_signal_app/pages/watchlist/add_to_watchlist_page.dart';
 
 class WatchedCryptoWidget extends StatelessWidget {
-  String cryptoCode;
-  bool goingUp;
-  double price;
-  double percentageChanged;
-  WatchedCryptoWidget(this.cryptoCode, this.goingUp, this.price, this.percentageChanged, {Key? key}) : super(key: key);
+  CryptoApi cryptoApi;
+  WatchedCryptoWidget(this.cryptoApi, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +32,17 @@ class WatchedCryptoWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SvgPicture.asset('assets/cryptoicons/'+cryptoCode+'.svg', height: 48.r, width: 48.r,),
+          SvgPicture.asset('assets/cryptoicons/'+cryptoApi.symbol.toLowerCase()+'.svg', height: 48.r, width: 48.r,),
           SizedBox(width: 12.w,),
-          Text(cryptoCode.toUpperCase()+'/USD', style: textButtonStyle,),
+          Text(cryptoApi.symbol.toUpperCase()+'/USD', style: textButtonStyle,),
           const Spacer(),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('\$'+price.toString(), style: textButtonStyle,),
-              Text(percentageChanged.toStringAsFixed(6)+'%', style: goingUp == true ? textGainGreen : textButtonStyle,),
+              Text('\$'+cryptoApi.currentPrice.toString(), style: textButtonStyle,),
+              Text(cryptoApi.percentChange+'%', style: cryptoApi.gain == true ? textGainGreen : textGainRed,),
             ],
           )
         ],

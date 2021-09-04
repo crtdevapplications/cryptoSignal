@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crypto_signal_app/constants.dart';
 import 'package:crypto_signal_app/broker_ad_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive/hive.dart';
 import 'package:crypto_signal_app/pages/settings/notification_page.dart';
 import 'package:crypto_signal_app/pages/settings/terms_and_conditions_page.dart';
 import 'package:crypto_signal_app/pages/settings/privacy_policy_page.dart';
@@ -13,6 +14,9 @@ import 'package:crypto_signal_app/pages/settings/calculate_gain_page.dart';
 import 'package:crypto_signal_app/pages/watchlist/add_to_watchlist_page.dart';
 import 'package:crypto_signal_app/pages/watchlist/watched_crypto_widget.dart';
 
+import '../../crypto_api.dart';
+import '../../user.dart';
+
 class WatchlistPage extends StatefulWidget {
   const WatchlistPage({Key? key}) : super(key: key);
 
@@ -20,18 +24,25 @@ class WatchlistPage extends StatefulWidget {
   _WatchlistPageState createState() => _WatchlistPageState();
 }
 
-class _WatchlistPageState extends State<WatchlistPage> {
-  late bool temporalBool;
+class _WatchlistPageState extends State<WatchlistPage>  {
+  late Future<List<CryptoApi>> dataFromApi;
+
 
   @override
   void initState() {
-    temporalBool = false;
+    if(Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos.isNotEmpty){
+    dataFromApi = getCryptosFromApi(
+        Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos);}
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (temporalBool == true) {
+    if (Hive.box<AppUser>('appuser')
+        .values
+        .first
+        .listOfWatchedCryptos
+        .isEmpty) {
       return Padding(
         padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 12.h),
         child: Column(
@@ -92,52 +103,129 @@ class _WatchlistPageState extends State<WatchlistPage> {
         ),
       );
     } else {
-      return Padding(
-        padding: EdgeInsets.only(top: 12.h),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 11.w,),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Watchlist',
-                    style: textStyleHeader,
-                  ),
-                  const Spacer(),
-                  CupertinoButton(
-                    child: Container(
-                      color: Colors.transparent,
-                      child: SvgPicture.asset('assets/plus.svg', color: Colors.white, height: 24.r,
-                        width: 24.r,),
-                    ),
-                    onPressed: () { Navigator.push(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (context) => const AddToWatchlistPage(),
+      return FutureBuilder(
+          future: Future.wait([dataFromApi]),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Container(
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Network error.',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'SFProDisplay',
+                          fontSize: 20.sp,
+                        ),
                       ),
-                    );},
-                    padding: EdgeInsets.zero,
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 12.h,
-            ),
-            Padding(
-              padding:  EdgeInsets.only(left: 16.w, right: 16.w,),
-              child: WatchedCryptoWidget('btc', true, 32210.93, 0.085000,),
-            ),
-          ],
-        ),
-      );
+                      SizedBox(height: 10.w),
+                      CupertinoButton.filled(
+                        onPressed: () {},
+                        child: Text(
+                          'Try again',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+            if (!snapshot.hasData) {
+              return Container(
+                alignment: AlignmentDirectional.center,
+                child: Container(
+                  height: 120.r,
+                  width: 120.r,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 7.w,
+                    color: Colors.white,
+                  ),
+                ),
+              );
+            }
+            else {
+              List<CryptoApi> listOfWatchlistCryptos =
+              (snapshot.data as List)[0] as List<CryptoApi>;
+              return Padding(
+                padding: EdgeInsets.only(top: 12.h),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 11.w,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Watchlist',
+                            style: textStyleHeader,
+                          ),
+                          const Spacer(),
+                          CupertinoButton(
+                            child: Container(
+                              color: Colors.transparent,
+                              child: SvgPicture.asset(
+                                'assets/plus.svg',
+                                color: Colors.white,
+                                height: 24.r,
+                                width: 24.r,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (context) =>
+                                      const AddToWatchlistPage(),
+                                ),
+                              );
+                            },
+                            padding: EdgeInsets.zero,
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 12.h,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
+                      ),
+                      child: ListView.builder(
+                        itemCount: listOfWatchlistCryptos.length,
+                        physics: ClampingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 12.h),
+                            child: WatchedCryptoWidget(
+                                listOfWatchlistCryptos.elementAt(index)),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+          });
     }
   }
 }
+//   void apiActions() async{
+//     if(Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos.isNotEmpty){
+//       dataFromApi = ;}
+//   }
+// }
