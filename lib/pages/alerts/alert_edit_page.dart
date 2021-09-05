@@ -1,4 +1,7 @@
+import 'package:crypto_signal_app/crypto_api.dart';
 import 'package:crypto_signal_app/pages/alerts/alert_crypto_widget.dart';
+import 'package:crypto_signal_app/pages/signals/signal_service.dart';
+import 'package:crypto_signal_app/pages/signals/signals_widget.dart';
 import 'package:crypto_signal_app/pages/watchlist/watched_crypto_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -14,7 +17,9 @@ import 'package:crypto_signal_app/pages/settings/how_to_use_app_page.dart';
 import 'package:crypto_signal_app/pages/settings/calculate_gain_page.dart';
 
 class AlertEditPage extends StatefulWidget {
-  const AlertEditPage({Key? key}) : super(key: key);
+  String alertSymbol;
+
+  AlertEditPage(this.alertSymbol, {Key? key}) : super(key: key);
 
   @override
   _AlertEditPageState createState() => _AlertEditPageState();
@@ -72,22 +77,17 @@ class _AlertEditPageState extends State<AlertEditPage> {
                     SizedBox(
                       height: 12.h,
                     ),
-                    // Padding(
-                    //   padding: EdgeInsets.symmetric(
-                    //     horizontal: 16.w,
-                    //   ),
-                    //   child: AlertCryptoWidget(
-                    //     'btc',
-                    //     true,
-                    //     32210.93,
-                    //     0.085000,
-                    //   ),
-                    // ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                      ),
+                    child: AlertCryptoWidget(listOfOpenSignals.first),),
                     SizedBox(
                       height: 32.h,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 17.w, right: 6.w, bottom: 12.h),
+                      padding:
+                          EdgeInsets.only(left: 17.w, right: 6.w, bottom: 12.h),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,12 +105,16 @@ class _AlertEditPageState extends State<AlertEditPage> {
                                   width: 24.r,
                                   child: Checkbox(
                                       checkColor: Colors.white,
-                                      fillColor: MaterialStateProperty.all(buttonGradientStart),
+                                      fillColor: MaterialStateProperty.all(
+                                          buttonGradientStart),
                                       splashRadius: 0,
                                       value: _isAboveChecked,
                                       activeColor: toggleButtonBorderColor,
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.w)),
-                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4.w)),
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
                                       onChanged: (bool? value) {
                                         setState(() {
                                           _isAboveChecked = value!;
@@ -147,7 +151,8 @@ class _AlertEditPageState extends State<AlertEditPage> {
                                   controller: _aboveAlertController,
                                   textAlign: TextAlign.center,
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 14.w),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 14.h, horizontal: 14.w),
                                   ),
                                 ),
                               ),
@@ -170,7 +175,8 @@ class _AlertEditPageState extends State<AlertEditPage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 17.w, right: 6.w, bottom: 12.h),
+                      padding:
+                          EdgeInsets.only(left: 17.w, right: 6.w, bottom: 12.h),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,7 +213,8 @@ class _AlertEditPageState extends State<AlertEditPage> {
                                   controller: _abovePercentChangeController,
                                   textAlign: TextAlign.center,
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 14.w),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 14.h, horizontal: 14.w),
                                   ),
                                 ),
                               ),
@@ -230,7 +237,8 @@ class _AlertEditPageState extends State<AlertEditPage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 17.w, right: 6.w, bottom: 12.h),
+                      padding:
+                          EdgeInsets.only(left: 17.w, right: 6.w, bottom: 12.h),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,12 +256,16 @@ class _AlertEditPageState extends State<AlertEditPage> {
                                   width: 24.r,
                                   child: Checkbox(
                                       checkColor: Colors.white,
-                                      fillColor: MaterialStateProperty.all(buttonGradientStart),
+                                      fillColor: MaterialStateProperty.all(
+                                          buttonGradientStart),
                                       splashRadius: 0,
                                       value: _isBelowChecked,
                                       activeColor: toggleButtonBorderColor,
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.w)),
-                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4.w)),
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
                                       onChanged: (bool? value) {
                                         setState(() {
                                           _isBelowChecked = value!;
@@ -290,7 +302,8 @@ class _AlertEditPageState extends State<AlertEditPage> {
                                   controller: _belowAlertController,
                                   textAlign: TextAlign.center,
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 14.w),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 14.h, horizontal: 14.w),
                                   ),
                                 ),
                               ),
@@ -313,7 +326,8 @@ class _AlertEditPageState extends State<AlertEditPage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 17.w, right: 6.w, bottom: 12.h),
+                      padding:
+                          EdgeInsets.only(left: 17.w, right: 6.w, bottom: 12.h),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -350,7 +364,8 @@ class _AlertEditPageState extends State<AlertEditPage> {
                                   controller: _belowPercentChangeController,
                                   textAlign: TextAlign.center,
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 14.w),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 14.h, horizontal: 14.w),
                                   ),
                                 ),
                               ),
@@ -376,11 +391,15 @@ class _AlertEditPageState extends State<AlertEditPage> {
                       height: 20.h,
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w,),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20.w,
+                      ),
                       child: Container(
                         height: 52.h,
                         width: double.infinity,
-                        decoration: BoxDecoration(color: cardBackground, borderRadius: BorderRadius.circular(16.r)),
+                        decoration: BoxDecoration(
+                            color: cardBackground,
+                            borderRadius: BorderRadius.circular(16.r)),
                         padding: EdgeInsets.fromLTRB(16.w, 0, 9.w, 0),
                         child: Center(
                           child: Row(
@@ -388,51 +407,72 @@ class _AlertEditPageState extends State<AlertEditPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                            Text(
-                              'Repeat alert',
-                              style: textButtonStyle,
-                              textAlign: TextAlign.center,
-                            ),
-                            Spacer(),
-                            Switch(
-                              splashRadius: 0,
-                              activeTrackColor: Colors.white,
-                              thumbColor: _repeatAlertSwitchValue == false ?  MaterialStateProperty.all(Color.fromRGBO(196, 196, 196, 1)): MaterialStateProperty.all(Color.fromRGBO(84, 122, 255, 1)),
-                              inactiveTrackColor: Color.fromRGBO(196, 196, 196, 1),
-                              value: _repeatAlertSwitchValue,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  _repeatAlertSwitchValue = value;
-                                });
-                              },
-                            ),
-                          ]),
+                                Text(
+                                  'Repeat alert',
+                                  style: textButtonStyle,
+                                  textAlign: TextAlign.center,
+                                ),
+                                Spacer(),
+                                Switch(
+                                  splashRadius: 0,
+                                  activeTrackColor: Colors.white,
+                                  thumbColor: _repeatAlertSwitchValue == false
+                                      ? MaterialStateProperty.all(
+                                          Color.fromRGBO(196, 196, 196, 1))
+                                      : MaterialStateProperty.all(
+                                          Color.fromRGBO(84, 122, 255, 1)),
+                                  inactiveTrackColor:
+                                      Color.fromRGBO(196, 196, 196, 1),
+                                  value: _repeatAlertSwitchValue,
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      _repeatAlertSwitchValue = value;
+                                    });
+                                  },
+                                ),
+                              ]),
                         ),
                       ),
                     ),
-                    SizedBox(height: 26.h,),
+                    SizedBox(
+                      height: 26.h,
+                    ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
                       child: Container(
                         height: 72.h,
                         width: double.infinity,
                         padding: EdgeInsets.fromLTRB(16.w, 16.h, 40.w, 16.h),
-                        decoration: BoxDecoration(color: cardBackground, borderRadius: BorderRadius.circular(16.r)),
+                        decoration: BoxDecoration(
+                            color: cardBackground,
+                            borderRadius: BorderRadius.circular(16.r)),
                         child: Align(
-                          alignment: Alignment.centerLeft,
-                            child: Text('Send me a push notification when the price of BTC/USD is above \$'+_aboveAlertController.text, style: textButtonStyle,)),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Send me a push notification when the price of BTC/USD is above \$' +
+                                  _aboveAlertController.text,
+                              style: textButtonStyle,
+                            )),
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
                       child: Container(
                         height: 72.h,
                         width: double.infinity,
                         padding: EdgeInsets.fromLTRB(16.w, 16.h, 40.w, 16.h),
-                        decoration: BoxDecoration(color: cardBackground, borderRadius: BorderRadius.circular(16.r)),
+                        decoration: BoxDecoration(
+                            color: cardBackground,
+                            borderRadius: BorderRadius.circular(16.r)),
                         child: Align(
-                          alignment: Alignment.centerLeft,
-                            child: Text('Send me a push notification when the price of BTC/USD is below \$'+_belowAlertController.text, style: textButtonStyle,)),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Send me a push notification when the price of BTC/USD is below \$' +
+                                  _belowAlertController.text,
+                              style: textButtonStyle,
+                            )),
                       ),
                     ),
                     Padding(
@@ -447,8 +487,7 @@ class _AlertEditPageState extends State<AlertEditPage> {
                             ),
                             padding: EdgeInsets.zero,
                             onPressed: () {
-                              setState(() {
-                              });
+                              setState(() {});
                             }),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12.w),

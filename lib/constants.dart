@@ -619,7 +619,7 @@ Map<String, String> listOfCryptos = {
   "HNS": "Handshake",
   "HODL": "HOdlcoin",
   "HOT": "Holo",
-  "HPB": "High Performance Blockchain",
+  "HPB": "High Performance \nBlockchain",
   "HT": "HOTTO",
   "HTML": "HTMLCOIN",
   "HUC": "Huntercoin",

@@ -90,12 +90,12 @@ class _AlertsPageState extends State<AlertsPage> {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute<void>(
-                                builder: (context) => const AlertEditPage(),
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute<void>(
+                            //     builder: (context) => const AlertEditPage(),
+                            //   ),
+                            // );
                           },
                           padding: EdgeInsets.zero,
                         ),

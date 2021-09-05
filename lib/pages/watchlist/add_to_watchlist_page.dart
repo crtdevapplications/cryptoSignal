@@ -65,7 +65,7 @@ class _AddToWatchlistPageState extends State<AddToWatchlistPage> {
                     children: [
                       TextField(
                         onChanged: (value) {
-                          filterSearchResults(value);
+                          _filterSearchResults(value);
                         },
                         controller: editingController,
                         decoration: InputDecoration(
@@ -138,7 +138,7 @@ class _AddToWatchlistPageState extends State<AddToWatchlistPage> {
                                                   .toUpperCase()) ==
                                           true
                                       ? 'assets/greencheckmark.svg'
-                                      : 'assets/arrowright.svg'),
+                                      : 'assets/white_plus.svg'),
                               onPressed: () {
                                 if (Hive.box<AppUser>('appuser')
                                             .values
@@ -199,7 +199,7 @@ class _AddToWatchlistPageState extends State<AddToWatchlistPage> {
     );
   }
 
-  void filterSearchResults(String query) {
+  void _filterSearchResults(String query) {
     Map<String, String> dummySearchList = {};
     dummySearchList.addAll(listOfCryptos);
     if (query.isNotEmpty) {

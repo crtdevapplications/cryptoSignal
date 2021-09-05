@@ -29,6 +29,7 @@ class SignalsPage extends StatefulWidget {
 
 class _SignalsPageState extends State<SignalsPage>
     with TickerProviderStateMixin {
+  TextEditingController _editingController = TextEditingController();
   late TabController _tabController;
   late String userName;
   late int currentTime;
@@ -80,6 +81,30 @@ class _SignalsPageState extends State<SignalsPage>
             ),
             SizedBox(
               height: 20.h,
+            ),
+            Theme(
+              data: textFieldThemeData,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(16.w,0.h, 16.w, 0),
+                child: Container(
+                  height: 42.h,
+                  child: TextField(
+                    onChanged: (value) {},
+                    controller: _editingController,
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
+                        hintText: 'Search Crypto',
+                        suffixIcon: CupertinoButton(
+                          child: SvgPicture.asset(
+                            'assets/loupe.svg',
+                          ),
+                          onPressed: () {
+                            setState(() {});
+                          },
+                        )),
+                  ),
+                ),
+              ),
             ),
             SizedBox(
               height: 12.h,
