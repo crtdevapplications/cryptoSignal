@@ -1,8 +1,11 @@
+import 'package:crypto_signal_app/alert_service.dart';
 import 'package:crypto_signal_app/crypto_api.dart';
+import 'package:crypto_signal_app/home_page.dart';
 import 'package:crypto_signal_app/pages/alerts/alert_crypto_widget.dart';
 import 'package:crypto_signal_app/pages/signals/signal_service.dart';
 import 'package:crypto_signal_app/pages/signals/signals_widget.dart';
 import 'package:crypto_signal_app/pages/watchlist/watched_crypto_widget.dart';
+import 'package:crypto_signal_app/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -78,10 +81,63 @@ class _AlertEditPageState extends State<AlertEditPage> {
                       height: 12.h,
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                      ),
-                    child: AlertCryptoWidget(listOfOpenSignals.first),),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                        ),
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/cryptoicons/' +
+                                    widget.alertSymbol.toLowerCase() +
+                                    '.svg',
+                                height: 48.r,
+                                width: 48.r,
+                              ),
+                              SizedBox(
+                                width: 12.w,
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    widget.alertSymbol.toUpperCase() + '/USD',
+                                    style: textStyleHeader,
+                                  ),
+                                  Text(
+                                    widget.alertSymbol + '/US Dollar',
+                                    style: textButtonStyle,
+                                  ),
+                                ],
+                              ),
+                              const Spacer(),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    '\$44444444',
+                                    style: textButtonStyle,
+                                  ),
+                                  Text(
+                                    '4.85%',
+                                    style: textGainGreen,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        )),
                     SizedBox(
                       height: 32.h,
                     ),
@@ -166,7 +222,8 @@ class _AlertEditPageState extends State<AlertEditPage> {
                                     width: 24.r,
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                },
                                 padding: EdgeInsets.zero,
                               ),
                             ],
@@ -487,7 +544,18 @@ class _AlertEditPageState extends State<AlertEditPage> {
                             ),
                             padding: EdgeInsets.zero,
                             onPressed: () {
-                              setState(() {});
+                              updateAlertCrypto(Alert(
+                                  symbol: widget.alertSymbol,
+                                  active: true,
+                                  abovePrice: 4000,
+                                  belowPrice: 2000,
+                                  repeatAlert: true));
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (context) => HomePage(2),
+                                ),
+                              );
                             }),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12.w),

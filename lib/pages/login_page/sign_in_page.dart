@@ -1,4 +1,5 @@
 import 'package:crypto_signal_app/home_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -71,16 +72,27 @@ class _SignInPageState extends State<SignInPage>
                       return;
                     } else {
                       _signInPageFormKey.currentState!.save();
-                      await _authService
-                          .signInWithEmail(
-                              loginList.elementAt(0), loginList.elementAt(1))
-                          .then((value) => _uid = value);
-                      // AppUser appUser  = await _authService.getUserData(_uid);
-                      // addUser(appUser);
+                      try {
+                        await _authService
+                            .signInWithEmail(
+                                loginList.elementAt(0), loginList.elementAt(1))
+                            .then((value) => _uid = value);
+                      }
+                      on FirebaseAuthException catch (e) {
+                        // print('Failed with error code: ${e.code}');
+                        // print(e.message);
+                        correctCredentials = false;
+                        _signInPageFormKey.currentState!.validate();
+                        setState(() {
+                        });
+                      }
+                      catch (e, s) {
+                        // FirebaseCrashlytics.instance.recordError(e, s);
+                        rethrow;
+                      }
                       loginList.clear();
                       FirebaseAnalytics()
                           .logEvent(name: 'user_logged_in', parameters: null);
-                      setState(() {});
                     }
                   }),
               decoration: BoxDecoration(

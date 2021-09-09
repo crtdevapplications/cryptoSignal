@@ -36,6 +36,8 @@ class _WatchlistPageState extends State<WatchlistPage>  {
     super.initState();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     if (Hive.box<AppUser>('appuser')
@@ -58,13 +60,18 @@ class _WatchlistPageState extends State<WatchlistPage>  {
               height: 12.h,
             ),
             CupertinoButton(
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+              await  Navigator.push(
                   context,
                   MaterialPageRoute<void>(
                     builder: (context) => const AddToWatchlistPage(),
                   ),
                 );
+              if(Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos.isNotEmpty){
+                dataFromApi = getCryptosFromApi(
+                    Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos);}
+              setState(() {
+              });
               },
               padding: EdgeInsets.zero,
               child: Container(
@@ -152,7 +159,7 @@ class _WatchlistPageState extends State<WatchlistPage>  {
               return Padding(
                 padding: EdgeInsets.only(top: 12.h),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -181,14 +188,19 @@ class _WatchlistPageState extends State<WatchlistPage>  {
                                 width: 24.r,
                               ),
                             ),
-                            onPressed: () {
-                              Navigator.push(
+                            onPressed: () async {
+                             await Navigator.push(
                                 context,
                                 MaterialPageRoute<void>(
                                   builder: (context) =>
                                       const AddToWatchlistPage(),
                                 ),
                               );
+                              if(Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos.isNotEmpty){
+                                dataFromApi = getCryptosFromApi(
+                                    Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos);}
+                              setState(() {
+                              });
                             },
                             padding: EdgeInsets.zero,
                           )
@@ -198,22 +210,24 @@ class _WatchlistPageState extends State<WatchlistPage>  {
                     SizedBox(
                       height: 12.h,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 16.w,
-                        right: 16.w,
-                      ),
-                      child: ListView.builder(
-                        itemCount: listOfWatchlistCryptos.length,
-                        physics: ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: EdgeInsets.only(bottom: 12.h),
-                            child: WatchedCryptoWidget(
-                                listOfWatchlistCryptos.elementAt(index)),
-                          );
-                        },
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: 16.w,
+                          right: 16.w,
+                        ),
+                        child: ListView.builder(
+                          itemCount: listOfWatchlistCryptos.length,
+                          physics: ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 12.h),
+                              child: WatchedCryptoWidget(
+                                  listOfWatchlistCryptos.elementAt(index)),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ],

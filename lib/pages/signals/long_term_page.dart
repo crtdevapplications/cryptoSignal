@@ -20,7 +20,6 @@ import '../../user.dart';
 
 class LongTermPage extends StatefulWidget {
   String type;
-
   LongTermPage(this.type, {Key? key}) : super(key: key);
 
   @override
@@ -44,6 +43,7 @@ class _LongTermPageState extends State<LongTermPage> {
     }
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +109,7 @@ class _LongTermPageState extends State<LongTermPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    listOfOpenSignals
+                    listOfFilteredOpenSignals
                         .where((element) =>
                     element.type!.toLowerCase() == widget.type)
                         .length
@@ -153,7 +153,7 @@ class _LongTermPageState extends State<LongTermPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    listOfClosedSignals
+                    listOfFilteredClosedSignals
                         .where((element) =>
                     element.type!.toLowerCase() == widget.type)
                         .length
@@ -169,7 +169,8 @@ class _LongTermPageState extends State<LongTermPage> {
                         width: 24.r,
                         color: bottomNavBarColor,
                       ),
-                      onPressed: () {})
+                      onPressed: () {
+                      })
                 ],
               ),
             ),
@@ -212,7 +213,7 @@ class _LongTermPageState extends State<LongTermPage> {
             ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: listOfClosedSignals.where((element) => element.type!.toLowerCase() ==
+                itemCount: listOfFilteredClosedSignals.where((element) => element.type!.toLowerCase() ==
                     widget.type).length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
@@ -225,7 +226,7 @@ class _LongTermPageState extends State<LongTermPage> {
                           context,
                           MaterialPageRoute<void>(
                             builder: (context) => SignalDetails(
-                                listOfClosedSignals.where((element) => element.type!.toLowerCase() ==
+                                listOfFilteredClosedSignals.where((element) => element.type!.toLowerCase() ==
                                     widget.type).elementAt(index), 'closed'),
                           ),
                         );
@@ -242,7 +243,7 @@ class _LongTermPageState extends State<LongTermPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             SvgPicture.asset(
-                              'assets/cryptoicons/' + listOfClosedSignals
+                              'assets/cryptoicons/' + listOfFilteredClosedSignals
                                   .elementAt(index)
                                   .symbol!
                                   .toLowerCase() + '.svg',
@@ -253,7 +254,7 @@ class _LongTermPageState extends State<LongTermPage> {
                               width: 12.w,
                             ),
                             Text(
-                              listOfClosedSignals
+                              listOfFilteredClosedSignals
                                   .elementAt(index)
                                   .symbol!
                                   .toUpperCase() + '/USD',

@@ -34,11 +34,19 @@ class _SignalsPageState extends State<SignalsPage>
   late String userName;
   late int currentTime;
 
+
   @override
   void initState() {
+
     userName = toBeginningOfSentenceCase(
-        Hive.box<AppUser>('appuser').values.first.firstName)!;
-    currentTime = DateTime.now().hour;
+        Hive
+            .box<AppUser>('appuser')
+            .values
+            .first
+            .firstName)!;
+    currentTime = DateTime
+        .now()
+        .hour;
     getSignals();
     _tabController = TabController(
       vsync: this,
@@ -73,7 +81,7 @@ class _SignalsPageState extends State<SignalsPage>
                     TextSpan(text: ' morning '),
                   if (currentTime >= 11 && currentTime < 19)
                     TextSpan(text: ' day '),
-                  if (currentTime > 19 && currentTime <= 23)
+                  if (currentTime >= 19 && currentTime <= 23)
                     TextSpan(text: ' evening '),
                   TextSpan(text: userName),
                 ]),
@@ -85,11 +93,12 @@ class _SignalsPageState extends State<SignalsPage>
             Theme(
               data: textFieldThemeData,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(16.w,0.h, 16.w, 0),
+                padding: EdgeInsets.fromLTRB(16.w, 0.h, 16.w, 0),
                 child: Container(
                   height: 42.h,
                   child: TextField(
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                    filterSearchResults(value);},
                     controller: _editingController,
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
@@ -118,7 +127,7 @@ class _SignalsPageState extends State<SignalsPage>
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4.w),
                     border:
-                        Border.all(color: toggleButtonBorderColor, width: 1)),
+                    Border.all(color: toggleButtonBorderColor, width: 1)),
                 child: TabBar(
                   controller: _tabController,
                   onTap: (index) {
@@ -130,19 +139,19 @@ class _SignalsPageState extends State<SignalsPage>
                   labelColor: textBlack,
                   indicator: _tabController.index == 0
                       ? BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(4.w),
-                            topLeft: Radius.circular(4.w),
-                          ),
-                        )
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(4.w),
+                      topLeft: Radius.circular(4.w),
+                    ),
+                  )
                       : BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(4.w),
-                            topRight: Radius.circular(4.w),
-                          ),
-                        ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(4.w),
+                      topRight: Radius.circular(4.w),
+                    ),
+                  ),
                   labelPadding: EdgeInsets.zero,
                   tabs: [
                     Tab(
@@ -186,4 +195,39 @@ class _SignalsPageState extends State<SignalsPage>
       ),
     );
   }
+  void filterSearchResults(String query) {
+
+    List<Signal> dummyOpenSignalsSearchList = [];
+    List<Signal> dummyClosedSignalsSearchList = [];
+    dummyOpenSignalsSearchList.addAll(listOfOpenSignals);
+    dummyClosedSignalsSearchList.addAll(listOfClosedSignals);
+    if (query.isNotEmpty) {
+      List<Signal> dummyOpenSignalsListData = [];
+      List<Signal> dummyClosedSignalsListData = [];
+      dummyOpenSignalsSearchList.forEach((item) {
+        if (item.symbol!.toLowerCase().contains(query) || item.name!.toLowerCase().contains(query)) {
+          dummyOpenSignalsListData.add(item);
+        }
+      });
+      dummyClosedSignalsSearchList.forEach((item) {
+        if (item.symbol!.toLowerCase().contains(query) || item.name!.toLowerCase().contains(query)) {
+          dummyClosedSignalsListData.add(item);
+        }
+      });
+      setState(() {
+        listOfFilteredClosedSignals.clear();
+        listOfFilteredOpenSignals.clear();
+        listOfFilteredClosedSignals.addAll(dummyClosedSignalsListData);
+        listOfFilteredOpenSignals.addAll(dummyOpenSignalsListData);
+      });
+      return;
+    } else {
+      setState(() {
+        listOfFilteredClosedSignals.clear();
+        listOfFilteredOpenSignals.clear();
+        fillTheLists();
+      });
+    }
+  }
 }
+

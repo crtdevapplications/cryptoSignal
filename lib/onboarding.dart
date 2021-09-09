@@ -9,6 +9,7 @@ import 'package:crypto_signal_app/constants.dart';
 import 'package:crypto_signal_app/pages/login_page/sign_in_page.dart';
 import 'package:crypto_signal_app/pages/login_page/create_acc_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive/hive.dart';
 
 class Onboarding extends StatefulWidget {
   const Onboarding({Key? key}) : super(key: key);
@@ -17,18 +18,22 @@ class Onboarding extends StatefulWidget {
   _OnboardingState createState() => _OnboardingState();
 }
 
-class _OnboardingState extends State<Onboarding>  with TickerProviderStateMixin  {
+class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
   late TabController _tabControllerOnboarding;
+
   @override
   void initState() {
-    addPreference(UserPreference(sawOnboarding: true));
-    _tabControllerOnboarding = TabController(vsync: this, length: 4, initialIndex: 0,);
+    _tabControllerOnboarding = TabController(
+      vsync: this,
+      length: 4,
+      initialIndex: 0,
+    );
     _tabControllerOnboarding.addListener(_switchTabIndex);
     super.initState();
   }
-  void _switchTabIndex(){
-    setState(() {
-    });
+
+  void _switchTabIndex() {
+    setState(() {});
   }
 
   @override
@@ -41,208 +46,290 @@ class _OnboardingState extends State<Onboarding>  with TickerProviderStateMixin 
         body: SafeArea(
           child: Stack(
             children: [
-              Column(
-                children: [
-                  Expanded(
-                    child: TabBarView(
-                      controller: _tabControllerOnboarding,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                          ),
-                          child: SingleChildScrollView(
-                            physics: NeverScrollableScrollPhysics(),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 12.h),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .start,
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .start,
-                                    children: [
-                                      Text('Signal list',
-                                        style: textStyleSuperHeader,),
-                                      Spacer(),
-                                      CupertinoButton(
-                                        child: Text(
-                                          'Skip', style: textStyleShaded,),
-                                        onPressed: () {
-                                          Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute<void>(
-                                              builder: (context) => MyApp(),
-                                            ),
-                                          );
-                                        },
-                                        padding: EdgeInsets.zero,)
-                                    ],
+              ShaderMask(
+                shaderCallback: (rect) {
+                  return const LinearGradient(
+                    begin: Alignment.center,
+                    end: Alignment.bottomCenter,
+                    colors: [Color.fromRGBO(26, 27, 39, 1), Color.fromRGBO(26, 27, 39, 0)],
+                  ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
+                },
+                blendMode: BlendMode.dstIn,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: TabBarView(
+                        controller: _tabControllerOnboarding,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
+                            ),
+                            child: SingleChildScrollView(
+                              physics: NeverScrollableScrollPhysics(),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 12.h),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Signal list',
+                                          style: textStyleSuperHeader,
+                                        ),
+                                        Spacer(),
+                                        CupertinoButton(
+                                          child: Text(
+                                            'Skip',
+                                            style: textStyleShaded,
+                                          ),
+                                          onPressed: () {
+                                            addPreference(UserPreference(
+                                                sawOnboarding: true));
+                                            if (Hive.box<UserPreference>(
+                                                    'userpreference')
+                                                .values
+                                                .isNotEmpty) {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute<void>(
+                                                  builder: (context) => MyApp(),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          padding: EdgeInsets.zero,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height: 2.h,),
-                                Text('See all crypto signals in one place',
-                                  style: textStyleSuperWhite,),
-                                SizedBox(height: 60.h,),
-                                Center(child: Image.asset(
-                                    'assets/onboarding/onboarding1.png')),
-                              ],
+                                  SizedBox(
+                                    height: 2.h,
+                                  ),
+                                  Text(
+                                    'See all crypto signals in one place',
+                                    style: textStyleSuperWhite,
+                                  ),
+                                  SizedBox(
+                                    height: 60.h,
+                                  ),
+                                  Center(
+                                      child: Image.asset(
+                                          'assets/onboarding/onboarding1.png')),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                          ),
-                          child: SingleChildScrollView(
-                            physics: NeverScrollableScrollPhysics(),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 12.h),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .start,
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .start,
-                                    children: [
-                                      Text('Watchlist',
-                                        style: textStyleSuperHeader,),
-                                      Spacer(),
-                                      CupertinoButton(
-                                        child: Text(
-                                          'Skip', style: textStyleShaded,),
-                                        onPressed: () {
-                                          Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute<void>(
-                                              builder: (context) => MyApp(),
-                                            ),
-                                          );
-                                        },
-                                        padding: EdgeInsets.zero,)
-                                    ],
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
+                            ),
+                            child: SingleChildScrollView(
+                              physics: NeverScrollableScrollPhysics(),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 12.h),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Watchlist',
+                                          style: textStyleSuperHeader,
+                                        ),
+                                        Spacer(),
+                                        CupertinoButton(
+                                          child: Text(
+                                            'Skip',
+                                            style: textStyleShaded,
+                                          ),
+                                          onPressed: () {
+                                            addPreference(UserPreference(
+                                                sawOnboarding: true));
+                                            if (Hive.box<UserPreference>(
+                                                    'userpreference')
+                                                .values
+                                                .isNotEmpty) {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute<void>(
+                                                  builder: (context) => MyApp(),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          padding: EdgeInsets.zero,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height: 2.h,),
-                                Text('Create a watchlist by trapping on the plus icon',
-                                  style: textStyleSuperWhite,),
-                                SizedBox(height: 60.h,),
-                                Center(child: Image.asset(
-                                    'assets/onboarding/onboarding2.png')),
-                              ],
+                                  SizedBox(
+                                    height: 2.h,
+                                  ),
+                                  Text(
+                                    'Create a watchlist by trapping on the plus icon',
+                                    style: textStyleSuperWhite,
+                                  ),
+                                  SizedBox(
+                                    height: 60.h,
+                                  ),
+                                  Center(
+                                      child: Image.asset(
+                                          'assets/onboarding/onboarding2.png')),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                          ),
-                          child: SingleChildScrollView(
-                            physics: NeverScrollableScrollPhysics(),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 12.h),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .start,
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .start,
-                                    children: [
-                                      Text('Crypto signals',
-                                        style: textStyleSuperHeader,),
-                                      Spacer(),
-                                      CupertinoButton(
-                                        child: Text(
-                                          'Skip', style: textStyleShaded,),
-                                        onPressed: () {
-                                          Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute<void>(
-                                              builder: (context) => MyApp(),
-                                            ),
-                                          );
-                                        },
-                                        padding: EdgeInsets.zero,)
-                                    ],
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
+                            ),
+                            child: SingleChildScrollView(
+                              physics: NeverScrollableScrollPhysics(),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 12.h),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Crypto signals',
+                                          style: textStyleSuperHeader,
+                                        ),
+                                        Spacer(),
+                                        CupertinoButton(
+                                          child: Text(
+                                            'Skip',
+                                            style: textStyleShaded,
+                                          ),
+                                          onPressed: () {
+                                            addPreference(UserPreference(
+                                                sawOnboarding: true));
+                                            if (Hive.box<UserPreference>(
+                                                    'userpreference')
+                                                .values
+                                                .isNotEmpty) {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute<void>(
+                                                  builder: (context) => MyApp(),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          padding: EdgeInsets.zero,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height: 2.h,),
-                                Text('See details about all our crypto signals including gain, take profit, and stop loss',
-                                  style: textStyleSuperWhite,),
-                                SizedBox(height: 60.h,),
-                                Center(child: Image.asset(
-                                    'assets/onboarding/onboarding3.png')),
-                              ],
+                                  SizedBox(
+                                    height: 2.h,
+                                  ),
+                                  Text(
+                                    'See details about all our crypto signals including gain, take profit, and stop loss',
+                                    style: textStyleSuperWhite,
+                                  ),
+                                  SizedBox(
+                                    height: 60.h,
+                                  ),
+                                  Center(
+                                      child: Image.asset(
+                                          'assets/onboarding/onboarding3.png')),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                          ),
-                          child: SingleChildScrollView(
-                            physics: NeverScrollableScrollPhysics(),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 12.h),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .start,
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .start,
-                                    children: [
-                                      Text('Price alerts',
-                                        style: textStyleSuperHeader,),
-                                      Spacer(),
-                                      CupertinoButton(
-                                        child: Text(
-                                          'Skip', style: textStyleShaded,),
-                                        onPressed: () {
-                                          Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute<void>(
-                                              builder: (context) => MyApp(),
-                                            ),
-                                          );
-                                        },
-                                        padding: EdgeInsets.zero,)
-                                    ],
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
+                            ),
+                            child: SingleChildScrollView(
+                              physics: NeverScrollableScrollPhysics(),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 12.h),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Price alerts',
+                                          style: textStyleSuperHeader,
+                                        ),
+                                        Spacer(),
+                                        CupertinoButton(
+                                          child: Text(
+                                            'Skip',
+                                            style: textStyleShaded,
+                                          ),
+                                          onPressed: () {
+                                            addPreference(UserPreference(
+                                                sawOnboarding: true));
+                                            if (Hive.box<UserPreference>(
+                                                    'userpreference')
+                                                .values
+                                                .isNotEmpty) {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute<void>(
+                                                  builder: (context) => MyApp(),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          padding: EdgeInsets.zero,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height: 2.h,),
-                                Text('See custom alerts for crypto',
-                                  style: textStyleSuperWhite,),
-                                SizedBox(height: 60.h,),
-                                Center(child: Image.asset(
-                                    'assets/onboarding/onboarding4.png')),
-                              ],
+                                  SizedBox(
+                                    height: 2.h,
+                                  ),
+                                  Text(
+                                    'See custom alerts for crypto',
+                                    style: textStyleSuperWhite,
+                                  ),
+                                  SizedBox(
+                                    height: 60.h,
+                                  ),
+                                  Center(
+                                      child: Image.asset(
+                                          'assets/onboarding/onboarding4.png')),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Align(
                 alignment: Alignment.bottomCenter,
@@ -295,48 +382,53 @@ class _OnboardingState extends State<Onboarding>  with TickerProviderStateMixin 
                   ),
                 ),
               ),
-              if(_tabControllerOnboarding.index == 3)
-              Padding(
-                padding:  EdgeInsets.only(bottom: 12.h),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.w),
-                        gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [
-                            buttonGradientStart,
-                            buttonGradientEnd,
-                          ],
-                        ),
+              if (_tabControllerOnboarding.index == 3)
+                Padding(
+                  padding: EdgeInsets.only(bottom: 12.h),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
                       ),
-                      width: double.infinity,
-                      height: 52.h,
-                      child: CupertinoButton(
-                          child: Text(
-                            'Join us for free',
-                            style: textButtonStyle,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.w),
+                          gradient: LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [
+                              buttonGradientStart,
+                              buttonGradientEnd,
+                            ],
                           ),
-                          padding: EdgeInsets.zero,
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute<void>(
-                                builder: (context) => MyApp(),
-                              ),
-                            );
-
-                          }),
+                        ),
+                        width: double.infinity,
+                        height: 52.h,
+                        child: CupertinoButton(
+                            child: Text(
+                              'Join us for free',
+                              style: textButtonStyle,
+                            ),
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              addPreference(
+                                  UserPreference(sawOnboarding: true));
+                              if (Hive.box<UserPreference>('userpreference')
+                                  .values
+                                  .isNotEmpty) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute<void>(
+                                    builder: (context) => MyApp(),
+                                  ),
+                                );
+                              }
+                            }),
+                      ),
                     ),
                   ),
                 ),
-              ),
             ],
           ),
         ),

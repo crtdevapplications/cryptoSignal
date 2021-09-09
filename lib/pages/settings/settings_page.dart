@@ -18,7 +18,7 @@ class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
   static final Map<Widget, String> _settingsPageMenus = <Widget, String>{
     const HowToUseAppPage(): 'How to use app',
-    const NotificationPage(): 'Notifications',
+    // const NotificationPage(): 'Notifications',
     const CalculateGainPage(): 'Potential Gain Calculator',
     const TermsAndConditionsPage(): 'Terms and conditions',
     const PrivacyPolicyPage(): 'Privacy policy',

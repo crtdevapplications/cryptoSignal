@@ -13,7 +13,8 @@ import 'package:hive/hive.dart';
 import 'crypto_api.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  int startingIndex;
+  HomePage(this.startingIndex, {Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -21,10 +22,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late int _selectedIndex;
-  List<StatefulWidget> listOfPages = [const SignalsPage(), const WatchlistPage(), const AlertsPage(), const SettingsPage()];
+  List<StatefulWidget> listOfPages = [
+    const SignalsPage(),
+    const WatchlistPage(),
+    // const AlertsPage(),
+    const SettingsPage()];
   @override
   void initState()  {
-    _selectedIndex = 0;
+    _selectedIndex = widget.startingIndex;
     super.initState();
   }
 
@@ -32,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
       bottomNavigationBar: Theme(
         data: ThemeData(
@@ -40,7 +46,7 @@ class _HomePageState extends State<HomePage> {
           highlightColor: Colors.transparent,
         ),
         child: SizedBox(
-          height: 54.h,
+          height: 57.h,
           child: BottomNavigationBar(
             showUnselectedLabels: true,
             elevation: 0,
@@ -60,8 +66,9 @@ class _HomePageState extends State<HomePage> {
             items: [
               BottomNavigationBarItem(icon: SvgPicture.asset('assets/signals.svg', color: _selectedIndex == 0 ? Colors.white : bottomNavBarColor, height: 24.r, width: 24.r,), label: 'Signals', tooltip: 'Signals',),
               BottomNavigationBarItem(icon: SvgPicture.asset('assets/watchlist.svg', color: _selectedIndex == 1 ? Colors.white : bottomNavBarColor, height: 24.r, width: 24.r,), label: 'Watchlist'),
-              BottomNavigationBarItem(icon: SvgPicture.asset('assets/alerts.svg', color: _selectedIndex == 2 ? Colors.white : bottomNavBarColor, width: 24.r,), label: 'Alerts'),
-              BottomNavigationBarItem(icon: SvgPicture.asset('assets/settings.svg',color: _selectedIndex == 3 ? Colors.white : bottomNavBarColor, height: 24.r, width: 24.r,), label: 'Settings'),
+              //алерты пока выключены
+              // BottomNavigationBarItem(icon: SvgPicture.asset('assets/alerts.svg', color: _selectedIndex == 2 ? Colors.white : bottomNavBarColor, width: 24.r,), label: 'Alerts'),
+              BottomNavigationBarItem(icon: SvgPicture.asset('assets/settings.svg',color: _selectedIndex == 2 ? Colors.white : bottomNavBarColor, height: 24.r, width: 24.r,), label: 'Settings'),
             ],
           ),
         ),

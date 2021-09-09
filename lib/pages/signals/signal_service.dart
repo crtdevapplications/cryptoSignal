@@ -15,23 +15,36 @@ import 'package:hive/hive.dart';
 import 'package:crypto_signal_app/user.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-
 import '../../constants.dart';
+
+part 'signal_service.g.dart';
 
 List<Signal> listOfOpenSignals = [];
 List<Signal> listOfClosedSignals = [];
 
+@HiveType(typeId: 3)
 class Signal {
+  @HiveField(0)
   String? name;
+  @HiveField(1)
   String? symbol;
+  @HiveField(2)
   double? entryPrice;
+  @HiveField(3)
   double? currentPrice;
+  @HiveField(4)
   double? takeProfit;
+  @HiveField(5)
   double? stopLoss;
+  @HiveField(6)
   DateTime? dateAdded;
+  @HiveField(7)
   double? percentChange;
+  @HiveField(8)
   bool? gain;
+  @HiveField(9)
   String? type;
+  @HiveField(10)
   String? recomendedAction;
 
   Signal({
@@ -77,4 +90,17 @@ void getSignals() {
     record = Signal.fromJson(item as Map<String, dynamic>);
     listOfClosedSignals.add(record);
   });
+  addSignals(listOfOpenSignals, 0);
+  addSignals(listOfClosedSignals, 1);
+  fillTheLists();
+
+}
+
+void addSignals(List <Signal> signals, int id) {
+  final Box<List <Signal>> userBox = Hive.box<List<Signal>>('signals');
+  userBox.put(id, signals);
+}
+void fillTheLists(){
+  listOfFilteredOpenSignals.addAll(Hive.box<List <Signal>>('signals').toMap()[0]!.toList());
+  listOfFilteredClosedSignals.addAll(Hive.box<List <Signal>>('signals').toMap()[1]!.toList());
 }

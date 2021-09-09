@@ -16,65 +16,102 @@ List<String> signUpList = <String>[];
 List<String> loginList = <String>[];
 List<String> choosedCountry = ['RU', '+7'];
 
-Widget buildFirstName() {
-  return TextFormField(
-    cursorHeight: 22.sp,
-    // scrollPadding: EdgeInsets.only(bottom: 200),
-    decoration: InputDecoration(
-      contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
-      hintText: 'First Name',
-    ),
-    validator: (String? value) {
-      if (value == null || value.isEmpty) {
-        return 'First Name is Required';
-      }
-      return null;
-    },
-    onSaved: (String? value) {
-      signUpList.add(value.toString());
-    },
-  );
+class buildFirstName extends StatefulWidget {
+  const buildFirstName({Key? key}) : super(key: key);
+
+  @override
+  _buildFirstNameState createState() => _buildFirstNameState();
 }
 
-Widget buildLastName() {
-  return TextFormField(
-    cursorHeight: 22.sp,
-    decoration: InputDecoration(
-      hintText: 'Last Name',
-      contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
-    ),
-    validator: (String? value) {
-      if (value == null || value.isEmpty) {
-        return 'Last Name is Required';
-      }
-      return null;
-    },
-    onSaved: (String? value) {
-      signUpList.add(value.toString());
-    },
-  );
+class _buildFirstNameState extends State<buildFirstName> {
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      cursorHeight: 22.sp,
+      // scrollPadding: EdgeInsets.only(bottom: 200),
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
+        hintText: 'First Name',
+      ),
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
+          return 'First Name is Required';
+        }
+        return null;
+      },
+      onSaved: (String? value) {
+        signUpList.add(value.toString());
+      },
+    );
+  }
 }
 
-Widget buildEmail() {
-  return TextFormField(
-    cursorHeight: 22.sp,
-    decoration: InputDecoration(
-      hintText: 'Email',
-      contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
-    ),
-    validator: (String? value) {
-      if (value == null || value.isEmpty) {
-        return 'Email is Required';
-      }
-      if (!emailRegExp.hasMatch(value)) {
-        return 'Please enter a valid email Address';
-      }
-      return null;
-    },
-    onSaved: (String? value) {
-      signUpList.add(value.toString());
-    },
-  );
+class buildLastName extends StatefulWidget {
+  const buildLastName({Key? key}) : super(key: key);
+
+  @override
+  _buildLastNameState createState() => _buildLastNameState();
+}
+
+class _buildLastNameState extends State<buildLastName> {
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      cursorHeight: 22.sp,
+      decoration: InputDecoration(
+        hintText: 'Last Name',
+        contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
+      ),
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
+          return 'Last Name is Required';
+        }
+        return null;
+      },
+      onSaved: (String? value) {
+        signUpList.add(value.toString());
+      },
+    );
+  }
+}
+
+class buildEmail extends StatefulWidget {
+  const buildEmail({Key? key}) : super(key: key);
+
+  @override
+  _buildEmailState createState() => _buildEmailState();
+}
+
+class _buildEmailState extends State<buildEmail> {
+  @override
+  Widget build(BuildContext context) {
+    return  TextFormField(
+      cursorHeight: 22.sp,
+      decoration: InputDecoration(
+        hintText: 'Email',
+        contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
+      ),
+      onChanged: (value){
+        correctCredentials = true;
+      },
+
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
+          return 'Email is Required';
+        }
+        if (correctCredentials == false){
+          return 'Incorrect credentials';
+        }
+        if (!emailRegExp.hasMatch(value)) {
+          return 'Please enter a valid email Address';
+        }
+        return null;
+      },
+      onSaved: (String? value) {
+        signUpList.add(value.toString());
+      },
+    );
+  }
 }
 
 class buildPhoneNumber extends StatefulWidget {
@@ -170,23 +207,42 @@ class _buildPhoneNumberState extends State<buildPhoneNumber> {
   }
 }
 
-Widget buildLogin() {
-  return TextFormField(
-    cursorHeight: 22.sp,
-    decoration: InputDecoration(
-      hintText: 'Login',
-      contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
-    ),
-    validator: (String? value) {
-      if (value == null || value.isEmpty) {
-        return 'Login Required';
-      }
-      return null;
-    },
-    onSaved: (String? value) {
-      loginList.add(value.toString());
-    },
-  );
+class buildLogin extends StatefulWidget {
+  const buildLogin({Key? key}) : super(key: key);
+
+  @override
+  _buildLoginState createState() => _buildLoginState();
+}
+
+class _buildLoginState extends State<buildLogin> {
+  @override
+  Widget build(BuildContext context) {
+    return  TextFormField(
+      cursorHeight: 22.sp,
+      onChanged: (value){
+        correctCredentials = true;
+      },
+      decoration: InputDecoration(
+        hintText: 'Login',
+        contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
+      ),
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
+          return 'Login Required';
+        }
+        if (correctCredentials == false){
+          return 'Incorrect credentials';
+        }
+        if (!emailRegExp.hasMatch(value)) {
+          return 'Please enter a valid email Address';
+        }
+        return null;
+      },
+      onSaved: (String? value) {
+        loginList.add(value.toString());
+      },
+    );
+  }
 }
 
 class buildPassword extends StatefulWidget {
@@ -217,9 +273,15 @@ class _buildPasswordState extends State<buildPassword> {
               contentPadding:
                   EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
             ),
+            onChanged: (value){
+              correctCredentials = true;
+            },
             validator: (String? value) {
               if (value == null || value.isEmpty) {
                 return 'Password is Required';
+              }
+              if (correctCredentials == false){
+                return 'Incorrect credentials';
               }
               return null;
             },

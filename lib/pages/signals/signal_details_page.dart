@@ -38,21 +38,21 @@ class _SignalDetailsState extends State<SignalDetails> {
         appBar: AppBar(
           brightness: Brightness.dark,
           actions: [
-            CupertinoButton(
-                child: SvgPicture.asset(
-                  'assets/bell.svg',
-                  color: Colors.white,
-                  height: 24.r,
-                  width: 24.r,
-                ),
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (context) => const NotificationPage(),
-                    ),
-                  );
-                })
+            // CupertinoButton(
+            //     child: SvgPicture.asset(
+            //       'assets/bell.svg',
+            //       color: Colors.white,
+            //       height: 24.r,
+            //       width: 24.r,
+            //     ),
+            //     onPressed: (){
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute<void>(
+            //           builder: (context) => const NotificationPage(),
+            //         ),
+            //       );
+            //     })
           ],
           title: Text(
             'Signal details',
@@ -128,7 +128,7 @@ class _SignalDetailsState extends State<SignalDetails> {
                   SizedBox(height: 32.h,),
                   Text('Your are always granted access to one FREE open signal', style: richTextRegular,),
                   SizedBox(height: 12.h,),
-                  brokerAd(false, Hive.box<AppUser>('appuser').values.first.brokerAdURL),
+                  brokerAd(true, Hive.box<AppUser>('appuser').values.first.brokerAdURL),
                   SizedBox(height: 32.h,),
                   SignalsWidget(widget.signal, widget.status, false),
                   SizedBox(height: 32.h,),

@@ -21,6 +21,7 @@ import 'package:hive/hive.dart';
 import 'package:crypto_signal_app/user.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'alert_service.dart';
 import 'constants.dart';
 
 void main() async {
@@ -28,6 +29,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await Hive.initFlutter();
+  Paint.enableDithering = true;
   final RemoteConfig remoteConfig = RemoteConfig.instance;
   await setUpRemoteConfig(remoteConfig);
   listOfID =
@@ -36,8 +38,13 @@ void main() async {
   signalsFromFirestore = remoteConfig.getString('signals');
   Hive.registerAdapter(AppUserAdapter());
   Hive.registerAdapter(UserPreferenceAdapter());
+  Hive.registerAdapter(AlertAdapter());
+  Hive.registerAdapter(SignalAdapter());
   await Hive.openBox<AppUser>('appuser');
   await Hive.openBox<UserPreference>('userpreference');
+  await Hive.openBox<List <Signal>>('signals');
+  // print(Hive.box<AppUser>('appuser').values.first.listOfAlertCryptos);
+
   runApp(MyApp());
 }
 
@@ -61,7 +68,7 @@ class MyApp extends StatelessWidget {
                       ? Onboarding()
                       : Consumer<AuthService>(
                           builder: (_, auth, __) =>
-                              auth.isSignedIn ? HomePage() : LoginPage(),
+                              auth.isSignedIn ? HomePage(0) : LoginPage(),
                         );
                 }),
                 debugShowCheckedModeBanner: false,

@@ -210,7 +210,7 @@ class _HowToUseAppPageState extends State<HowToUseAppPage> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute<void>(
-                              builder: (context) => HomePage(),
+                              builder: (context) => HomePage(0),
                             ),
                           );
 

@@ -1,6 +1,7 @@
 import 'package:crypto_signal_app/broker_ad_service.dart';
 import 'package:crypto_signal_app/home_page.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -13,6 +14,7 @@ import 'package:crypto_signal_app/pages/login_page/login_page_text_forms.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import '../../alert_service.dart';
 import '../../auth_service.dart';
 import '../../user.dart';
 import 'package:http/http.dart' as http;
@@ -27,6 +29,7 @@ class CreateAccPage extends StatefulWidget {
 class _CreateAccPageState extends State<CreateAccPage>
     with AutomaticKeepAliveClientMixin {
   bool isLoading = false;
+  bool shouldBeShown = false;
   late String _password;
   late String _uid;
   late String _leadIP;
@@ -130,16 +133,33 @@ class _CreateAccPageState extends State<CreateAccPage>
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   setState(() {
-                                    if (isChecked == true)
+                                    if (isChecked == true){
                                       isChecked = false;
-                                    else
+                                      shouldBeShown = true;}
+                                    else{
                                       isChecked = true;
+                                      shouldBeShown = false;}
                                   });
                                 }),
                         ]),
                       ),
                     ],
                   ),
+                  if (shouldBeShown == true)
+                    Padding(
+                      padding:  EdgeInsets.only(left: 28.w),
+                      child: Container(
+                        height: 15.sp,
+                        child: Text(
+                          'Required',
+                          style: errorStyle,
+                        ),
+                      ),
+                    )
+                  else
+                    Container(
+                      height: 15.sp,
+                    )
                 ],
               ),
             ),
@@ -148,7 +168,7 @@ class _CreateAccPageState extends State<CreateAccPage>
               child: Column(
                 children: [
                   SizedBox(
-                    height: 34.h,
+                    height: 19.h,
                   ),
                   Container(
                     width: double.infinity,
@@ -233,30 +253,7 @@ class _CreateAccPageState extends State<CreateAccPage>
           await _authService
               .registerWithEmail(signUpList.elementAt(2), _password)
               .then((value) => _uid = value);
-        } catch (e) {}
-        AppUser user = AppUser(
-          firstName: signUpList.elementAt(0),
-          lastName: signUpList.elementAt(1),
-          email: signUpList.elementAt(2),
-          phoneNumber: signUpList.elementAt(3),
-          countryPhoneCode: choosedCountry.elementAt(1),
-          password: _password,
-          affiliateID: listOfID.values.elementAt(0).toString(),
-          offerID: listOfID.values.elementAt(1).toString(),
-          countryISO: choosedCountry.elementAt(0),
-          landDomain: 'domain.com',
-          uid: _uid,
-          leadIP: _leadIP,
-          dateTime: DateTime.now(),
-          listOfWatchedCryptos: <String>[],
-          brokerAdURL: '',
-        );
-        await _brokerAdService
-            .registerNewUser(user)
-            .then((value) => _brokerApiResponse = value);
-        print(_brokerApiResponse);
-        if (_brokerApiResponse != '') {
-          AppUser finalUser = AppUser(
+          AppUser user = AppUser(
             firstName: signUpList.elementAt(0),
             lastName: signUpList.elementAt(1),
             email: signUpList.elementAt(2),
@@ -271,18 +268,57 @@ class _CreateAccPageState extends State<CreateAccPage>
             leadIP: _leadIP,
             dateTime: DateTime.now(),
             listOfWatchedCryptos: <String>[],
-            brokerAdURL: _brokerApiResponse.toString(),
+            brokerAdURL: '',
+            listOfAlertCryptos: <Alert>[],
           );
-          addUser(finalUser);
-          await _authService.updateUserData(finalUser, _uid);
-          FirebaseAnalytics()
-              .logEvent(name: 'new_account_created', parameters: null);
+          await _brokerAdService
+              .registerNewUser(user)
+              .then((value) => _brokerApiResponse = value);
+          print(_brokerApiResponse);
+          if (_brokerApiResponse != '') {
+            AppUser finalUser = AppUser(
+              firstName: signUpList.elementAt(0),
+              lastName: signUpList.elementAt(1),
+              email: signUpList.elementAt(2),
+              phoneNumber: signUpList.elementAt(3),
+              countryPhoneCode: choosedCountry.elementAt(1),
+              password: _password,
+              affiliateID: listOfID.values.elementAt(0).toString(),
+              offerID: listOfID.values.elementAt(1).toString(),
+              countryISO: choosedCountry.elementAt(0),
+              landDomain: 'domain.com',
+              uid: _uid,
+              leadIP: _leadIP,
+              dateTime: DateTime.now(),
+              listOfWatchedCryptos: <String>[],
+              brokerAdURL: _brokerApiResponse.toString(),
+              listOfAlertCryptos: <Alert>[],
+            );
+            addUser(finalUser);
+            _authService.notifyListenersIfUserIsAdded();
+            await _authService.updateUserData(finalUser, _uid);
+            FirebaseAnalytics()
+                .logEvent(name: 'new_account_created', parameters: null);
+          }
+        } on FirebaseAuthException catch (e) {
+          print('Failed with error code: ${e.code}');
+          print(e.message);
+          correctCredentials = false;
+          _createAccPageFormKey.currentState!.validate();
+          setState(() {});
+        } catch (e, s) {
+          // FirebaseCrashlytics.instance.recordError(e, s);
+          rethrow;
         }
-        //email = email12345@legit.net
-        //password = Ban3scwSBC
+        //email = lastfirst@mail.ru
+        //password = zbS4VuI4x0
         signUpList.clear();
       }
-    } else {}
+    } else {
+      shouldBeShown = true;
+      setState(() {
+      });
+    }
   }
 
   @override

@@ -6,7 +6,11 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+
+import 'alert_service.dart';
+import 'constants.dart';
 
 class AuthService extends ChangeNotifier {
   bool get isSignedIn => _auth.currentUser != null;
@@ -26,11 +30,24 @@ class AuthService extends ChangeNotifier {
       notifyListeners();
       final UserCredential authResult = await _auth
           .createUserWithEmailAndPassword(email: email, password: pass);
-      notifyListeners();
       return authResult.user!.uid;
-    } catch (e, s) {
-      FirebaseCrashlytics.instance.recordError(e, s);
+    }
+    on FirebaseAuthException catch (e) {
+      isLoading = false;
+      notifyListeners();
+      // print('Failed with error code: ${e.code}');
+      // print(e.message);
       rethrow;
+    }
+    catch (e, s) {
+      // FirebaseCrashlytics.instance.recordError(e, s);
+      rethrow;
+    }
+  }
+
+  void notifyListenersIfUserIsAdded() {
+    if (isSignedIn) {
+      notifyListeners();
     }
   }
 
@@ -43,8 +60,16 @@ class AuthService extends ChangeNotifier {
       await getUserData(authResult.user!.uid);
       notifyListeners();
       return authResult.user!.uid;
-    } catch (e, s) {
-      FirebaseCrashlytics.instance.recordError(e, s);
+    }
+    on FirebaseAuthException catch (e) {
+      isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+    catch (e, s) {
+      isLoading = false;
+      notifyListeners();
+      // FirebaseCrashlytics.instance.recordError(e, s);
       rethrow;
     }
   }
@@ -63,7 +88,8 @@ class AuthService extends ChangeNotifier {
       'affiliate_ID': user.affiliateID,
       'offer_ID': user.offerID,
       'date_time': user.dateTime,
-      'watched_crypto': user.listOfWatchedCryptos,
+      // добавляет список watched крипт на фаерстор
+      // 'watched_crypto': user.listOfWatchedCryptos,
       'broker_ad_url': user.brokerAdURL
     });
   }
@@ -73,21 +99,24 @@ class AuthService extends ChangeNotifier {
     var object = snapshot.data();
     Map<String, dynamic> mapes = object as Map<String, dynamic>;
     AppUser appUsr = AppUser(
-        firstName: mapes["first_name"].toString(),
-        lastName: mapes["last_name"].toString(),
-        email: mapes["email"].toString(),
-        password: mapes["password"].toString(),
-        countryPhoneCode: mapes["country_phone_code"].toString(),
-        phoneNumber: mapes["phone_number"].toString(),
-        countryISO: mapes["country_ISO"].toString(),
-        leadIP: mapes["lead_IP"].toString(),
-        landDomain: mapes["land_domain"].toString(),
-        affiliateID: mapes["affiliate_ID"].toString(),
-        offerID: mapes["offer_ID"].toString(),
-        dateTime: mapes["date_time"].toDate() as DateTime,
-        uid: uid,
-        listOfWatchedCryptos: mapes["watched_crypto"] as List<String>,
-        brokerAdURL: mapes["broker_ad_url"].toString(),
+      firstName: mapes["first_name"].toString(),
+      lastName: mapes["last_name"].toString(),
+      email: mapes["email"].toString(),
+      password: mapes["password"].toString(),
+      countryPhoneCode: mapes["country_phone_code"].toString(),
+      phoneNumber: mapes["phone_number"].toString(),
+      countryISO: mapes["country_ISO"].toString(),
+      leadIP: mapes["lead_IP"].toString(),
+      landDomain: mapes["land_domain"].toString(),
+      affiliateID: mapes["affiliate_ID"].toString(),
+      offerID: mapes["offer_ID"].toString(),
+      dateTime: mapes["date_time"].toDate() as DateTime,
+      uid: uid,
+      //вытягивает список watched крипт с фаерстора, поскольку их теперь нет, записывает пустую строку
+      // listOfWatchedCryptos: mapes["watched_crypto"] as List<String>,
+      listOfWatchedCryptos: <String>[],
+      listOfAlertCryptos: <Alert>[],
+      brokerAdURL: mapes["broker_ad_url"].toString(),
     );
     addUser(appUsr);
     return appUsr;

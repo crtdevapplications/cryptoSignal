@@ -24,6 +24,7 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
   final TextEditingController _calculateGainTextController =
       TextEditingController();
   late String _dropdownValue;
+  late String _currentUserInvestment;
   late DateTime selectedDate;
   double unrealizedGains = 0;
   DateTime lastMonth = DateTime(
@@ -44,6 +45,7 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
         .reduce(
             (value, element) => value! + element!)!;}
     _calculateGainTextController.text = '1000';
+    _currentUserInvestment = _calculateGainTextController.text;
     _dropdownValue = 'Last month';
     if (_dropdownValue == 'Last month') {
       selectedDate = lastMonth;
@@ -60,9 +62,8 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
           .reduce((value, element) => value! + element!)!;
     }
   }
-
-  @override
-  void setState(VoidCallback fn) {
+  void calculateGainLogic(){
+    _currentUserInvestment = _calculateGainTextController.text;
     if (_dropdownValue == 'Last month') {
       selectedDate = lastMonth;
     } else if (_dropdownValue == '3 months') {
@@ -80,7 +81,6 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
     else{
       totalGainFromClosedSignals = 0;
     }
-    super.setState(fn);
   }
 
   @override
@@ -134,6 +134,8 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                               Container(
                                 width: 129.w,
                                 child: TextFormField(
+                                  onChanged: (value){},
+                                  onTap: (){},
                                   controller: _calculateGainTextController,
                                   keyboardType: TextInputType.number,
                                 ),
@@ -216,6 +218,7 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                               ),
                               padding: EdgeInsets.zero,
                               onPressed: () {
+                                calculateGainLogic();
                                 setState(() {});
                               }),
                           decoration: BoxDecoration(
@@ -254,8 +257,7 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                                       ((totalGainFromClosedSignals / 100) *
 
                                               double.parse(
-                                                  _calculateGainTextController
-                                                      .text))
+                                                  _currentUserInvestment))
                                           .toStringAsFixed(2) +
                                       '(' +
                                       totalGainFromClosedSignals
@@ -285,15 +287,13 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                                         text: 'Your total new balance')),
                                 Spacer(),
                                 Text(
-                                    totalGainFromClosedSignals == 0 ? _calculateGainTextController.text :
+                                    totalGainFromClosedSignals == 0 ? _currentUserInvestment :
                                   '\$' +
                                       ((totalGainFromClosedSignals / 100) *
                                                   double.parse(
-                                                      _calculateGainTextController
-                                                          .text) +
+                                                      _currentUserInvestment) +
                                               double.parse(
-                                                  _calculateGainTextController
-                                                      .text))
+                                                  _currentUserInvestment))
                                           .toStringAsFixed(2),
                                   style: textGainGreen,
                                 ),

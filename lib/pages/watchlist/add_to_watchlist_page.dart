@@ -141,11 +141,11 @@ class _AddToWatchlistPageState extends State<AddToWatchlistPage> {
                                       : 'assets/white_plus.svg'),
                               onPressed: () {
                                 if (Hive.box<AppUser>('appuser')
-                                            .values
-                                            .first
-                                            .listOfWatchedCryptos
-                                            .length <=
-                                        4) {
+                                        .values
+                                        .first
+                                        .listOfWatchedCryptos
+                                        .length <=
+                                    49) {
                                   if (Hive.box<AppUser>('appuser')
                                       .values
                                       .first
@@ -163,25 +163,24 @@ class _AddToWatchlistPageState extends State<AddToWatchlistPage> {
                                         .toUpperCase());
                                     setState(() {});
                                   }
-                                }
-                                else if(Hive.box<AppUser>('appuser')
-                                    .values
-                                    .first
-                                    .listOfWatchedCryptos
-                                    .length >=
-                                    4 && Hive.box<AppUser>('appuser')
-                                    .values
-                                    .first
-                                    .listOfWatchedCryptos
-                                    .contains(searchList.keys
-                                    .elementAt(index)
-                                    .toUpperCase())){
+                                } else if (Hive.box<AppUser>('appuser')
+                                            .values
+                                            .first
+                                            .listOfWatchedCryptos
+                                            .length >=
+                                        49 &&
+                                    Hive.box<AppUser>('appuser')
+                                        .values
+                                        .first
+                                        .listOfWatchedCryptos
+                                        .contains(searchList.keys
+                                            .elementAt(index)
+                                            .toUpperCase())) {
                                   deleteWatchedCrypto(searchList.keys
                                       .elementAt(index)
                                       .toUpperCase());
                                   setState(() {});
-                                }
-                                else{
+                                } else {
                                   print('Too many cryptos for u');
                                   setState(() {});
                                 }

@@ -1,3 +1,4 @@
+import 'package:crypto_signal_app/alert_service.dart';
 import 'package:hive/hive.dart';
 import 'dart:io';
 import 'package:crypto_signal_app/auth_service.dart';
@@ -21,7 +22,8 @@ class AppUser extends HiveObject {
     required this.dateTime,
     required this.uid,
     required this.listOfWatchedCryptos,
-    required this.brokerAdURL
+    required this.brokerAdURL,
+    required this.listOfAlertCryptos
   });
 
   @HiveField(0)
@@ -54,6 +56,8 @@ class AppUser extends HiveObject {
   List<String> listOfWatchedCryptos = <String>[];
   @HiveField(14)
   String brokerAdURL;
+  @HiveField(15)
+  List<Alert> listOfAlertCryptos = <Alert>[];
 }
 
 void addUser(AppUser user) {
@@ -84,9 +88,11 @@ void updateWatchedCrypto(String crypto) async {
       uid: userBox.getAt(0)!.uid,
       listOfWatchedCryptos: currentlyWatchedCryptos,
       brokerAdURL: userBox.getAt(0)!.brokerAdURL,
+      listOfAlertCryptos: userBox.getAt(0)!.listOfAlertCryptos
   );
   userBox.put(0, updatedUser);
-  await _authService.updateUserData(updatedUser, userBox.getAt(0)!.uid);
+  // Обновляет (добавляет в этой функции) данные о watched криптах на фаерстор
+  // await _authService.updateUserData(updatedUser, userBox.getAt(0)!.uid);
 }
 void deleteWatchedCrypto(String crypto) async {
   final Box<AppUser> userBox = Hive.box<AppUser>('appuser');
@@ -108,7 +114,63 @@ void deleteWatchedCrypto(String crypto) async {
       uid: userBox.getAt(0)!.uid,
       listOfWatchedCryptos: currentlyWatchedCryptos,
       brokerAdURL: userBox.getAt(0)!.brokerAdURL,
+      listOfAlertCryptos: userBox.getAt(0)!.listOfAlertCryptos
   );
   userBox.put(0, updatedUser);
-  await _authService.updateUserData(updatedUser, userBox.getAt(0)!.uid);
+  // Обновляет (удаляет в этой функции) данные о watched криптах на фаерстор
+  // await _authService.updateUserData(updatedUser, userBox.getAt(0)!.uid);
+}
+void updateAlertCrypto(Alert alert) async {
+  final Box<AppUser> userBox = Hive.box<AppUser>('appuser');
+  List<Alert> currentlyAlertCryptos = [alert];
+  if(userBox.getAt(0)!.listOfAlertCryptos.isNotEmpty){
+    currentlyAlertCryptos.addAll(userBox.getAt(0)!.listOfAlertCryptos);
+  }
+  AppUser updatedUser = AppUser(
+      firstName: userBox.getAt(0)!.firstName,
+      lastName: userBox.getAt(0)!.lastName,
+      email: userBox.getAt(0)!.email,
+      password: userBox.getAt(0)!.password,
+      countryPhoneCode: userBox.getAt(0)!.countryPhoneCode,
+      phoneNumber: userBox.getAt(0)!.phoneNumber,
+      countryISO: userBox.getAt(0)!.countryISO,
+      leadIP: userBox.getAt(0)!.leadIP,
+      landDomain: userBox.getAt(0)!.landDomain,
+      affiliateID: userBox.getAt(0)!.affiliateID,
+      offerID: userBox.getAt(0)!.offerID,
+      dateTime: userBox.getAt(0)!.dateTime,
+      uid: userBox.getAt(0)!.uid,
+      listOfWatchedCryptos: userBox.getAt(0)!.listOfWatchedCryptos,
+      brokerAdURL: userBox.getAt(0)!.brokerAdURL,
+      listOfAlertCryptos: currentlyAlertCryptos
+  );
+  userBox.put(0, updatedUser);
+  // Обновляет (добавляет в этой функции) данные о watched криптах на фаерстор
+  // await _authService.updateUserData(updatedUser, userBox.getAt(0)!.uid);
+}
+void deleteAlertCrypto(Alert alert) async {
+  final Box<AppUser> userBox = Hive.box<AppUser>('appuser');
+  userBox.getAt(0)!.listOfAlertCryptos.removeWhere((element) => element == alert);
+  List<Alert>currentlyAlertCryptos = userBox.getAt(0)!.listOfAlertCryptos;
+  AppUser updatedUser = AppUser(
+      firstName: userBox.getAt(0)!.firstName,
+      lastName: userBox.getAt(0)!.lastName,
+      email: userBox.getAt(0)!.email,
+      password: userBox.getAt(0)!.password,
+      countryPhoneCode: userBox.getAt(0)!.countryPhoneCode,
+      phoneNumber: userBox.getAt(0)!.phoneNumber,
+      countryISO: userBox.getAt(0)!.countryISO,
+      leadIP: userBox.getAt(0)!.leadIP,
+      landDomain: userBox.getAt(0)!.landDomain,
+      affiliateID: userBox.getAt(0)!.affiliateID,
+      offerID: userBox.getAt(0)!.offerID,
+      dateTime: userBox.getAt(0)!.dateTime,
+      uid: userBox.getAt(0)!.uid,
+      listOfWatchedCryptos: userBox.getAt(0)!.listOfWatchedCryptos,
+      brokerAdURL: userBox.getAt(0)!.brokerAdURL,
+      listOfAlertCryptos: currentlyAlertCryptos
+  );
+  userBox.put(0, updatedUser);
+  // Обновляет (удаляет в этой функции) данные о watched криптах на фаерстор
+  // await _authService.updateUserData(updatedUser, userBox.getAt(0)!.uid);
 }

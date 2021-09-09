@@ -12,7 +12,7 @@ class UserPreference extends HiveObject {
   bool sawOnboarding;
 }
 
-void addPreference(UserPreference preference) {
+void addPreference(UserPreference preference)  {
   final Box<UserPreference> preferenceBox = Hive.box<UserPreference>('userpreference');
-  preferenceBox.put(0, preference);
+ preferenceBox.put(0, preference);
 }
