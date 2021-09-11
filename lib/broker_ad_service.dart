@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:crypto_signal_app/auth_service.dart';
 import 'package:crypto_signal_app/constants.dart';
 import 'package:crypto_signal_app/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +11,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 class BrokerAdService {
-  Future<String?> registerNewUser(AppUser appUser) async {
+  Future<String?> registerNewUser(AppUser appUser, AuthService authService) async {
+    authService.switchIsLoading(true);
     try {
       var response = await http.post(
         Uri.parse(apiBrokerUrl),
@@ -44,7 +46,8 @@ class BrokerAdService {
             print('2Status code ' + response.statusCode.toString());
             print('2Response body ' + response.body);
             print('2Headers ' + response.headers.toString());
-            return null;
+            authService.switchIsLoading(false);
+            return 'wrong';
           }
         }
       }
@@ -52,6 +55,7 @@ class BrokerAdService {
         print('Status code ' + response.statusCode.toString());
         print('Response body ' + response.body);
         print('Headers ' + response.headers.toString());
+        correctCredentials = false;
         return null;
       }
     } catch (e) {

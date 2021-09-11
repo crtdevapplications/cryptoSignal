@@ -47,7 +47,6 @@ class _SignalsPageState extends State<SignalsPage>
     currentTime = DateTime
         .now()
         .hour;
-    getSignals();
     _tabController = TabController(
       vsync: this,
       length: 2,
@@ -87,6 +86,7 @@ class _SignalsPageState extends State<SignalsPage>
                 ]),
               ),
             ),
+
             SizedBox(
               height: 20.h,
             ),

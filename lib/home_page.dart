@@ -1,3 +1,4 @@
+import 'package:crypto_signal_app/pages/signals/signal_service.dart';
 import 'package:crypto_signal_app/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class _HomePageState extends State<HomePage> {
     const SettingsPage()];
   @override
   void initState()  {
+    getSignals();
     _selectedIndex = widget.startingIndex;
     super.initState();
   }

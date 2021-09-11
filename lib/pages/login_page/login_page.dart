@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     AuthService _authService = Provider.of<AuthService>(context);
-    return Consumer<AuthService>(builder: (_, auth, __) {
+    return Consumer <AuthService>(builder: (_, auth, __) {
       return Stack(
         children: [
           LoginPageTabBar(),

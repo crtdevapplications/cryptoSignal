@@ -25,6 +25,7 @@ class TermsAndConditionsPage extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: SingleChildScrollView(
+              physics: ClampingScrollPhysics(),
               child: Padding(
                 padding: EdgeInsets.only(bottom: 16.w, top: 2.h),
                 child: RichText(

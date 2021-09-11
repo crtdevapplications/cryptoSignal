@@ -30,7 +30,10 @@ class AuthService extends ChangeNotifier {
       notifyListeners();
       final UserCredential authResult = await _auth
           .createUserWithEmailAndPassword(email: email, password: pass);
+      isLoading = false;
+      notifyListeners();
       return authResult.user!.uid;
+
     }
     on FirebaseAuthException catch (e) {
       isLoading = false;
@@ -41,6 +44,8 @@ class AuthService extends ChangeNotifier {
     }
     catch (e, s) {
       // FirebaseCrashlytics.instance.recordError(e, s);
+      isLoading = false;
+      notifyListeners();
       rethrow;
     }
   }
@@ -49,6 +54,10 @@ class AuthService extends ChangeNotifier {
     if (isSignedIn) {
       notifyListeners();
     }
+  }
+  void switchIsLoading(bool newValue) {
+      isLoading = newValue;
+      notifyListeners();
   }
 
   Future<String> signInWithEmail(String email, String pass) async {
@@ -140,24 +149,29 @@ Future<String?> getIP() async {
   }
 }
 
-String generatePassword({
-  bool letter = true,
-  bool isNumber = true,
-  bool isSpecial = false,
-}) {
-  const int length = 10;
-  const String letterLowerCase = 'abcdefghijklmnopqrstuvwxyz';
-  const String letterUpperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const String number = '0123456789';
-  const String special = '@#%^*>\$@?/[]=+';
+String generatePassword(bool _isWithLetters, bool _isWithUppercase,
+    bool _isWithNumbers, bool _isWithSpecial, double _numberCharPassword) {
 
-  String chars = '';
-  if (letter) chars += '$letterLowerCase$letterUpperCase';
-  if (isNumber) chars += number;
-  if (isSpecial) chars += special;
+  String _lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz';
+  String _upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  String _numbers = '0123456789';
+  String _special = '@#=+!£\$%&?[](){}';
 
-  return List.generate(length, (int index) {
-    final int indexRandom = Random.secure().nextInt(chars.length);
-    return chars[indexRandom];
-  }).join('');
+  String _allowedChars = '';
+  _allowedChars += _isWithLetters ? _lowerCaseLetters : '';
+  _allowedChars += _isWithUppercase ? _upperCaseLetters : '';
+  _allowedChars += _isWithNumbers ? _numbers : '';
+  _allowedChars += _isWithSpecial ? _special : '';
+
+  int i = 0;
+  String _result = '';
+  while (i < _numberCharPassword.round()) {
+    int randomInt = Random.secure().nextInt(_allowedChars.length);
+    _result += _allowedChars[randomInt];
+    i++;
+  }
+  _result += _numbers[Random().nextInt(_numbers.length)];
+  _result += _upperCaseLetters[Random().nextInt(_upperCaseLetters.length)];
+  _result += _lowerCaseLetters[Random().nextInt(_lowerCaseLetters.length)];
+  return _result;
 }

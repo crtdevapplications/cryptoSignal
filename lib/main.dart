@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
         designSize: const Size(375, 672),
-        builder: () => ChangeNotifierProvider<AuthService>(
+        builder: () => ChangeNotifierProvider <AuthService>(
               create: (_) => AuthService(),
               child: CupertinoApp(
                 title: 'Crypto Signal App',

@@ -68,6 +68,7 @@ class _SignInPageState extends State<SignInPage>
                   ),
                   padding: EdgeInsets.zero,
                   onPressed: () async {
+                    FocusScope.of(context).unfocus();
                     if (!_signInPageFormKey.currentState!.validate()) {
                       return;
                     } else {

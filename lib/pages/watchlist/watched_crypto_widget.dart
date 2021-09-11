@@ -42,7 +42,7 @@ class WatchedCryptoWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text('\$'+cryptoApi.currentPrice.toString(), style: textButtonStyle,),
-              Text(cryptoApi.percentChange+'%', style: cryptoApi.gain == true ? textGainGreen : textGainRed,),
+              Text(cryptoApi.percentChange != 'null' ? cryptoApi.percentChange+'%': '0%', style: cryptoApi.gain == true ? textGainGreen : textGainRed,),
             ],
           )
         ],

@@ -130,8 +130,13 @@ class _SignalDetailsState extends State<SignalDetails> {
                   SizedBox(height: 12.h,),
                   brokerAd(true, Hive.box<AppUser>('appuser').values.first.brokerAdURL),
                   SizedBox(height: 32.h,),
-                  SignalsWidget(widget.signal, widget.status, false),
-                  SizedBox(height: 32.h,),
+                  widget.status.toLowerCase() == 'open' ?  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SignalsWidget(widget.signal, widget.status, false),
+                      SizedBox(height: 32.h,),
+                    ],
+                  ) : Container(),
                 ],
               ),
             ),

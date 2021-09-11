@@ -120,9 +120,12 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                                   SizedBox(
                                     height: 60.h,
                                   ),
-                                  Center(
-                                      child: Image.asset(
-                                          'assets/onboarding/onboarding1.png')),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 21.w),
+                                    child: Center(
+                                        child: Image.asset(
+                                            'assets/onboarding/onboarding1.png')),
+                                  ),
                                 ],
                               ),
                             ),

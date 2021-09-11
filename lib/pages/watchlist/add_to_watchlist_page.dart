@@ -96,96 +96,101 @@ class _AddToWatchlistPageState extends State<AddToWatchlistPage> {
                 padding: EdgeInsets.only(top: 20.h),
                 itemCount: searchList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: EdgeInsets.fromLTRB(16.w, 0.h, 16.w, 12.h),
-                    child: Container(
-                      height: 80.h,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: cardBackground,
-                        borderRadius: BorderRadius.circular(16.w),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 16.w, right: 12.w),
-                            child: SvgPicture.asset(
-                              'assets/cryptoicons/' +
-                                  searchList.keys
-                                      .elementAt(index)
-                                      .toLowerCase() +
-                                  '.svg',
-                              width: 48.r,
-                              height: 48.r,
-                            ),
-                          ),
-                          Text(
-                            searchList.values.elementAt(index),
-                            style: textStyleWhite,
-                          ),
-                          Spacer(),
-                          CupertinoButton(
+                  return CupertinoButton(
+                    padding: EdgeInsets.zero,
+                      onPressed: () {
+                        if (Hive.box<AppUser>('appuser')
+                            .values
+                            .first
+                            .listOfWatchedCryptos
+                            .length <=
+                            49) {
+                          if (Hive.box<AppUser>('appuser')
+                              .values
+                              .first
+                              .listOfWatchedCryptos
+                              .contains(searchList.keys
+                              .elementAt(index)
+                              .toUpperCase())) {
+                            deleteWatchedCrypto(searchList.keys
+                                .elementAt(index)
+                                .toUpperCase());
+                            setState(() {});
+                          } else {
+                            updateWatchedCrypto(searchList.keys
+                                .elementAt(index)
+                                .toUpperCase());
+                            setState(() {});
+                          }
+                        } else if (Hive.box<AppUser>('appuser')
+                            .values
+                            .first
+                            .listOfWatchedCryptos
+                            .length >=
+                            49 &&
+                            Hive.box<AppUser>('appuser')
+                                .values
+                                .first
+                                .listOfWatchedCryptos
+                                .contains(searchList.keys
+                                .elementAt(index)
+                                .toUpperCase())) {
+                          deleteWatchedCrypto(searchList.keys
+                              .elementAt(index)
+                              .toUpperCase());
+                          setState(() {});
+                        } else {
+                          print('Too many cryptos for u');
+                          setState(() {});
+                        }
+                      },
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(16.w, 0.h, 16.w, 12.h),
+                      child: Container(
+                        height: 80.h,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: cardBackground,
+                          borderRadius: BorderRadius.circular(16.w),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 16.w, right: 12.w),
                               child: SvgPicture.asset(
-                                  Hive.box<AppUser>('appuser')
-                                              .values
-                                              .first
-                                              .listOfWatchedCryptos
-                                              .contains(searchList.keys
-                                                  .elementAt(index)
-                                                  .toUpperCase()) ==
-                                          true
-                                      ? 'assets/greencheckmark.svg'
-                                      : 'assets/white_plus.svg'),
-                              onPressed: () {
-                                if (Hive.box<AppUser>('appuser')
-                                        .values
-                                        .first
-                                        .listOfWatchedCryptos
-                                        .length <=
-                                    49) {
-                                  if (Hive.box<AppUser>('appuser')
-                                      .values
-                                      .first
-                                      .listOfWatchedCryptos
-                                      .contains(searchList.keys
-                                          .elementAt(index)
-                                          .toUpperCase())) {
-                                    deleteWatchedCrypto(searchList.keys
+                                'assets/cryptoicons/' +
+                                    searchList.keys
                                         .elementAt(index)
-                                        .toUpperCase());
-                                    setState(() {});
-                                  } else {
-                                    updateWatchedCrypto(searchList.keys
-                                        .elementAt(index)
-                                        .toUpperCase());
-                                    setState(() {});
-                                  }
-                                } else if (Hive.box<AppUser>('appuser')
-                                            .values
-                                            .first
-                                            .listOfWatchedCryptos
-                                            .length >=
-                                        49 &&
-                                    Hive.box<AppUser>('appuser')
-                                        .values
-                                        .first
-                                        .listOfWatchedCryptos
-                                        .contains(searchList.keys
-                                            .elementAt(index)
-                                            .toUpperCase())) {
-                                  deleteWatchedCrypto(searchList.keys
-                                      .elementAt(index)
-                                      .toUpperCase());
-                                  setState(() {});
-                                } else {
-                                  print('Too many cryptos for u');
-                                  setState(() {});
-                                }
-                              })
-                        ],
+                                        .toLowerCase() +
+                                    '.svg',
+                                width: 48.r,
+                                height: 48.r,
+                              ),
+                            ),
+                            Text(
+                              searchList.values.elementAt(index),
+                              style: textStyleWhite,
+                            ),
+                            Spacer(),
+                            Container(
+                              padding: EdgeInsets.only(right: 26.w),
+                              child: SvgPicture.asset(
+                                      Hive.box<AppUser>('appuser')
+                                                  .values
+                                                  .first
+                                                  .listOfWatchedCryptos
+                                                  .contains(searchList.keys
+                                                      .elementAt(index)
+                                                      .toUpperCase()) ==
+                                              true
+                                          ? 'assets/greencheckmark.svg'
+                                          : 'assets/white_plus.svg'),
+                                  ),
+                          ],
+                        ),
                       ),
                     ),
                   );

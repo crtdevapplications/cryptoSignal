@@ -27,10 +27,11 @@ class _buildFirstNameState extends State<buildFirstName> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      cursorHeight: 22.sp,
+      // cursorHeight: 22.sp,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       // scrollPadding: EdgeInsets.only(bottom: 200),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
+        contentPadding: EdgeInsets.fromLTRB(21.r, 21.r,21.r,21.r,),
         hintText: 'First Name',
       ),
       validator: (String? value) {
@@ -57,10 +58,11 @@ class _buildLastNameState extends State<buildLastName> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      cursorHeight: 22.sp,
+      // cursorHeight: 22.sp,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         hintText: 'Last Name',
-        contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
+        contentPadding: EdgeInsets.fromLTRB(21.r, 21.r,21.r,21.r,),
       ),
       validator: (String? value) {
         if (value == null || value.isEmpty) {
@@ -86,10 +88,11 @@ class _buildEmailState extends State<buildEmail> {
   @override
   Widget build(BuildContext context) {
     return  TextFormField(
-      cursorHeight: 22.sp,
+      // cursorHeight: 22.sp,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         hintText: 'Email',
-        contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
+        contentPadding: EdgeInsets.fromLTRB(21.r, 21.r,21.r,21.r,),
       ),
       onChanged: (value){
         correctCredentials = true;
@@ -100,7 +103,7 @@ class _buildEmailState extends State<buildEmail> {
           return 'Email is Required';
         }
         if (correctCredentials == false){
-          return 'Incorrect credentials';
+          return 'Email already in use';
         }
         if (!emailRegExp.hasMatch(value)) {
           return 'Please enter a valid email Address';
@@ -146,7 +149,8 @@ class _buildPhoneNumberState extends State<buildPhoneNumber> {
   Widget build(BuildContext context) {
     return TextFormField(
       onTap: (){},
-      cursorHeight: 22.sp,
+      // cursorHeight: 22.sp,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       onChanged: (value) async {
         bool? isValid =  await PhoneNumberUtil.isValidPhoneNumber(phoneNumber: value, isoCode: choosedCountry.elementAt(0));
         textFieldValue = value;
@@ -155,20 +159,26 @@ class _buildPhoneNumberState extends State<buildPhoneNumber> {
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
         prefixIcon:   CupertinoButton(
-          padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 15.w),
+          padding: EdgeInsets.symmetric( horizontal: 15.w),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/flags/' + choosedCountry.elementAt(0).toLowerCase() + '.png',
-                width: 20.r,
-                height: 20.r,
-              ),
-              Align(child: SvgPicture.asset('assets/dropdown.svg')),
               Padding(
-                padding:  EdgeInsets.only(top: 1.h),
+                padding:  EdgeInsets.only(bottom: 4.h),
+                child: Row(
+                  children: [
+                    Image.asset(
+                      'assets/flags/' + choosedCountry.elementAt(0).toLowerCase() + '.png',
+                      width: 20.r,
+                    ),
+                    SvgPicture.asset('assets/dropdown.svg'),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 2.h),
                 child: Text(choosedCountry.elementAt(1).toLowerCase(), style: textButtonStyle,),
               )
             ],
@@ -187,8 +197,7 @@ class _buildPhoneNumberState extends State<buildPhoneNumber> {
           minHeight: 20.r,
         ),
         hintText: 'Phone',
-        contentPadding:
-            EdgeInsets.fromLTRB(18.w, 18.h, 18.w, 18.h),
+        contentPadding: EdgeInsets.fromLTRB(21.r, 21.r,21.r,21.r,),
       ),
       validator: (String? value) {
         // bool isValid = PhoneNumber.parse(choosedCountry.elementAt(1)+value!).isValid;
@@ -218,13 +227,14 @@ class _buildLoginState extends State<buildLogin> {
   @override
   Widget build(BuildContext context) {
     return  TextFormField(
-      cursorHeight: 22.sp,
+      // cursorHeight: 22.sp,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       onChanged: (value){
         correctCredentials = true;
       },
       decoration: InputDecoration(
         hintText: 'Login',
-        contentPadding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
+        contentPadding: EdgeInsets.fromLTRB(21.r, 21.r,21.r,21.r,),
       ),
       validator: (String? value) {
         if (value == null || value.isEmpty) {
@@ -261,7 +271,8 @@ class _buildPasswordState extends State<buildPassword> {
       child: Stack(
         children: [
           TextFormField(
-            cursorHeight: 22.sp,
+            // cursorHeight: 22.sp,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             onSaved: (String? value) {
               loginList.add(value.toString());
             },
@@ -270,8 +281,7 @@ class _buildPasswordState extends State<buildPassword> {
             decoration: InputDecoration(
               hintStyle: textFieldStyle,
               hintText: 'Password',
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
+              contentPadding: EdgeInsets.fromLTRB(21.r, 21.r,21.r,21.r,),
             ),
             onChanged: (value){
               correctCredentials = true;

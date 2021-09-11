@@ -28,7 +28,7 @@ class CreateAccPage extends StatefulWidget {
 
 class _CreateAccPageState extends State<CreateAccPage>
     with AutomaticKeepAliveClientMixin {
-  bool isLoading = false;
+  // bool isLoading = false;
   bool shouldBeShown = false;
   late String _password;
   late String _uid;
@@ -44,11 +44,11 @@ class _CreateAccPageState extends State<CreateAccPage>
     buildEmail(),
     buildPhoneNumber(),
   ];
-  bool isChecked = false;
-
+  bool isChecked = true;
   @override
   void initState() {
-    _password = generatePassword();
+    _password = generatePassword(true, true, true, false, 9);
+    print(_password);
     ipResponseFuture = getIP();
     _brokerAdService = BrokerAdService();
     super.initState();
@@ -121,7 +121,7 @@ class _CreateAccPageState extends State<CreateAccPage>
                               MaterialTapTargetSize.shrinkWrap,
                           onChanged: (bool? value) {
                             setState(() {
-                              isChecked = value!;
+                              // isChecked = value!;
                             });
                           }),
                       RichText(
@@ -132,14 +132,14 @@ class _CreateAccPageState extends State<CreateAccPage>
                               style: textShadedStyle,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  setState(() {
-                                    if (isChecked == true){
-                                      isChecked = false;
-                                      shouldBeShown = true;}
-                                    else{
-                                      isChecked = true;
-                                      shouldBeShown = false;}
-                                  });
+                                  // setState(() {
+                                  //   if (isChecked == true){
+                                  //     isChecked = false;
+                                  //     shouldBeShown = true;}
+                                  //   else{
+                                  //     isChecked = true;
+                                  //     shouldBeShown = false;}
+                                  // });
                                 }),
                         ]),
                       ),
@@ -147,7 +147,7 @@ class _CreateAccPageState extends State<CreateAccPage>
                   ),
                   if (shouldBeShown == true)
                     Padding(
-                      padding:  EdgeInsets.only(left: 28.w),
+                      padding: EdgeInsets.only(left: 28.w),
                       child: Container(
                         height: 15.sp,
                         child: Text(
@@ -240,19 +240,17 @@ class _CreateAccPageState extends State<CreateAccPage>
   }
 
   void createAccPageActions(bool isChecked) async {
+    FocusScope.of(context).unfocus();
     if (isChecked == true) {
       if (!_createAccPageFormKey.currentState!.validate()) {
         return;
       } else {
         setState(() {
-          isLoading = true;
+          // isLoading = true;
         });
         _createAccPageFormKey.currentState!.save();
         _leadIP = (await ipResponseFuture)!;
         try {
-          await _authService
-              .registerWithEmail(signUpList.elementAt(2), _password)
-              .then((value) => _uid = value);
           AppUser user = AppUser(
             firstName: signUpList.elementAt(0),
             lastName: signUpList.elementAt(1),
@@ -264,7 +262,7 @@ class _CreateAccPageState extends State<CreateAccPage>
             offerID: listOfID.values.elementAt(1).toString(),
             countryISO: choosedCountry.elementAt(0),
             landDomain: 'domain.com',
-            uid: _uid,
+            uid: '',
             leadIP: _leadIP,
             dateTime: DateTime.now(),
             listOfWatchedCryptos: <String>[],
@@ -272,10 +270,13 @@ class _CreateAccPageState extends State<CreateAccPage>
             listOfAlertCryptos: <Alert>[],
           );
           await _brokerAdService
-              .registerNewUser(user)
+              .registerNewUser(user, _authService)
               .then((value) => _brokerApiResponse = value);
           print(_brokerApiResponse);
-          if (_brokerApiResponse != '') {
+          if (_brokerApiResponse != 'wrong') {
+            await _authService
+                .registerWithEmail(signUpList.elementAt(2), _password)
+                .then((value) => _uid = value);
             AppUser finalUser = AppUser(
               firstName: signUpList.elementAt(0),
               lastName: signUpList.elementAt(1),
@@ -300,6 +301,11 @@ class _CreateAccPageState extends State<CreateAccPage>
             FirebaseAnalytics()
                 .logEvent(name: 'new_account_created', parameters: null);
           }
+          else{
+            correctCredentials = false;
+            _createAccPageFormKey.currentState!.validate();
+            setState(() {});
+          }
         } on FirebaseAuthException catch (e) {
           print('Failed with error code: ${e.code}');
           print(e.message);
@@ -316,8 +322,7 @@ class _CreateAccPageState extends State<CreateAccPage>
       }
     } else {
       shouldBeShown = true;
-      setState(() {
-      });
+      setState(() {});
     }
   }
 

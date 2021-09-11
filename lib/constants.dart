@@ -531,6 +531,7 @@ TextStyle textButtonStyle = TextStyle(
     color: textDefault,
     fontSize: 14.sp,
     fontFamily: 'DMSans',
+    height: 1,
     fontWeight: FontWeight.w500);
 TextStyle textGainGreen = TextStyle(
     color: textGreen,
@@ -549,6 +550,7 @@ TextStyle textShadedStyle = TextStyle(
     fontWeight: FontWeight.w500);
 TextStyle textFieldStyle = TextStyle(
   color: textPlaceholder,
+  height: 1,
   fontSize: 14.sp,
   fontFamily: 'DMSans',
   fontWeight: FontWeight.w500,
@@ -575,6 +577,7 @@ TextStyle textStyleWhite = TextStyle(
   fontSize: 16.sp,
   fontWeight: FontWeight.w500,
   fontFamily: 'DMSans',
+  height: 1,
   color: textDefault,
 );
 TextStyle textStyleSuperWhite = TextStyle(
@@ -593,7 +596,6 @@ ThemeData textFieldThemeData = ThemeData(
   ),
   inputDecorationTheme: InputDecorationTheme(
     fillColor: toggleButtonBorderColor,
-
     errorStyle: errorStyle,
     filled: true,
     disabledBorder: OutlineInputBorder(
