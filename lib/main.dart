@@ -43,7 +43,7 @@ void main() async {
   await Hive.openBox<AppUser>('appuser');
   await Hive.openBox<UserPreference>('userpreference');
   await Hive.openBox<List <Signal>>('signals');
-  // print(Hive.box<AppUser>('appuser').values.first.listOfAlertCryptos);
+  // print(Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos);
 
   runApp(MyApp());
 }

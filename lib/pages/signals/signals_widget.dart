@@ -415,7 +415,7 @@ class RightArrowPainter extends CustomPainter {
     var paint = Paint();
     var path = Path();
     paint.style = PaintingStyle.stroke;
-    paint.strokeWidth = 1;
+    paint.strokeWidth = 2;
     paint.color = Color.fromRGBO(0, 255, 41, 1);
     path.moveTo(0, 0);
     path.lineTo((size.width) + 8, 0);
@@ -438,7 +438,7 @@ class LeftArrowPainter extends CustomPainter {
     var paint = Paint();
     var path = Path();
     paint.style = PaintingStyle.stroke;
-    paint.strokeWidth = 1;
+    paint.strokeWidth = 2;
     paint.color = Color.fromRGBO(255, 91, 91, 1);
     path.moveTo(0, 0);
     path.lineTo(-((size.width) - 8), 0);
