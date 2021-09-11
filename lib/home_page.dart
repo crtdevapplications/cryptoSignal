@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState()  {
     getSignals();
+    // print(listOfFilteredOpenSignals.first.name);
     _selectedIndex = widget.startingIndex;
     super.initState();
   }

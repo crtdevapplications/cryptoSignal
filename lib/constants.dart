@@ -13,7 +13,7 @@ Map<String, dynamic> listOfID = <String, dynamic>{};
 String apiKey = '176b4f97-f632-4b38-86c4-8b492a307494';
 String apiCryptoUrl = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=';
 String apiCryptoUrl1 = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=';
-String apiCryptoUrlSuffix = '&order=market_cap_desc&per_page=100&page=1&sparkline=false';
+String apiCryptoUrlSuffix = '&order=market_cap_desc&per_page=250&page=1&sparkline=false';
 String apiBrokerUrl = '';
 
 Map<String, String> listOfCryptos = {

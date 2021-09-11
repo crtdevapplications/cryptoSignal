@@ -14,21 +14,24 @@ class BrokerAdService {
   Future<String?> registerNewUser(AppUser appUser, AuthService authService) async {
     authService.switchIsLoading(true);
     try {
+      Map<String, dynamic> body = <String, dynamic>{
+        'first_name': appUser.firstName,
+        'last_name': appUser.lastName,
+        'email': appUser.email,
+        'password': appUser.password,
+        'phonecc': appUser.countryPhoneCode,
+        'phone': appUser.phoneNumber,
+        'country': appUser.countryISO,
+        'user_ip': appUser.leadIP,
+        'aff_sub3': 'domain.com',
+        'aff_id': appUser.affiliateID,
+        'offer_id': appUser.offerID,
+      };
+      String jsonBody = json.encode(body);
       var response = await http.post(
         Uri.parse(apiBrokerUrl),
-        body: {
-          'first_name': appUser.firstName,
-          'last_name': appUser.lastName,
-          'email': appUser.email,
-          'password': appUser.password,
-          'phonecc': appUser.countryPhoneCode,
-          'phone': appUser.phoneNumber,
-          'country': appUser.countryISO,
-          'user_ip': appUser.leadIP,
-          'aff_sub3': 'domain.com',
-          'aff_id': appUser.affiliateID,
-          'offer_id': appUser.offerID,
-        },
+        body: jsonBody,
+        encoding: Encoding.getByName('utf-8'),
         headers: <String, String>{
           'Accept': 'application/json',
         },

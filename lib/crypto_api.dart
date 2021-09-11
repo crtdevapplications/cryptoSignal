@@ -98,3 +98,30 @@ Future<List<CryptoApi>> getCryptosFromApiNew(List<String> list) async {
     rethrow;
   }
 }
+Future<List<CryptoApi>> getASingleCrypto(String crypto) async {
+
+  try {
+    http.Response response = await http
+        .get(Uri.parse(apiCryptoUrl1 + crypto + apiCryptoUrlSuffix), headers: <String, String>{
+      'Accept': 'application/json',
+    });
+    if (response.statusCode == 200) {
+      var cryptosData = jsonDecode(response.body) as List<dynamic>;
+      List<CryptoApi> listOfCryptos = [];
+      (cryptosData).forEach((dynamic item) {
+        var record = CryptoApi(
+            symbol: item['symbol'].toString(),
+            currentPrice: double.parse(item['current_price'].toString()),
+            gain: item['price_change_percentage_24h'].toString().contains('-') ? false : true,
+            percentChange: item['price_change_percentage_24h'].toString());
+        listOfCryptos.add(record);
+      });
+      return listOfCryptos;
+    } else {
+      throw Exception('Server returned non 200 response');
+    }
+  } catch (e, s) {
+    FirebaseCrashlytics.instance.recordError(e, s);
+    rethrow;
+  }
+}

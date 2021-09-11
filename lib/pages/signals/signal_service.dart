@@ -93,7 +93,6 @@ void getSignals() {
   addSignals(listOfOpenSignals, 0);
   addSignals(listOfClosedSignals, 1);
   fillTheLists();
-
 }
 
 void addSignals(List <Signal> signals, int id) {
@@ -104,3 +103,4 @@ void fillTheLists(){
   listOfFilteredOpenSignals.addAll(Hive.box<List <Signal>>('signals').toMap()[0]!.toList());
   listOfFilteredClosedSignals.addAll(Hive.box<List <Signal>>('signals').toMap()[1]!.toList());
 }
+
