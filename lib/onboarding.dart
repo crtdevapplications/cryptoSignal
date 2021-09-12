@@ -25,7 +25,7 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
   void initState() {
     _tabControllerOnboarding = TabController(
       vsync: this,
-      length: 4,
+      length: 3,
       initialIndex: 0,
     );
     _tabControllerOnboarding.addListener(_switchTabIndex);
@@ -262,72 +262,72 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16.w,
-                            ),
-                            child: SingleChildScrollView(
-                              physics: NeverScrollableScrollPhysics(),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 12.h),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Price alerts',
-                                          style: textStyleSuperHeader,
-                                        ),
-                                        Spacer(),
-                                        CupertinoButton(
-                                          child: Text(
-                                            'Skip',
-                                            style: textStyleShaded,
-                                          ),
-                                          onPressed: () {
-                                            addPreference(UserPreference(
-                                                sawOnboarding: true));
-                                            if (Hive.box<UserPreference>(
-                                                    'userpreference')
-                                                .values
-                                                .isNotEmpty) {
-                                              Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute<void>(
-                                                  builder: (context) => MyApp(),
-                                                ),
-                                              );
-                                            }
-                                          },
-                                          padding: EdgeInsets.zero,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 2.h,
-                                  ),
-                                  Text(
-                                    'See custom alerts for crypto',
-                                    style: textStyleSuperWhite,
-                                  ),
-                                  SizedBox(
-                                    height: 60.h,
-                                  ),
-                                  Center(
-                                      child: Image.asset(
-                                          'assets/onboarding/onboarding4.png')),
-                                ],
-                              ),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: EdgeInsets.symmetric(
+                          //     horizontal: 16.w,
+                          //   ),
+                          //   child: SingleChildScrollView(
+                          //     physics: NeverScrollableScrollPhysics(),
+                          //     child: Column(
+                          //       mainAxisSize: MainAxisSize.min,
+                          //       mainAxisAlignment: MainAxisAlignment.start,
+                          //       crossAxisAlignment: CrossAxisAlignment.start,
+                          //       children: [
+                          //         Padding(
+                          //           padding: EdgeInsets.only(top: 12.h),
+                          //           child: Row(
+                          //             mainAxisSize: MainAxisSize.min,
+                          //             mainAxisAlignment: MainAxisAlignment.start,
+                          //             crossAxisAlignment:
+                          //                 CrossAxisAlignment.start,
+                          //             children: [
+                          //               Text(
+                          //                 'Price alerts',
+                          //                 style: textStyleSuperHeader,
+                          //               ),
+                          //               Spacer(),
+                          //               CupertinoButton(
+                          //                 child: Text(
+                          //                   'Skip',
+                          //                   style: textStyleShaded,
+                          //                 ),
+                          //                 onPressed: () {
+                          //                   addPreference(UserPreference(
+                          //                       sawOnboarding: true));
+                          //                   if (Hive.box<UserPreference>(
+                          //                           'userpreference')
+                          //                       .values
+                          //                       .isNotEmpty) {
+                          //                     Navigator.pushReplacement(
+                          //                       context,
+                          //                       MaterialPageRoute<void>(
+                          //                         builder: (context) => MyApp(),
+                          //                       ),
+                          //                     );
+                          //                   }
+                          //                 },
+                          //                 padding: EdgeInsets.zero,
+                          //               )
+                          //             ],
+                          //           ),
+                          //         ),
+                          //         SizedBox(
+                          //           height: 2.h,
+                          //         ),
+                          //         Text(
+                          //           'See custom alerts for crypto',
+                          //           style: textStyleSuperWhite,
+                          //         ),
+                          //         SizedBox(
+                          //           height: 60.h,
+                          //         ),
+                          //         Center(
+                          //             child: Image.asset(
+                          //                 'assets/onboarding/onboarding4.png')),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -339,7 +339,7 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 32.h),
                   child: Container(
-                    width: 72.w,
+                    width: 52.w,
                     height: 12.h,
                     child: TabBar(
                       controller: _tabControllerOnboarding,
@@ -373,19 +373,19 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                                 color: Color.fromRGBO(196, 196, 196, 0.2)),
                           ),
                         ),
-                        Tab(
-                          child: Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color.fromRGBO(196, 196, 196, 0.2)),
-                          ),
-                        ),
+                        // Tab(
+                        //   child: Container(
+                        //     decoration: BoxDecoration(
+                        //         shape: BoxShape.circle,
+                        //         color: Color.fromRGBO(196, 196, 196, 0.2)),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
                 ),
               ),
-              if (_tabControllerOnboarding.index == 3)
+              if (_tabControllerOnboarding.index == 2)
                 Padding(
                   padding: EdgeInsets.only(bottom: 12.h),
                   child: Align(

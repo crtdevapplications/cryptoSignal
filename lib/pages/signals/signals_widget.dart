@@ -34,6 +34,7 @@ class SignalsWidget extends StatefulWidget {
 
 class _SignalsWidgetState extends State<SignalsWidget> {
   late Future<List<CryptoApi>> _list;
+  late bool isGaining;
 
   @override
   void initState() {
@@ -75,6 +76,7 @@ class _SignalsWidgetState extends State<SignalsWidget> {
           }
           if (!snapshot.hasData) {
             return Container(
+              height: 139.h,
               alignment: AlignmentDirectional.center,
               child: Container(
                 height: 120.r,
@@ -88,6 +90,10 @@ class _SignalsWidgetState extends State<SignalsWidget> {
           } else {
             List<CryptoApi> listOfSignalsDataFromApi =
                 (snapshot.data as List)[0] as List<CryptoApi>;
+            isGaining = widget.signal.entryPrice! >
+                    listOfSignalsDataFromApi.first.currentPrice
+                ? false
+                : true;
             return AbsorbPointer(
               absorbing: !widget.clickable,
               child: CupertinoButton(
@@ -126,7 +132,7 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                               width: 44.r,
                             ),
                             SizedBox(
-                              width: 8.w,
+                              width: 6.w,
                             ),
                             Expanded(
                               child: Column(
@@ -141,12 +147,20 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                                 .toString()
                                                 .toUpperCase() +
                                             '/USD',
-                                        style: textStyleSignalDefault,
+                                        style: TextStyle(
+                                            color: textDefault,
+                                            fontSize: getPercentageChange(
+                                                (widget
+                                                    .signal.entryPrice)!,
+                                                listOfSignalsDataFromApi
+                                                    .first.currentPrice).toStringAsFixed(2).length >= 6 ? 20.sp : 22.sp,
+                                            fontFamily: 'DMSans',
+                                            fontWeight: FontWeight.w500),
                                       ),
                                       SizedBox(
-                                        width: 8.w,
+                                        width:  7.w,
                                       ),
-                                      if (listOfSignalsDataFromApi.first.gain == true)
+                                      if (isGaining == true)
                                         Text(
                                           getPercentageChange(
                                                       (widget
@@ -155,20 +169,34 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                                           .first.currentPrice)
                                                   .toStringAsFixed(2) +
                                               '%',
-                                          style: textStyleSignalGreen,
+                                          style: TextStyle(
+                                            color: textGreen,
+                                            fontSize: getPercentageChange(
+                                                (widget
+                                                    .signal.entryPrice)!,
+                                                listOfSignalsDataFromApi
+                                                    .first.currentPrice).toStringAsFixed(2).length >= 6 ? 20.sp : 22.sp,
+                                            fontFamily: 'DMSans',
+                                            fontWeight: FontWeight.w500),
                                         )
                                       else
                                         Text(
-                                          '-' +
-                                              getPercentageChange(
+                                          getPercentageChange(
+                                                      (widget
+                                                          .signal.entryPrice)!,
+                                                      listOfSignalsDataFromApi
+                                                          .first.currentPrice)
+                                                  .toStringAsFixed(2) +
+                                              '%',
+                                          style:  TextStyle(
+                                              color: textRed,
+                                              fontSize: getPercentageChange(
                                                   (widget
                                                       .signal.entryPrice)!,
                                                   listOfSignalsDataFromApi
-                                                      .first.currentPrice)
-                                                  .toStringAsFixed(2) +
-
-                                              '%',
-                                          style: textStyleSignalRed,
+                                                      .first.currentPrice).toStringAsFixed(2).length >= 6 ? 20.sp : 22.sp,
+                                              fontFamily: 'DMSans',
+                                              fontWeight: FontWeight.w500),
                                         ),
                                       Spacer(),
                                       if (widget.signal.recomendedAction!
@@ -188,7 +216,15 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                             ),
                                             Text(
                                               'SELL',
-                                              style: textStyleSignalDefault,
+                                              style:  TextStyle(
+                                                  color: textDefault,
+                                                  fontSize: getPercentageChange(
+                                                      (widget
+                                                          .signal.entryPrice)!,
+                                                      listOfSignalsDataFromApi
+                                                          .first.currentPrice).toStringAsFixed(2).length >= 6 ? 20.sp : 22.sp,
+                                                  fontFamily: 'DMSans',
+                                                  fontWeight: FontWeight.w500),
                                             ),
                                           ],
                                         )
@@ -207,7 +243,15 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                             ),
                                             Text(
                                               'BUY',
-                                              style: textStyleSignalDefault,
+                                              style: TextStyle(
+                                                  color: textDefault,
+                                                  fontSize: getPercentageChange(
+                                                      (widget
+                                                          .signal.entryPrice)!,
+                                                      listOfSignalsDataFromApi
+                                                          .first.currentPrice).toStringAsFixed(2).length >= 6 ? 20.sp : 22.sp,
+                                                  fontFamily: 'DMSans',
+                                                  fontWeight: FontWeight.w500),
                                             ),
                                           ],
                                         ),
@@ -244,7 +288,7 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                         color: Color.fromRGBO(255, 91, 91, 1)),
                                   ),
                                   Spacer(),
-                                  if (listOfSignalsDataFromApi.first.gain == true)
+                                  if (isGaining == true)
                                     Text(
                                       '\$' +
                                           widget.signal.entryPrice.toString(),
@@ -268,11 +312,13 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                           color:
                                               Color.fromRGBO(252, 252, 252, 1)),
                                     ),
+                                  Spacer(),
                                   SizedBox(
                                     width:
-                                        MediaQuery.of(context).size.width / 8.5,
+                                        MediaQuery.of(context).size.width / 18,
                                   ),
-                                  if (listOfSignalsDataFromApi.first.gain == true)
+                                  Spacer(),
+                                  if (isGaining == true)
                                     Text(
                                       '\$' +
                                           listOfSignalsDataFromApi
@@ -333,7 +379,7 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                                     255, 91, 91, 1)),
                                           ),
                                           Spacer(),
-                                          if (listOfSignalsDataFromApi.first.gain == true)
+                                          if (isGaining == true)
                                             Container(
                                               height: 8.r,
                                               width: 8.r,
@@ -345,29 +391,29 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                           else
                                             Container(),
                                           Container(
-                                            height: 1.h,
+                                            height: 2.h,
                                             padding:
                                                 EdgeInsets.only(top: 0.5.h),
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width /
-                                                24,
-                                            color: listOfSignalsDataFromApi.first.gain == true
+                                                28,
+                                            color: isGaining == true
                                                 ? const Color.fromRGBO(
                                                     0, 255, 41, 1)
                                                 : const Color.fromRGBO(
                                                     255, 91, 91, 1),
-                                            child: listOfSignalsDataFromApi.first.gain == true
+                                            child: isGaining == true
                                                 ? null
                                                 : CustomPaint(
                                                     painter:
                                                         LeftArrowPainter()),
                                           ),
                                           Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 4.w),
+                                              padding: EdgeInsets.only(
+                                                  left: 4.w, right: 4.w, bottom: 2.h),
                                               decoration: BoxDecoration(
-                                                  color: listOfSignalsDataFromApi.first.gain == true
+                                                  color: isGaining == true
                                                       ? const Color.fromRGBO(
                                                           0, 255, 41, 1)
                                                       : const Color.fromRGBO(
@@ -375,7 +421,7 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           16.w)),
-                                              child: listOfSignalsDataFromApi.first.gain == true
+                                              child: isGaining == true
                                                   ? Text(
                                                       getPercentageChange(
                                                                   (widget.signal
@@ -387,7 +433,7 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                                                   2) +
                                                           '\% gain',
                                                       style: TextStyle(
-                                                        fontSize: 10.sp,
+                                                        fontSize: 14.sp,
                                                         color: const Color
                                                                 .fromRGBO(
                                                             73, 75, 87, 1),
@@ -397,18 +443,17 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                                       ),
                                                     )
                                                   : Text(
-                                                      '-' +
-                                                          getPercentageChange(
-                                                              (widget.signal
-                                                                  .entryPrice)!,
-                                                              listOfSignalsDataFromApi
-                                                                  .first
-                                                                  .currentPrice)
+                                                      getPercentageChange(
+                                                                  (widget.signal
+                                                                      .entryPrice)!,
+                                                                  listOfSignalsDataFromApi
+                                                                      .first
+                                                                      .currentPrice)
                                                               .toStringAsFixed(
-                                                              2) +
+                                                                  2) +
                                                           '\% loss',
                                                       style: TextStyle(
-                                                        fontSize: 10.sp,
+                                                        fontSize: 14.sp,
                                                         color: const Color
                                                                 .fromRGBO(
                                                             73, 75, 87, 1),
@@ -417,7 +462,7 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                                         fontFamily: 'DMSans',
                                                       ),
                                                     )),
-                                          if (listOfSignalsDataFromApi.first.gain == true)
+                                          if (isGaining == true)
                                             Container(
                                               height: 1.h,
                                               padding:
@@ -425,13 +470,13 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width /
-                                                  24,
-                                              color: listOfSignalsDataFromApi.first.gain == true
+                                                  28,
+                                              color: isGaining == true
                                                   ? const Color.fromRGBO(
                                                       0, 255, 41, 1)
                                                   : const Color.fromRGBO(
                                                       255, 91, 91, 1),
-                                              child: listOfSignalsDataFromApi.first.gain == false
+                                              child: isGaining == false
                                                   ? null
                                                   : CustomPaint(
                                                       painter:
@@ -439,18 +484,18 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                             )
                                           else
                                             Container(
-                                              height: 1.h,
+                                              height: 2.h,
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width /
-                                                  24,
-                                              color: listOfSignalsDataFromApi.first.gain == true
+                                                  28,
+                                              color: isGaining == true
                                                   ? const Color.fromRGBO(
                                                       0, 255, 41, 1)
                                                   : const Color.fromRGBO(
                                                       255, 91, 91, 1),
                                             ),
-                                          if (listOfSignalsDataFromApi.first.gain == false)
+                                          if (isGaining == false)
                                             Container(
                                               height: 8.r,
                                               width: 8.r,
@@ -487,7 +532,7 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                   style: textStyleSignalWidget,
                                 ),
                                 Spacer(),
-                                if (listOfSignalsDataFromApi.first.gain == true)
+                                if (isGaining == true)
                                   Text(
                                     'Entry Price',
                                     style: textStyleSignalWidget,
@@ -498,9 +543,10 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                     style: textStyleSignalWidget,
                                   ),
                                 SizedBox(
-                                  width: MediaQuery.of(context).size.width / 16,
+                                  width: MediaQuery.of(context).size.width / 18,
                                 ),
-                                if (listOfSignalsDataFromApi.first.gain == true)
+                                Spacer(),
+                                if (isGaining == true)
                                   Text(
                                     'Current Price',
                                     style: textStyleSignalWidget,

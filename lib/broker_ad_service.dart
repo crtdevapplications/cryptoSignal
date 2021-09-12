@@ -27,10 +27,10 @@ class BrokerAdService {
         'aff_id': appUser.affiliateID,
         'offer_id': appUser.offerID,
       };
-      String jsonBody = json.encode(body);
+      // String jsonBody = json.encode(body);
       var response = await http.post(
         Uri.parse(apiBrokerUrl),
-        body: jsonBody,
+        body: body,
         encoding: Encoding.getByName('utf-8'),
         headers: <String, String>{
           'Accept': 'application/json',
@@ -58,12 +58,13 @@ class BrokerAdService {
         print('Status code ' + response.statusCode.toString());
         print('Response body ' + response.body);
         print('Headers ' + response.headers.toString());
-        correctCredentials = false;
-        return null;
+        authService.switchIsLoading(false);
+        return 'wrong';
       }
     } catch (e) {
       print(e);
-      return null;
+      authService.switchIsLoading(false);
+      return 'wrong';
     }
   }
 }
