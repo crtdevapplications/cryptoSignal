@@ -304,28 +304,28 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                         SizedBox(
                           height: 32.h,
                         ),
-                        RichText(
-                            text: TextSpan(
-                                style: richTextRegular,
-                                text:
-                                    'Unrealized gains for signals that are still open. Have not reached their profit or loss targets')),
-                        SizedBox(height: 12.h),
-                        Container(
-                          width: double.infinity,
-                          height: 52.h,
-                          decoration: BoxDecoration(
-                              color: cardBackground,
-                              borderRadius: BorderRadius.circular(16.r)),
-                          child: Center(
-                              child: Text(
-                                unrealizedGains.toStringAsFixed(3) +
-                                '\%',
-                            style: textGainGreen,
-                          )),
-                        ),
-                        SizedBox(
-                          height: 32.h,
-                        ),
+                        // RichText(
+                        //     text: TextSpan(
+                        //         style: richTextRegular,
+                        //         text:
+                        //             'Unrealized gains for signals that are still open. Have not reached their profit or loss targets')),
+                        // SizedBox(height: 12.h),
+                        // Container(
+                        //   width: double.infinity,
+                        //   height: 52.h,
+                        //   decoration: BoxDecoration(
+                        //       color: cardBackground,
+                        //       borderRadius: BorderRadius.circular(16.r)),
+                        //   child: Center(
+                        //       child: Text(
+                        //         unrealizedGains.toStringAsFixed(3) +
+                        //         '\%',
+                        //     style: textGainGreen,
+                        //   )),
+                        // ),
+                        // SizedBox(
+                        //   height: 32.h,
+                        // ),
                         brokerAd(true, Hive.box<AppUser>('appuser').values.first.brokerAdURL),
                         SizedBox(
                           height: 32.h,

@@ -67,7 +67,7 @@ class _ShortTermPageState extends State<ShortTermPage> {
               left: 16.w,
               right: 15.w,
             ),
-            child: SignalsWidget(listOfOpenSignals.where((element) => element.type!.toLowerCase() == 'short').first, 'open', true),
+            child: SignalsWidget(listOfOpenSignals.where((element) => element.type!.toLowerCase() == 'short').first, 'open', true, true),
           ),
           Spacer(),
           brokerAd(false, Hive.box<AppUser>('appuser').values.first.brokerAdURL),

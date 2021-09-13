@@ -94,7 +94,7 @@ class _LongTermPageState extends State<LongTermPage> {
               child: SignalsWidget(listOfOpenSignals
                   .where((element) =>
               element.type!.toLowerCase() == widget.type)
-                  .first, 'open', true,),
+                  .first, 'open', true, true),
             ),
             SizedBox(
               height: 30.h,
@@ -197,7 +197,7 @@ class _LongTermPageState extends State<LongTermPage> {
                     Spacer(),
                     // if (true)
                     Text(
-                      totalGain.toStringAsFixed(3) +
+                      totalGain.toStringAsFixed(2) +
                           '%',
                       style: textStyleHeaderGreen,
                     )

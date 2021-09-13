@@ -624,3 +624,6 @@ ThemeData textFieldThemeData = ThemeData(
 );
 RegExp emailRegExp = RegExp(
     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+RegExp numberRegExp = RegExp(
+    r"^\d+$");
+String totalSignalGain = '0';

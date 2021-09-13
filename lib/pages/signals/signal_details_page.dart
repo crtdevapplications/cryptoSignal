@@ -21,8 +21,8 @@ import '../../user.dart';
 class SignalDetails extends StatefulWidget {
   Signal signal;
   String status;
-   SignalDetails(this.signal, this.status, {Key? key}) : super(key: key);
 
+  SignalDetails(this.signal, this.status, {Key? key}) : super(key: key);
 
   @override
   _SignalDetailsState createState() => _SignalDetailsState();
@@ -64,7 +64,7 @@ class _SignalDetailsState extends State<SignalDetails> {
         ),
         body: SafeArea(
           child: Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: SingleChildScrollView(
               physics: ClampingScrollPhysics(),
               child: Column(
@@ -72,20 +72,30 @@ class _SignalDetailsState extends State<SignalDetails> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(height: 32.h,),
-                  AlertCryptoWidget(widget.signal),
-                  SizedBox(height: 32.h,),
+                  SizedBox(
+                    height: 32.h,
+                  ),
+                  widget.status.toLowerCase() == 'open'
+                      ? SignalsWidget(
+                          widget.signal, widget.status, false, false)
+                      : AlertCryptoWidget(widget.signal),
+                  SizedBox(
+                    height: 32.h,
+                  ),
                   Container(
                     height: 72.h,
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 19.h),
-                    decoration: BoxDecoration(color: cardBackground, borderRadius: BorderRadius.circular(16.w)),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 19.h),
+                    decoration: BoxDecoration(
+                        color: cardBackground,
+                        borderRadius: BorderRadius.circular(16.w)),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                         'Status',
+                          'Status',
                           style: textButtonStyle,
                         ),
                         Spacer(),
@@ -97,11 +107,16 @@ class _SignalDetailsState extends State<SignalDetails> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 12.h,),
+                  SizedBox(
+                    height: 12.h,
+                  ),
                   Container(
                     height: 72.h,
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 19.h),
-                    decoration: BoxDecoration(color: cardBackground, borderRadius: BorderRadius.circular(16.w)),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 19.h),
+                    decoration: BoxDecoration(
+                        color: cardBackground,
+                        borderRadius: BorderRadius.circular(16.w)),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -112,31 +127,50 @@ class _SignalDetailsState extends State<SignalDetails> {
                           style: textButtonStyle,
                         ),
                         Spacer(),
-                        if (widget.signal.gain == true)
-                        Text(
-                          widget.signal.percentChange!.toStringAsFixed(3) + '%',
-                          style: textStyleHeaderGreen,
-                        )
+                        if (widget.status.toLowerCase() == 'open')
+                          Text(
+                            totalSignalGain + '%',
+                            style: totalSignalGain.contains('-') == false
+                                ? textStyleHeaderGreen
+                                : textStyleHeaderRed,
+                          )
                         else
                           Text(
-                            '-' +  widget.signal.percentChange!.toStringAsFixed(3) + '%',
-                            style: textStyleHeaderRed,
+                            widget.signal.percentChange!.toStringAsFixed(2)+ '%',
+                            style: widget.signal.gain == true
+                                ? textStyleHeaderGreen
+                                : textStyleHeaderRed,
                           )
                       ],
                     ),
                   ),
-                  SizedBox(height: 32.h,),
-                  Text('Your are always granted access to one FREE open signal', style: richTextRegular,),
-                  SizedBox(height: 12.h,),
-                  brokerAd(true, Hive.box<AppUser>('appuser').values.first.brokerAdURL),
-                  SizedBox(height: 32.h,),
-                  widget.status.toLowerCase() == 'open' ?  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SignalsWidget(widget.signal, widget.status, false),
-                      SizedBox(height: 32.h,),
-                    ],
-                  ) : Container(),
+                  SizedBox(
+                    height: 32.h,
+                  ),
+                  Text(
+                    'Your are always granted access to one FREE open signal',
+                    style: richTextRegular,
+                  ),
+                  SizedBox(
+                    height: 12.h,
+                  ),
+                  brokerAd(true,
+                      Hive.box<AppUser>('appuser').values.first.brokerAdURL),
+                  SizedBox(
+                    height: 32.h,
+                  ),
+                  widget.status.toLowerCase() == 'open'
+                      ? Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SignalsWidget(
+                                widget.signal, widget.status, false, true),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                          ],
+                        )
+                      : Container(),
                 ],
               ),
             ),

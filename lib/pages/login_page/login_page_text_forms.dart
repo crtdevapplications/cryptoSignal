@@ -205,7 +205,10 @@ class _buildPhoneNumberState extends State<buildPhoneNumber> {
           return 'Phone Number is Required';
         }
         if (value.isNotEmpty && !correctNumber) {
-          return 'Please enter correct number';
+          return 'Please enter a valid number';
+        }
+        if (!numberRegExp.hasMatch(value)) {
+          return 'Please enter a valid number';
         }
         return null;
       },
