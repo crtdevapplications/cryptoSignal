@@ -79,7 +79,13 @@ class _LongTermPageState extends State<LongTermPage> {
                         width: 24.r,
                         color: bottomNavBarColor,
                       ),
-                      onPressed: () {})
+                      onPressed: () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (context) => const HowToUseAppPage(),
+                        ),
+                      );})
                 ],
               ),
             ),
@@ -125,7 +131,12 @@ class _LongTermPageState extends State<LongTermPage> {
                         width: 24.r,
                         color: bottomNavBarColor,
                       ),
-                      onPressed: () {})
+                      onPressed: () {  Navigator.push(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (context) => const HowToUseAppPage(),
+                        ),
+                      );})
                 ],
               ),
             ),
@@ -170,6 +181,12 @@ class _LongTermPageState extends State<LongTermPage> {
                         color: bottomNavBarColor,
                       ),
                       onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (context) => const HowToUseAppPage(),
+                          ),
+                        );
                       })
                 ],
               ),

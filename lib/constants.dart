@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
  List<Signal> listOfFilteredOpenSignals = [];
  List<Signal> listOfFilteredClosedSignals = [];
@@ -532,7 +533,7 @@ TextStyle textButtonStyle = TextStyle(
     color: textDefault,
     fontSize: 14.sp,
     fontFamily: 'DMSans',
-    height: 1,
+    height: 1.4,
     fontWeight: FontWeight.w500);
 TextStyle textGainGreen = TextStyle(
     color: textGreen,
@@ -551,7 +552,7 @@ TextStyle textShadedStyle = TextStyle(
     fontWeight: FontWeight.w500);
 TextStyle textFieldStyle = TextStyle(
   color: textPlaceholder,
-  height: 1,
+  height: 1.2,
   fontSize: 14.sp,
   fontFamily: 'DMSans',
   fontWeight: FontWeight.w500,

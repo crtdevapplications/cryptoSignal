@@ -27,11 +27,9 @@ class _buildFirstNameState extends State<buildFirstName> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      // cursorHeight: 22.sp,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      // scrollPadding: EdgeInsets.only(bottom: 200),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(21.r, 21.r,21.r,21.r,),
+        contentPadding: EdgeInsets.fromLTRB(19.r, 19.r,19.r,19.r,),
         hintText: 'First Name',
       ),
       validator: (String? value) {
@@ -62,7 +60,7 @@ class _buildLastNameState extends State<buildLastName> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         hintText: 'Last Name',
-        contentPadding: EdgeInsets.fromLTRB(21.r, 21.r,21.r,21.r,),
+        contentPadding: EdgeInsets.fromLTRB(19.r, 19.r,19.r,19.r,),
       ),
       validator: (String? value) {
         if (value == null || value.isEmpty) {
@@ -92,7 +90,7 @@ class _buildEmailState extends State<buildEmail> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         hintText: 'Email',
-        contentPadding: EdgeInsets.fromLTRB(21.r, 21.r,21.r,21.r,),
+        contentPadding: EdgeInsets.fromLTRB(19.r, 19.r,19.r,19.r,),
       ),
       onChanged: (value){
         correctCredentials = true;
@@ -197,7 +195,7 @@ class _buildPhoneNumberState extends State<buildPhoneNumber> {
           minHeight: 20.r,
         ),
         hintText: 'Phone',
-        contentPadding: EdgeInsets.fromLTRB(21.r, 21.r,21.r,21.r,),
+        contentPadding: EdgeInsets.fromLTRB(19.r, 19.r,19.r,19.r,),
       ),
       validator: (String? value) {
         // bool isValid = PhoneNumber.parse(choosedCountry.elementAt(1)+value!).isValid;
@@ -237,7 +235,7 @@ class _buildLoginState extends State<buildLogin> {
       },
       decoration: InputDecoration(
         hintText: 'Login',
-        contentPadding: EdgeInsets.fromLTRB(21.r, 21.r,21.r,21.r,),
+        contentPadding: EdgeInsets.fromLTRB(19.r, 19.r,19.r,19.r,),
       ),
       validator: (String? value) {
         if (value == null || value.isEmpty) {
@@ -284,7 +282,7 @@ class _buildPasswordState extends State<buildPassword> {
             decoration: InputDecoration(
               hintStyle: textFieldStyle,
               hintText: 'Password',
-              contentPadding: EdgeInsets.fromLTRB(21.r, 21.r,21.r,21.r,),
+              contentPadding: EdgeInsets.fromLTRB(19.r, 19.r,19.r,19.r,),
             ),
             onChanged: (value){
               correctCredentials = true;

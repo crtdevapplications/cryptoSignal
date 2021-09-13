@@ -575,12 +575,7 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                                                 '\% gain',
                                                             style: TextStyle(
                                                               fontSize: 14.sp,
-                                                              color: const Color
-                                                                      .fromRGBO(
-                                                                  73,
-                                                                  75,
-                                                                  87,
-                                                                  1),
+                                                              color: textBlack,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500,
@@ -601,12 +596,7 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                                                                 '\% loss',
                                                             style: TextStyle(
                                                               fontSize: 14.sp,
-                                                              color: const Color
-                                                                      .fromRGBO(
-                                                                  73,
-                                                                  75,
-                                                                  87,
-                                                                  1),
+                                                              color:  textDefault,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500,

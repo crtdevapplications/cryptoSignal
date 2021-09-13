@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crypto_signal_app/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class brokerAd extends StatefulWidget {
@@ -17,6 +20,8 @@ class brokerAd extends StatefulWidget {
 }
 
 class _brokerAdState extends State<brokerAd> {
+  late WebViewController controllerGlobal;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,18 +43,42 @@ class _brokerAdState extends State<brokerAd> {
                 MaterialPageRoute<void>(
                   builder: (context) => Theme(
                     data: appThemeData,
-                    child: Scaffold(
-                        appBar: AppBar(
-                          elevation: 0,
-                          brightness: Brightness.dark,
-                          backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
-                          titleSpacing: 0,
-                        ),
-                        body: SafeArea(
-                            child: WebView(
-                          initialUrl: widget.url,
-                          javascriptMode: JavascriptMode.unrestricted,
-                        ))),
+                    child: WillPopScope(
+                      onWillPop: () => _willPopCallback(),
+                      child: Scaffold(
+                          appBar: AppBar(
+                            actions: [
+                            Transform.rotate(
+                                angle: 150,
+                                child: Container(
+                                  // height: 24.r,
+                                  // width: 24.r,
+                                  child: CupertinoButton(
+                                    child:
+                                        SvgPicture.asset('assets/white_plus.svg', height: 26.r, width: 26.r,),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    padding: EdgeInsets.zero,
+                                  ),
+                                ),
+                              )
+                            ],
+                            elevation: 0,
+                            brightness: Brightness.dark,
+                            backgroundColor:
+                                const Color.fromRGBO(20, 20, 34, 1),
+                            titleSpacing: 0,
+                          ),
+                          body: SafeArea(
+                              child: WebView(
+                            initialUrl: widget.url,
+                            onWebViewCreated: (controlller) {
+                              controllerGlobal = controlller;
+                            },
+                            javascriptMode: JavascriptMode.unrestricted,
+                          ))),
+                    ),
                   ),
                 ),
               );
@@ -91,5 +120,15 @@ class _brokerAdState extends State<brokerAd> {
         ),
       ),
     );
+  }
+
+  Future<bool> _willPopCallback() async {
+    bool canNavigate = await controllerGlobal.canGoBack();
+    if (canNavigate) {
+      controllerGlobal.goBack();
+      return false;
+    } else {
+      return true;
+    }
   }
 }

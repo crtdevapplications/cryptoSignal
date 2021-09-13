@@ -71,19 +71,33 @@ class _SignalsPageState extends State<SignalsPage>
                 left: 16.w,
                 right: 16.w,
               ),
-              child: RichText(
-                text: TextSpan(style: textStyleHeader, children: [
-                  TextSpan(text: 'Good'),
-                  if (currentTime > 0 && currentTime < 7)
-                    TextSpan(text: ' night '),
-                  if (currentTime > 7 && currentTime < 11)
-                    TextSpan(text: ' morning '),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  if (currentTime >= 0 && currentTime < 11)
+                    SvgPicture.asset('assets/morning.svg'),
                   if (currentTime >= 11 && currentTime < 19)
-                    TextSpan(text: ' day '),
+                    SvgPicture.asset('assets/day.svg'),
                   if (currentTime >= 19 && currentTime <= 23)
-                    TextSpan(text: ' evening '),
-                  TextSpan(text: userName),
-                ]),
+                    SvgPicture.asset('assets/night.svg'),
+                  SizedBox(width: 8.w,),
+                  RichText(
+                    text: TextSpan(style: textStyleHeader, children: [
+                      TextSpan(text: 'Good'),
+                      if (currentTime >= 0 && currentTime < 7)
+                        TextSpan(text: ' night '),
+                      if (currentTime > 7 && currentTime < 11)
+                        TextSpan(text: ' morning '),
+                      if (currentTime >= 11 && currentTime < 19)
+                        TextSpan(text: ' day '),
+                      if (currentTime >= 19 && currentTime <= 23)
+                        TextSpan(text: ' evening '),
+                      TextSpan(text: userName),
+                    ]),
+                  ),
+                ],
               ),
             ),
 
