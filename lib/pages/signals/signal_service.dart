@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:crypto_signal_app/auth_service.dart';
 import 'package:crypto_signal_app/main.dart';
+import 'package:crypto_signal_app/pages/signals/signals_widget.dart';
 import 'package:crypto_signal_app/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import 'package:crypto_signal_app/user.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../constants.dart';
+import '../../crypto_api.dart';
 
 part 'signal_service.g.dart';
 
@@ -31,7 +33,7 @@ class Signal {
   @HiveField(2)
   double? entryPrice;
   @HiveField(3)
-  double? currentPrice;
+  double? exitPrice;
   @HiveField(4)
   double? takeProfit;
   @HiveField(5)
@@ -51,7 +53,7 @@ class Signal {
     this.name,
     this.symbol,
     this.entryPrice,
-    this.currentPrice,
+    this.exitPrice,
     this.takeProfit,
     this.stopLoss,
     this.dateAdded,
@@ -64,13 +66,15 @@ class Signal {
   Signal.fromJson(Map<String, dynamic> json) {
     name = json["name"]?.toString();
     symbol = json["symbol"]?.toString();
-    entryPrice =  double.parse(json['entry_price'].toString());
-    currentPrice =double.parse(json['current_price'].toString());
+    entryPrice = double.parse(json['entry_price'].toString());
+    exitPrice = double.parse(json['exit_price'].toString());
     takeProfit = double.parse(json['take_profit'].toString());
     stopLoss = double.parse(json['stop_loss'].toString());
     dateAdded = DateTime.parse(json['date_added'].toString());
-    percentChange = double.parse(json['percent_change'].toString());
-    gain = json["gain"] as bool;
+    percentChange = getPercentageChange(
+        double.parse((json['entry_price']).toString()),
+        double.parse((json['exit_price']).toString()));
+    gain = double.parse(json['entry_price'].toString()) < double.parse((json['exit_price']).toString());
     type = json["type"]?.toString();
     recomendedAction = json["recomended_action"]?.toString();
   }
@@ -78,7 +82,8 @@ class Signal {
 
 void getSignals() {
   // String jsonString = '{     "open": [{             "name": "bitcoin",             "symbol": "BTC",             "entry_price": 29727.4,             "current_price": 33386.52,             "take_profit": 40000,             "stop_loss": 28000,             "date_added": "2021-08-28 19:39:58.320822Z",             "percent_change": 8.95,             "gain": true,             "type": "short",             "recomended_action": "buy"         },         {             "name": "dogecoin",             "symbol": "DOGE",             "entry_price": 29727.4,             "current_price": 32386.52,             "take_profit": 40000,             "stop_loss": 28000,             "date_added": "2021-08-28 19:39:58.320822Z",             "percent_change": 8.95,             "gain": true,             "type": "long",             "recomended_action": "buy"         },         {             "name": "ethereum",             "symbol": "ETH",             "entry_price": 29727.4,             "current_price": 32386.52,             "take_profit": 40000,             "stop_loss": 28000,             "date_added": "2021-08-28 19:39:58.320822Z",             "percent_change": 8.95,             "gain": true,             "type": "long",             "recomended_action": "buy"         },          {             "name": "ethereum",             "symbol": "ETH",             "entry_price": 29727.4,             "current_price": 32386.52,             "take_profit": 40000,             "stop_loss": 28000,             "date_added": "2021-08-28 19:39:58.320822Z",             "percent_change": 8.95,             "gain": true,             "type": "long",             "recomended_action": "buy"         }     ],     "closed": [{             "name": "bitcoin",             "symbol": "BTC",             "entry_price": 29727.4,             "current_price": 32386.52,             "take_profit": 40000,             "stop_loss": 28000,             "date_added": "2021-08-28 19:39:58.320822Z",             "percent_change": 8.95,             "gain": true,             "type": "long"         },         {             "name": "dogecoin",             "symbol": "DOGE",             "entry_price": 29727.4,             "current_price": 32386.52,             "take_profit": 40000,             "stop_loss": 28000,             "date_added": "2021-08-28 19:39:58.320822Z",             "percent_change": 8.95,             "gain": true,             "type": "long"         },         {             "name": "ethereum",             "symbol": "ETH",             "entry_price": 29727.4,             "current_price": 32386.52,             "take_profit": 40000,             "stop_loss": 28000,             "date_added": "2021-08-28 19:39:58.320822Z",             "percent_change": 8.95,             "gain": true,             "type": "long"         }     ] }';
-  Map<String, dynamic> json = jsonDecode(signalsFromFirestore) as Map<String, dynamic>;
+  Map<String, dynamic> json =
+      jsonDecode(signalsFromFirestore) as Map<String, dynamic>;
   var record = Signal();
   listOfOpenSignals.clear();
   (json['open']).forEach((dynamic item) {
@@ -95,12 +100,21 @@ void getSignals() {
   fillTheLists();
 }
 
-void addSignals(List <Signal> signals, int id) {
-  final Box<List <Signal>> userBox = Hive.box<List<Signal>>('signals');
+void addSignals(List<Signal> signals, int id) {
+  final Box<List<Signal>> userBox = Hive.box<List<Signal>>('signals');
   userBox.put(id, signals);
 }
-void fillTheLists(){
-  listOfFilteredOpenSignals.addAll(Hive.box<List <Signal>>('signals').toMap()[0]!.toList());
-  listOfFilteredClosedSignals.addAll(Hive.box<List <Signal>>('signals').toMap()[1]!.toList());
-}
 
+void fillTheLists() {
+  listOfFilteredOpenSignals
+      .addAll(Hive.box<List<Signal>>('signals').toMap()[0]!.toList());
+  tempList.clear();
+  tempListForExitPrices.clear();
+  listOfFilteredOpenSignals.forEach((element) {
+    tempList.add((element.symbol)!);
+    tempListForExitPrices.add((element.entryPrice)!);
+  });
+  // print(tempList);
+  listOfFilteredClosedSignals
+      .addAll(Hive.box<List<Signal>>('signals').toMap()[1]!.toList());
+}

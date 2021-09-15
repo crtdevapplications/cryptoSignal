@@ -31,7 +31,7 @@ class _WatchlistPageState extends State<WatchlistPage>  {
   @override
   void initState() {
     if(Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos.isNotEmpty){
-    dataFromApi = getCryptosFromApiNew(
+    dataFromApi = getCryptosFromById(
         Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos);}
     super.initState();
   }
@@ -68,7 +68,7 @@ class _WatchlistPageState extends State<WatchlistPage>  {
                   ),
                 );
               if(Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos.isNotEmpty){
-                dataFromApi = getCryptosFromApiNew(
+                dataFromApi = getCryptosFromById(
                     Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos);}
               setState(() {
               });
@@ -197,7 +197,7 @@ class _WatchlistPageState extends State<WatchlistPage>  {
                                 ),
                               );
                               if(Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos.isNotEmpty){
-                                dataFromApi = getCryptosFromApiNew(
+                                dataFromApi = getCryptosFromById(
                                     Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos);}
                               setState(() {
                               });

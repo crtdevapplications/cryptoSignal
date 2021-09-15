@@ -45,7 +45,7 @@ class AlertCryptoWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('\$'+signal.currentPrice.toString(), style: textButtonStyle,),
+              Text('\$'+signal.exitPrice.toString(), style: textButtonStyle,),
               Text(signal.percentChange!.toStringAsFixed(2)+'%', style: signal.gain == true ? textGainGreen : textButtonStyle,),
             ],
           )

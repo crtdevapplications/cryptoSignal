@@ -1,3 +1,4 @@
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:crypto_signal_app/pages/signals/signal_service.dart';
 import 'package:crypto_signal_app/user.dart';
 import 'package:flutter/cupertino.dart';
@@ -65,6 +66,7 @@ class _HomePageState extends State<HomePage> {
               setState(() {
                 _selectedIndex = index;
               });
+              Amplitude.getInstance(instanceName: "crypto-signal").logEvent('watchlist-clicked');
             },
             items: [
               BottomNavigationBarItem(icon: SvgPicture.asset('assets/signals.svg', color: _selectedIndex == 0 ? Colors.white : bottomNavBarColor, height: 24.r, width: 24.r,), label: 'Signals', tooltip: 'Signals',),

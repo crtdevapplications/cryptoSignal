@@ -1,3 +1,4 @@
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:crypto_signal_app/auth_service.dart';
 import 'package:crypto_signal_app/crypto_api.dart';
 import 'package:crypto_signal_app/onboarding.dart';
@@ -43,6 +44,9 @@ void main() async {
   await Hive.openBox<AppUser>('appuser');
   await Hive.openBox<UserPreference>('userpreference');
   await Hive.openBox<List <Signal>>('signals');
+  final Amplitude analytics = Amplitude.getInstance(instanceName: "crypto-signal");
+  analytics.init(amplitudeKey);
+  Amplitude.getInstance(instanceName: "crypto-signal").logEvent('App started');
   // print(Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos);
 
   runApp(MyApp());

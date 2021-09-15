@@ -1,3 +1,4 @@
+import 'package:crypto_signal_app/pages/settings/calculate_gain_widget.dart';
 import 'package:crypto_signal_app/pages/settings/privacy_policy_page.dart';
 import 'package:crypto_signal_app/pages/settings/terms_and_conditions_page.dart';
 import 'package:crypto_signal_app/pages/signals/signal_service.dart';
@@ -304,12 +305,13 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                         SizedBox(
                           height: 32.h,
                         ),
-                        // RichText(
-                        //     text: TextSpan(
-                        //         style: richTextRegular,
-                        //         text:
-                        //             'Unrealized gains for signals that are still open. Have not reached their profit or loss targets')),
-                        // SizedBox(height: 12.h),
+                        RichText(
+                            text: TextSpan(
+                                style: richTextRegular,
+                                text:
+                                    'Unrealized gains for signals that are still open. Have not reached their profit or loss targets')),
+                        SizedBox(height: 12.h),
+                        CalculateGainWidget(),
                         // Container(
                         //   width: double.infinity,
                         //   height: 52.h,
@@ -323,9 +325,9 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                         //     style: textGainGreen,
                         //   )),
                         // ),
-                        // SizedBox(
-                        //   height: 32.h,
-                        // ),
+                        SizedBox(
+                          height: 32.h,
+                        ),
                         brokerAd(true, Hive.box<AppUser>('appuser').values.first.brokerAdURL),
                         SizedBox(
                           height: 32.h,
@@ -364,6 +366,7 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
                                       );
                                     }),
                             ])),
+                        SizedBox(height: 12.h,)
                       ],
                     ),
                   ),
