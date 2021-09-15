@@ -164,7 +164,7 @@ class _buildPhoneNumberState extends State<buildPhoneNumber> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding:  EdgeInsets.only(bottom: 4.h),
+                padding:  EdgeInsets.only(bottom: 2.h),
                 child: Row(
                   children: [
                     Image.asset(
