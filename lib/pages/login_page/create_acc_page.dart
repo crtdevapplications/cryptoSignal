@@ -215,7 +215,7 @@ class _CreateAccPageState extends State<CreateAccPage>
                                   listOfID.values.elementAt(2).toString();
                               signalsFromFirestore =
                                   remoteConfig.getString('signals');
-                              _leadIP = await getIP()
+                              _leadIP = await _authService.getIP()
                                   .then((value) => value = value.toString());
                             } catch (e, s) {
                               FirebaseCrashlytics.instance.recordError(e, s);
@@ -294,7 +294,7 @@ class _CreateAccPageState extends State<CreateAccPage>
         // if(ipResponseFuture != null){
         // _leadIP = (await ipResponseFuture)!;}
         try {
-          _leadIP = await getIP().then((value) => value = value.toString());
+          _leadIP = await _authService.getIP().then((value) => value = value.toString());
           AppUser user = AppUser(
             firstName: signUpList.elementAt(0),
             lastName: signUpList.elementAt(1),

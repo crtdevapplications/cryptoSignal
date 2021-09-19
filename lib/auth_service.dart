@@ -130,9 +130,11 @@ class AuthService extends ChangeNotifier {
     addUser(appUsr);
     return appUsr;
   }
-}
+
 
 Future<String?> getIP() async {
+  isLoading = true;
+  notifyListeners();
   try {
     const url = 'https://api.ipify.org';
     var ipResponse = await http.get(Uri.parse(url));
@@ -141,15 +143,19 @@ Future<String?> getIP() async {
     } else {
       print(ipResponse.statusCode);
       print(ipResponse.body);
+      isLoading = false;
+      notifyListeners();
       return null;
     }
   } catch (e, s) {
     FirebaseCrashlytics.instance.recordError(e, s);
     print(e);
+    isLoading = false;
+    notifyListeners();
     return null;
   }
 }
-
+}
 String generatePassword(bool _isWithLetters, bool _isWithUppercase,
     bool _isWithNumbers, bool _isWithSpecial, double _numberCharPassword) {
 
