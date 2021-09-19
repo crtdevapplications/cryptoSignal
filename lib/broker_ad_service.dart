@@ -61,8 +61,9 @@ class BrokerAdService {
         authService.switchIsLoading(false);
         return 'wrong';
       }
-    } catch (e) {
+    } catch (e, s) {
       print(e);
+      FirebaseCrashlytics.instance.recordError(e, s);
       authService.switchIsLoading(false);
       return 'wrong';
     }

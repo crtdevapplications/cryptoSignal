@@ -58,18 +58,34 @@ class _SignalsWidgetState extends State<SignalsWidget> {
                   children: [
                     Text(
                       'Network error.',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'SFProDisplay',
-                        fontSize: 20.sp,
-                      ),
+                      style: richTextRegular,
                     ),
                     SizedBox(height: 10.w),
-                    CupertinoButton.filled(
-                      onPressed: () {},
-                      child: Text(
-                        'Try again',
-                        style: TextStyle(color: Colors.white),
+                    Container(
+                      width: 90.w,
+                      height: 37.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.w),
+                        gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            buttonGradientStart,
+                            buttonGradientEnd,
+                          ],
+                        ),
+                      ),
+                      child: CupertinoButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () {
+                          _list = getASingleCrypto(widget.signal.name!.toLowerCase());
+                          setState(() {
+                          });
+                        },
+                        child: Text(
+                          'Try again',
+                          style: richTextRegular,
+                        ),
                       ),
                     ),
                   ],

@@ -8,6 +8,7 @@ import 'package:crypto_signal_app/remote_config_service.dart';
 import 'dart:convert';
 import 'package:crypto_signal_app/user.dart';
 import 'package:crypto_signal_app/user_preference.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +32,16 @@ void main() async {
   await Firebase.initializeApp();
   await Hive.initFlutter();
   Paint.enableDithering = true;
-  final RemoteConfig remoteConfig = RemoteConfig.instance;
-  await setUpRemoteConfig(remoteConfig);
-  listOfID =
-      jsonDecode(remoteConfig.getString('aivix_id')) as Map<String, dynamic>;
-  apiBrokerUrl = listOfID.values.elementAt(2).toString();
-  signalsFromFirestore = remoteConfig.getString('signals');
+  try {
+    final RemoteConfig remoteConfig = RemoteConfig.instance;
+    await setUpRemoteConfig(remoteConfig);
+    listOfID =
+        jsonDecode(remoteConfig.getString('aivix_id')) as Map<String, dynamic>;
+    apiBrokerUrl = listOfID.values.elementAt(2).toString();
+    signalsFromFirestore = remoteConfig.getString('signals');
+  }  catch (e, s) {
+    FirebaseCrashlytics.instance.recordError(e, s);
+  }
   Hive.registerAdapter(AppUserAdapter());
   Hive.registerAdapter(UserPreferenceAdapter());
   Hive.registerAdapter(AlertAdapter());
@@ -44,11 +49,12 @@ void main() async {
   await Hive.openBox<AppUser>('appuser');
   await Hive.openBox<UserPreference>('userpreference');
   await Hive.openBox<List <Signal>>('signals');
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  ErrorWidget.builder = (FlutterErrorDetails details) => Container();
   // final Amplitude analytics = Amplitude.getInstance(instanceName: "crypto-signal");
   // analytics.init(amplitudeKey);
-  // Amplitude.getInstance(instanceName: "crypto-signal").logEvent('App started');
+  // Amplitude.getInstance(instanceName: "crypto-signal").logEvent('app_started');
   // print(Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos);
-
   runApp(MyApp());
 }
 

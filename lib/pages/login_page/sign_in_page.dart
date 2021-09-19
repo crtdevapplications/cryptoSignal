@@ -88,7 +88,7 @@ class _SignInPageState extends State<SignInPage>
                         });
                       }
                       catch (e, s) {
-                        // FirebaseCrashlytics.instance.recordError(e, s);
+                        FirebaseCrashlytics.instance.recordError(e, s);
                         rethrow;
                       }
                       loginList.clear();

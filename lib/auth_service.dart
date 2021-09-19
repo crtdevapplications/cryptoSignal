@@ -43,7 +43,7 @@ class AuthService extends ChangeNotifier {
       rethrow;
     }
     catch (e, s) {
-      // FirebaseCrashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       isLoading = false;
       notifyListeners();
       rethrow;
@@ -78,7 +78,7 @@ class AuthService extends ChangeNotifier {
     catch (e, s) {
       isLoading = false;
       notifyListeners();
-      // FirebaseCrashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       rethrow;
     }
   }
@@ -135,15 +135,16 @@ class AuthService extends ChangeNotifier {
 Future<String?> getIP() async {
   try {
     const url = 'https://api.ipify.org';
-    var response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      return response.body;
+    var ipResponse = await http.get(Uri.parse(url));
+    if (ipResponse.statusCode == 200) {
+      return ipResponse.body;
     } else {
-      print(response.statusCode);
-      print(response.body);
+      print(ipResponse.statusCode);
+      print(ipResponse.body);
       return null;
     }
-  } catch (e) {
+  } catch (e, s) {
+    FirebaseCrashlytics.instance.recordError(e, s);
     print(e);
     return null;
   }

@@ -1,6 +1,8 @@
 // import 'package:amplitude_flutter/amplitude.dart';
 import 'package:crypto_signal_app/pages/signals/signal_service.dart';
 import 'package:crypto_signal_app/user.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,7 +33,11 @@ class _HomePageState extends State<HomePage> {
     const SettingsPage()];
   @override
   void initState()  {
-    getSignals();
+    try {
+      getSignals();
+    } catch (e, s) {
+      FirebaseCrashlytics.instance.recordError(e, s);
+    }
     // print(listOfFilteredOpenSignals.first.name);
     _selectedIndex = widget.startingIndex;
     super.initState();

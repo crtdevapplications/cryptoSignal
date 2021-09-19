@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,7 +20,7 @@ class brokerAd extends StatefulWidget {
 }
 
 class _brokerAdState extends State<brokerAd> {
-  late WebViewController controllerGlobal;
+  late InAppWebViewController controllerGlobal;
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +48,17 @@ class _brokerAdState extends State<brokerAd> {
                       child: Scaffold(
                           appBar: AppBar(
                             actions: [
-                            Transform.rotate(
+                              Transform.rotate(
                                 angle: 150,
                                 child: Container(
                                   // height: 24.r,
                                   // width: 24.r,
                                   child: CupertinoButton(
-                                    child:
-                                        SvgPicture.asset('assets/white_plus.svg', height: 26.r, width: 26.r,),
+                                    child: SvgPicture.asset(
+                                      'assets/white_plus.svg',
+                                      height: 26.r,
+                                      width: 26.r,
+                                    ),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
@@ -70,14 +73,20 @@ class _brokerAdState extends State<brokerAd> {
                                 const Color.fromRGBO(20, 20, 34, 1),
                             titleSpacing: 0,
                           ),
-                          body: SafeArea(
-                              child: WebView(
-                            initialUrl: widget.url,
+                          body: SafeArea(child: InAppWebView(
                             onWebViewCreated: (controlller) {
                               controllerGlobal = controlller;
                             },
-                            javascriptMode: JavascriptMode.unrestricted,
-                          ))),
+                            initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
+                          )
+                              //     WebView(
+                              //   initialUrl: widget.url,
+                              //   onWebViewCreated: (controlller) {
+                              //     controllerGlobal = controlller;
+                              //   },
+                              //   javascriptMode: JavascriptMode.unrestricted,
+                              // )
+                              )),
                     ),
                   ),
                 ),

@@ -5,7 +5,7 @@ Future setUpRemoteConfig(RemoteConfig remoteConfig) async{
     'respawnTime': 14400,
   });
   remoteConfig.setConfigSettings(RemoteConfigSettings(
-    fetchTimeout: const Duration(seconds: 7),
+    fetchTimeout: const Duration(seconds: 5),
     minimumFetchInterval: const Duration(hours: 0),
   ));
   await remoteConfig.fetchAndActivate();

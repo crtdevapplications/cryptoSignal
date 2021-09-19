@@ -1,6 +1,7 @@
 import 'package:crypto_signal_app/pages/signals/signal_details_page.dart';
 import 'package:crypto_signal_app/pages/signals/signal_service.dart';
 import 'package:crypto_signal_app/pages/signals/signals_widget.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,60 @@ class _LongTermPageState extends State<LongTermPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return
+      listOfOpenSignals.isEmpty ? Container(
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Network error.',
+              style: richTextRegular,
+            ),
+            SizedBox(height: 10.w),
+            Container(
+              width: 90.w,
+              height: 37.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.w),
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [
+                    buttonGradientStart,
+                    buttonGradientEnd,
+                  ],
+                ),
+              ),
+              child: CupertinoButton(
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  signalsFromFirestore = RemoteConfig.instance.getString('signals');
+                  getSignals();
+                  listOfTotalGain =
+                      listOfClosedSignals.where((element) => element.type!.toLowerCase() ==
+                          widget.type && element.gain == true)
+                          .toList();
+                  if (listOfTotalGain.isNotEmpty) {
+                    totalGain = listOfTotalGain.map((e) => e.percentChange)
+                        .toList()
+                        .reduce((value, element) => value! + element!)!;
+                  }
+                  setState(() {
+
+                  });
+                },
+                child: Text(
+                  'Try again',
+                  style: richTextRegular,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ) :
+    SingleChildScrollView(
       physics: ClampingScrollPhysics(),
       child: Container(
         child: Column(

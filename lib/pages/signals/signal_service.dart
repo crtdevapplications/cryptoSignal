@@ -108,10 +108,10 @@ void addSignals(List<Signal> signals, int id) {
 void fillTheLists() {
   listOfFilteredOpenSignals
       .addAll(Hive.box<List<Signal>>('signals').toMap()[0]!.toList());
-  tempList.clear();
+  tempListForOpenSignalsIds.clear();
   tempListForExitPrices.clear();
   listOfFilteredOpenSignals.forEach((element) {
-    tempList.add((element.symbol)!);
+    tempListForOpenSignalsIds.add((element.symbol)!);
     tempListForExitPrices.add((element.entryPrice)!);
   });
   // print(tempList);

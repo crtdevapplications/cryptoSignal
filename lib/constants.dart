@@ -628,6 +628,6 @@ RegExp emailRegExp = RegExp(
 RegExp numberRegExp = RegExp(
     r"^\d+$");
 String totalSignalGain = '0';
-List<String> tempList = [];
+List<String> tempListForOpenSignalsIds = [];
 List<double> tempListForExitPrices = [];
 String amplitudeKey = 'c31e2200f4f6efa1ba267414016e140b';

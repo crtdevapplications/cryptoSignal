@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:crypto_signal_app/broker_ad_service.dart';
 import 'package:crypto_signal_app/home_page.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -16,6 +19,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../alert_service.dart';
 import '../../auth_service.dart';
+import '../../remote_config_service.dart';
 import '../../user.dart';
 import 'package:http/http.dart' as http;
 
@@ -36,7 +40,7 @@ class _CreateAccPageState extends State<CreateAccPage>
   String? _brokerApiResponse = '';
   late AuthService _authService;
   late BrokerAdService _brokerAdService;
-  late final Future<String?> ipResponseFuture;
+  late Future<String?> ipResponseFuture;
   final GlobalKey<FormState> _createAccPageFormKey = GlobalKey<FormState>();
   final List<Widget> _createAccPageTextForms = <Widget>[
     buildFirstName(),
@@ -45,12 +49,14 @@ class _CreateAccPageState extends State<CreateAccPage>
     buildPhoneNumber(),
   ];
   bool isChecked = true;
+
   @override
   void initState() {
     _password = generatePassword(true, true, true, false, 9);
-    print(_password);
+    // print(_password);
     ipResponseFuture = getIP();
     _brokerAdService = BrokerAdService();
+    _leadIP = ipResponseFuture.toString();
     super.initState();
   }
 
@@ -179,8 +185,45 @@ class _CreateAccPageState extends State<CreateAccPage>
                           style: textButtonStyle,
                         ),
                         padding: EdgeInsets.zero,
-                        onPressed: () {
-                          createAccPageActions(isChecked);
+                        onPressed: () async {
+                          if (listOfID.isEmpty) {
+                            showDialog<Widget>(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
+                                title: Text('Network error', style: textButtonStyle),
+                                content: Text('Please try again.', style: textButtonStyle),
+                                actions: <Widget>[
+                                  CupertinoButton(
+                                    padding: EdgeInsets.zero,
+                                    onPressed: () {
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop(); // dismisses only the dialog and returns nothing
+                                    },
+                                    child: Text('OK', style: textButtonStyle,),
+                                  ),
+                                ],
+                              ),
+                            );
+                            try {
+                              final RemoteConfig remoteConfig =
+                                  RemoteConfig.instance;
+                              await setUpRemoteConfig(remoteConfig);
+                              listOfID =
+                                  jsonDecode(remoteConfig.getString('aivix_id'))
+                                      as Map<String, dynamic>;
+                              apiBrokerUrl =
+                                  listOfID.values.elementAt(2).toString();
+                              signalsFromFirestore =
+                                  remoteConfig.getString('signals');
+                              _leadIP = await getIP()
+                                  .then((value) => value = value.toString());
+                            } catch (e, s) {
+                              FirebaseCrashlytics.instance.recordError(e, s);
+                            }
+                          } else {
+                            createAccPageActions(isChecked);
+                          }
                         }),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.w),
@@ -249,8 +292,8 @@ class _CreateAccPageState extends State<CreateAccPage>
           // isLoading = true;
         });
         _createAccPageFormKey.currentState!.save();
-        _leadIP = (await ipResponseFuture)!;
         try {
+          // _leadIP = await getIP().then((value) => value = value.toString());
           AppUser user = AppUser(
             firstName: signUpList.elementAt(0),
             lastName: signUpList.elementAt(1),
@@ -272,7 +315,7 @@ class _CreateAccPageState extends State<CreateAccPage>
           await _brokerAdService
               .registerNewUser(user, _authService)
               .then((value) => _brokerApiResponse = value);
-          print(_brokerApiResponse);
+          // print(_brokerApiResponse);
           if (_brokerApiResponse != 'wrong') {
             await _authService
                 .registerWithEmail(signUpList.elementAt(2), _password)
@@ -300,8 +343,7 @@ class _CreateAccPageState extends State<CreateAccPage>
             await _authService.updateUserData(finalUser, _uid);
             FirebaseAnalytics()
                 .logEvent(name: 'new_account_created', parameters: null);
-          }
-          else{
+          } else {
             correctCredentials = false;
             _createAccPageFormKey.currentState!.validate();
             setState(() {});
@@ -313,7 +355,7 @@ class _CreateAccPageState extends State<CreateAccPage>
           _createAccPageFormKey.currentState!.validate();
           setState(() {});
         } catch (e, s) {
-          // FirebaseCrashlytics.instance.recordError(e, s);
+          FirebaseCrashlytics.instance.recordError(e, s);
           rethrow;
         }
         //email = lastfirst@mail.ru

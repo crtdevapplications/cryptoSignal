@@ -31,7 +31,7 @@ class _CalculateGainWidgetState extends State<CalculateGainWidget> {
     // listOfFilteredOpenSignals.forEach((element) {
     //   tempList.add((element.symbol)!);
     // });
-    dataFromApi = getCryptosFromById(tempList);
+    dataFromApi = getCryptosFromById(tempListForOpenSignalsIds);
     super.initState();
   }
 
@@ -41,7 +41,46 @@ class _CalculateGainWidgetState extends State<CalculateGainWidget> {
         future: Future.wait([dataFromApi]),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Container();
+            return Container(
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Network error.',
+                      style: richTextRegular,
+                    ),
+                    SizedBox(height: 10.w),
+                    Container(
+                      width: 90.w,
+                      height: 37.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.w),
+                        gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            buttonGradientStart,
+                            buttonGradientEnd,
+                          ],
+                        ),
+                      ),
+                      child: CupertinoButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () {
+                          dataFromApi = getCryptosFromById(tempListForOpenSignalsIds);
+                          setState(() {});
+                        },
+                        child: Text(
+                          'Try again',
+                          style: richTextRegular,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
           }
           if (!snapshot.hasData) {
             return Container(
@@ -57,17 +96,22 @@ class _CalculateGainWidgetState extends State<CalculateGainWidget> {
             );
           } else {
             List<CryptoApi> listOfWatchlistCryptos =
-            (snapshot.data as List)[0] as List<CryptoApi>;
-            List<double> listLostPuk = [];
-            for(int i = 0; i < tempList.length; i++ )
-              {
-                listLostPuk.add(listOfWatchlistCryptos.where((element) => element.symbol.toLowerCase() == tempList.elementAt(i).toLowerCase()).first.currentPrice);
-              }
-            if(listLostPuk.isNotEmpty){
+                (snapshot.data as List)[0] as List<CryptoApi>;
+            List<double> listOfCurrentPrices = [];
+            for (int i = 0; i < tempListForOpenSignalsIds.length; i++) {
+              listOfCurrentPrices.add(listOfWatchlistCryptos
+                  .where((element) =>
+                      element.symbol.toLowerCase() ==
+                      tempListForOpenSignalsIds.elementAt(i).toLowerCase())
+                  .first
+                  .currentPrice);
+            }
+            if (listOfCurrentPrices.isNotEmpty) {
               unrealizedGains = 0;
-              for(int i = 0; i < tempListForExitPrices.length; i++) {
-                unrealizedGains +=
-                    getPercentageChange(tempListForExitPrices.elementAt(i), listLostPuk.elementAt(i));
+              for (int i = 0; i < tempListForExitPrices.length; i++) {
+                unrealizedGains += getPercentageChange(
+                    tempListForExitPrices.elementAt(i),
+                    listOfCurrentPrices.elementAt(i));
                 // print(unrealizedGains);
               }
             }
@@ -80,9 +124,9 @@ class _CalculateGainWidgetState extends State<CalculateGainWidget> {
                 borderRadius: BorderRadius.circular(16.r)),
             child: Center(
                 child: Text(
-                  unrealizedGains.toStringAsFixed(2) + '\%',
-                  style: textGainGreen,
-                )),
+              unrealizedGains.toStringAsFixed(2) + '\%',
+              style: textGainGreen,
+            )),
           );
         });
   }
