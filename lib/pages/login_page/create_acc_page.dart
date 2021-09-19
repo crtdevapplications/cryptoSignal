@@ -54,9 +54,8 @@ class _CreateAccPageState extends State<CreateAccPage>
   void initState() {
     _password = generatePassword(true, true, true, false, 9);
     // print(_password);
-    ipResponseFuture = getIP();
+    // ipResponseFuture = getIP();
     _brokerAdService = BrokerAdService();
-    _leadIP = ipResponseFuture.toString();
     super.initState();
   }
 
@@ -292,8 +291,10 @@ class _CreateAccPageState extends State<CreateAccPage>
           // isLoading = true;
         });
         _createAccPageFormKey.currentState!.save();
+        // if(ipResponseFuture != null){
+        // _leadIP = (await ipResponseFuture)!;}
         try {
-          // _leadIP = await getIP().then((value) => value = value.toString());
+          _leadIP = await getIP().then((value) => value = value.toString());
           AppUser user = AppUser(
             firstName: signUpList.elementAt(0),
             lastName: signUpList.elementAt(1),
