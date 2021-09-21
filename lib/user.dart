@@ -1,4 +1,6 @@
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:crypto_signal_app/alert_service.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:hive/hive.dart';
 import 'dart:io';
 import 'package:crypto_signal_app/auth_service.dart';
@@ -91,6 +93,14 @@ void updateWatchedCrypto(String crypto) async {
       listOfAlertCryptos: userBox.getAt(0)!.listOfAlertCryptos
   );
   userBox.put(0, updatedUser);
+  Amplitude.getInstance(instanceName: "crypto-signal")
+      .logEvent('crypto_added_to_watchlist', eventProperties: <String, dynamic>{
+    'name': crypto});
+  FirebaseAnalytics().logEvent(
+      name: 'crypto_added_to_watchlist',
+      parameters: {
+        'name': crypto
+      });
   // Обновляет (добавляет в этой функции) данные о watched криптах на фаерстор
   // await _authService.updateUserData(updatedUser, userBox.getAt(0)!.uid);
 }
@@ -117,6 +127,14 @@ void deleteWatchedCrypto(String crypto) async {
       listOfAlertCryptos: userBox.getAt(0)!.listOfAlertCryptos
   );
   userBox.put(0, updatedUser);
+  Amplitude.getInstance(instanceName: "crypto-signal")
+      .logEvent('crypto_deleted_from_watchlist', eventProperties: <String, dynamic>{
+    'name': crypto});
+  FirebaseAnalytics().logEvent(
+      name: 'crypto_deleted_from_watchlist',
+      parameters: {
+        'name': crypto
+      });
   // Обновляет (удаляет в этой функции) данные о watched криптах на фаерстор
   // await _authService.updateUserData(updatedUser, userBox.getAt(0)!.uid);
 }

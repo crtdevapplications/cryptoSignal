@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:crypto_signal_app/pages/signals/long_term_page.dart';
 import 'package:crypto_signal_app/pages/signals/short_term_page.dart';
 import 'package:crypto_signal_app/pages/signals/signal_service.dart';
@@ -18,6 +20,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../background_widget.dart';
 import '../../user.dart';
 
 class SignalsPage extends StatefulWidget {

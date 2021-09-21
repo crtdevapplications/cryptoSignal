@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:amplitude_flutter/amplitude.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +40,9 @@ class _brokerAdState extends State<brokerAd> {
         child: Container(
           child: CupertinoButton(
             onPressed: () {
+              FirebaseAnalytics()
+                  .logEvent(name: 'broker_widget_pressed', parameters: null);
+              Amplitude.getInstance(instanceName: "crypto-signal").logEvent('broker_widget_pressed');
               Navigator.push(
                 context,
                 MaterialPageRoute<void>(

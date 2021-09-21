@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:crypto_signal_app/user.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,6 +34,9 @@ class AuthService extends ChangeNotifier {
           .createUserWithEmailAndPassword(email: email, password: pass);
       isLoading = false;
       notifyListeners();
+      FirebaseAnalytics()
+          .logEvent(name: 'new_account_created', parameters: null);
+      Amplitude.getInstance(instanceName: "crypto-signal").logEvent('new_account_created');
       return authResult.user!.uid;
 
     }
@@ -68,6 +73,9 @@ class AuthService extends ChangeNotifier {
           await _auth.signInWithEmailAndPassword(email: email, password: pass);
       await getUserData(authResult.user!.uid);
       notifyListeners();
+      FirebaseAnalytics()
+          .logEvent(name: 'user_logged_in', parameters: null);
+      Amplitude.getInstance(instanceName: "crypto-signal").logEvent('user_logged_in');
       return authResult.user!.uid;
     }
     on FirebaseAuthException catch (e) {

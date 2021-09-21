@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:crypto_signal_app/broker_ad_service.dart';
 import 'package:crypto_signal_app/home_page.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -342,8 +343,6 @@ class _CreateAccPageState extends State<CreateAccPage>
             addUser(finalUser);
             _authService.notifyListenersIfUserIsAdded();
             await _authService.updateUserData(finalUser, _uid);
-            FirebaseAnalytics()
-                .logEvent(name: 'new_account_created', parameters: null);
           } else {
             correctCredentials = false;
             _createAccPageFormKey.currentState!.validate();

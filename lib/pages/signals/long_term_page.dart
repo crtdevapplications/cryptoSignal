@@ -1,3 +1,4 @@
+import 'package:crypto_signal_app/background_widget.dart';
 import 'package:crypto_signal_app/pages/signals/signal_details_page.dart';
 import 'package:crypto_signal_app/pages/signals/signal_service.dart';
 import 'package:crypto_signal_app/pages/signals/signals_widget.dart';
@@ -33,6 +34,7 @@ class _LongTermPageState extends State<LongTermPage> {
 
   @override
   void initState() {
+
     listOfTotalGain =
         listOfClosedSignals.where((element) => element.type!.toLowerCase() ==
             widget.type && element.gain == true)
@@ -110,7 +112,7 @@ class _LongTermPageState extends State<LongTermPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(
-              height: 20.h,
+              height: 10.h,
             ),
             Padding(
               padding: EdgeInsets.only(

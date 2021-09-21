@@ -99,12 +99,17 @@ class _CalculateGainWidgetState extends State<CalculateGainWidget> {
                 (snapshot.data as List)[0] as List<CryptoApi>;
             List<double> listOfCurrentPrices = [];
             for (int i = 0; i < tempListForOpenSignalsIds.length; i++) {
-              listOfCurrentPrices.add(listOfWatchlistCryptos
+              // listOfCurrentPrices.add(listOfWatchlistCryptos
+              //     .where((element) =>
+              //         element.symbol.toLowerCase() ==
+              //         tempListForOpenSignalsIds.elementAt(i).toLowerCase())
+              //     .first
+              //     .currentPrice);
+              listOfWatchlistCryptos
                   .where((element) =>
-                      element.symbol.toLowerCase() ==
-                      tempListForOpenSignalsIds.elementAt(i).toLowerCase())
-                  .first
-                  .currentPrice);
+              element.symbol.toLowerCase() ==
+                  tempListForOpenSignalsIds.elementAt(i).toLowerCase())
+                  .forEach((element) { listOfCurrentPrices.add(element.currentPrice); });
             }
             if (listOfCurrentPrices.isNotEmpty) {
               unrealizedGains = 0;

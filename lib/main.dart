@@ -1,4 +1,4 @@
-// import 'package:amplitude_flutter/amplitude.dart';
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:crypto_signal_app/auth_service.dart';
 import 'package:crypto_signal_app/crypto_api.dart';
 import 'package:crypto_signal_app/onboarding.dart';
@@ -8,6 +8,7 @@ import 'package:crypto_signal_app/remote_config_service.dart';
 import 'dart:convert';
 import 'package:crypto_signal_app/user.dart';
 import 'package:crypto_signal_app/user_preference.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,9 +52,11 @@ void main() async {
   await Hive.openBox<List <Signal>>('signals');
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   ErrorWidget.builder = (FlutterErrorDetails details) => Container();
-  // final Amplitude analytics = Amplitude.getInstance(instanceName: "crypto-signal");
-  // analytics.init(amplitudeKey);
-  // Amplitude.getInstance(instanceName: "crypto-signal").logEvent('app_started');
+  final Amplitude analytics = Amplitude.getInstance(instanceName: "crypto-signal");
+  analytics.init(amplitudeKey);
+  Amplitude.getInstance(instanceName: "crypto-signal").logEvent('app_started');
+  FirebaseAnalytics()
+      .logEvent(name: 'app_started', parameters: null);
   // print(Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos);
   runApp(MyApp());
 }
