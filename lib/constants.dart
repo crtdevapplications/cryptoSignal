@@ -99,7 +99,7 @@ Map<String, String> listOfCryptos = {
   "CLAM": "Clams",
   "CLOAK": "Cloakcoin",
   "CMM": "Commercium",
-  "CMT": "SafeComet",
+  // "CMT": "SafeComet",
   "CND": "Cindicator",
   "CNX": "Cryptonex",
   // "CNY": "CNY",
@@ -628,6 +628,8 @@ RegExp emailRegExp = RegExp(
 RegExp numberRegExp = RegExp(
     r"^\d+$");
 String totalSignalGain = '0';
+Map <String, String> totalGainPerCrypto = {};
 List<String> tempListForOpenSignalsIds = [];
 List<double> tempListForExitPrices = [];
+List<Signal> tempListOfSignals = [];
 String amplitudeKey = 'c31e2200f4f6efa1ba267414016e140b';

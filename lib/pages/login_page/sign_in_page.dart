@@ -1,3 +1,4 @@
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:crypto_signal_app/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -92,8 +93,6 @@ class _SignInPageState extends State<SignInPage>
                         rethrow;
                       }
                       loginList.clear();
-                      FirebaseAnalytics()
-                          .logEvent(name: 'user_logged_in', parameters: null);
                     }
                   }),
               decoration: BoxDecoration(

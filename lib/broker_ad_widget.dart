@@ -61,8 +61,8 @@ class _brokerAdState extends State<brokerAd> {
                                   child: CupertinoButton(
                                     child: SvgPicture.asset(
                                       'assets/white_plus.svg',
-                                      height: 26.r,
-                                      width: 26.r,
+                                      height: 28.r,
+                                      width: 28.r,
                                     ),
                                     onPressed: () {
                                       Navigator.of(context).pop();

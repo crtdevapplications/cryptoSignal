@@ -24,7 +24,7 @@ class WatchlistPage extends StatefulWidget {
   _WatchlistPageState createState() => _WatchlistPageState();
 }
 
-class _WatchlistPageState extends State<WatchlistPage>  {
+class _WatchlistPageState extends State<WatchlistPage> with AutomaticKeepAliveClientMixin {
   late Future<List<CryptoApi>> dataFromApi;
 
 
@@ -40,7 +40,8 @@ class _WatchlistPageState extends State<WatchlistPage>  {
 
   @override
   Widget build(BuildContext context) {
-    if (Hive.box<AppUser>('appuser')
+    if (Hive
+        .box<AppUser>('appuser')
         .values
         .first
         .listOfWatchedCryptos
@@ -61,17 +62,26 @@ class _WatchlistPageState extends State<WatchlistPage>  {
             ),
             CupertinoButton(
               onPressed: () async {
-              await  Navigator.push(
+                await Navigator.push(
                   context,
                   MaterialPageRoute<void>(
                     builder: (context) => const AddToWatchlistPage(),
                   ),
                 );
-              if(Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos.isNotEmpty){
-                dataFromApi = getCryptosFromById(
-                    Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos);}
-              setState(() {
-              });
+                if (Hive
+                    .box<AppUser>('appuser')
+                    .values
+                    .first
+                    .listOfWatchedCryptos
+                    .isNotEmpty) {
+                  dataFromApi = getCryptosFromById(
+                      Hive
+                          .box<AppUser>('appuser')
+                          .values
+                          .first
+                          .listOfWatchedCryptos);
+                }
+                setState(() {});
               },
               padding: EdgeInsets.zero,
               child: Container(
@@ -142,10 +152,13 @@ class _WatchlistPageState extends State<WatchlistPage>  {
                           padding: EdgeInsets.zero,
                           onPressed: () {
                             dataFromApi = getCryptosFromById(
-                                Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos);
-                            setState(() {
-                            });
-                            },
+                                Hive
+                                    .box<AppUser>('appuser')
+                                    .values
+                                    .first
+                                    .listOfWatchedCryptos);
+                            setState(() {});
+                          },
                           child: Text(
                             'Try again',
                             style: richTextRegular,
@@ -206,18 +219,27 @@ class _WatchlistPageState extends State<WatchlistPage>  {
                               ),
                             ),
                             onPressed: () async {
-                             await Navigator.push(
+                              await Navigator.push(
                                 context,
                                 MaterialPageRoute<void>(
                                   builder: (context) =>
-                                      const AddToWatchlistPage(),
+                                  const AddToWatchlistPage(),
                                 ),
                               );
-                              if(Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos.isNotEmpty){
+                              if (Hive
+                                  .box<AppUser>('appuser')
+                                  .values
+                                  .first
+                                  .listOfWatchedCryptos
+                                  .isNotEmpty) {
                                 dataFromApi = getCryptosFromById(
-                                    Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos);}
-                              setState(() {
-                              });
+                                    Hive
+                                        .box<AppUser>('appuser')
+                                        .values
+                                        .first
+                                        .listOfWatchedCryptos);
+                              }
+                              setState(() {});
                             },
                             padding: EdgeInsets.zero,
                           )
@@ -254,6 +276,10 @@ class _WatchlistPageState extends State<WatchlistPage>  {
           });
     }
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 //   void apiActions() async{
 //     if(Hive.box<AppUser>('appuser').values.first.listOfWatchedCryptos.isNotEmpty){

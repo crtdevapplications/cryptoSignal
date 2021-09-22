@@ -1,12 +1,27 @@
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:crypto_signal_app/background_widget.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crypto_signal_app/constants.dart';
 
-class TermsAndConditionsPage extends StatelessWidget {
+class TermsAndConditionsPage extends StatefulWidget {
   const TermsAndConditionsPage({Key? key}) : super(key: key);
+
+  @override
+  State<TermsAndConditionsPage> createState() => _TermsAndConditionsPageState();
+}
+
+class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
+
+  @override
+  void initState() {
+    FirebaseAnalytics().logEvent(name: 'terms_and_conditions_opened', parameters: null);
+    Amplitude.getInstance(instanceName: "crypto-signal").logEvent('terms_and_conditions_opened');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

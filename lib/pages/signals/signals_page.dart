@@ -1,9 +1,11 @@
 import 'dart:ui';
 
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:crypto_signal_app/pages/signals/long_term_page.dart';
 import 'package:crypto_signal_app/pages/signals/short_term_page.dart';
 import 'package:crypto_signal_app/pages/signals/signal_service.dart';
 import 'package:crypto_signal_app/pages/signals/signals_widget.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -148,6 +150,14 @@ class _SignalsPageState extends State<SignalsPage>
                 child: TabBar(
                   controller: _tabController,
                   onTap: (index) {
+                    if(_tabController.index == 0){
+                      FirebaseAnalytics().logEvent(name: 'short_term_page_opened', parameters: null);
+                      Amplitude.getInstance(instanceName: "crypto-signal").logEvent('short_term_page_opened');
+                    }
+                    if(_tabController.index == 1){
+                      FirebaseAnalytics().logEvent(name: 'long_term_page_opened', parameters: null);
+                      Amplitude.getInstance(instanceName: "crypto-signal").logEvent('long_term_page_opened');
+                    }
                     setState(() {});
                   },
                   indicatorSize: TabBarIndicatorSize.tab,
@@ -173,6 +183,7 @@ class _SignalsPageState extends State<SignalsPage>
                   tabs: [
                     Tab(
                       child: Container(
+                        height: 42.h,
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
@@ -184,6 +195,7 @@ class _SignalsPageState extends State<SignalsPage>
                     ),
                     Tab(
                       child: Container(
+                        height: 42.h,
                         child: Align(
                           alignment: Alignment.center,
                           child: Text('Long-Term', style: toggleButtonStyle),

@@ -1,7 +1,9 @@
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:crypto_signal_app/background_widget.dart';
 import 'package:crypto_signal_app/pages/signals/signal_details_page.dart';
 import 'package:crypto_signal_app/pages/signals/signal_service.dart';
 import 'package:crypto_signal_app/pages/signals/signals_widget.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -22,6 +24,7 @@ import '../../user.dart';
 
 class LongTermPage extends StatefulWidget {
   String type;
+
   LongTermPage(this.type, {Key? key}) : super(key: key);
 
   @override
@@ -34,321 +37,350 @@ class _LongTermPageState extends State<LongTermPage> {
 
   @override
   void initState() {
-
-    listOfTotalGain =
-        listOfClosedSignals.where((element) => element.type!.toLowerCase() ==
-            widget.type && element.gain == true)
-            .toList();
+    listOfTotalGain = listOfClosedSignals
+        .where((element) =>
+            element.type!.toLowerCase() == widget.type && element.gain == true)
+        .toList();
     if (listOfTotalGain.isNotEmpty) {
-      totalGain = listOfTotalGain.map((e) => e.percentChange)
+      totalGain = listOfTotalGain
+          .map((e) => e.percentChange)
           .toList()
           .reduce((value, element) => value! + element!)!;
     }
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return
-      listOfOpenSignals.isEmpty ? Container(
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Network error.',
-              style: richTextRegular,
-            ),
-            SizedBox(height: 10.w),
-            Container(
-              width: 90.w,
-              height: 37.h,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.w),
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                    buttonGradientStart,
-                    buttonGradientEnd,
-                  ],
-                ),
-              ),
-              child: CupertinoButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  signalsFromFirestore = RemoteConfig.instance.getString('signals');
-                  getSignals();
-                  listOfTotalGain =
-                      listOfClosedSignals.where((element) => element.type!.toLowerCase() ==
-                          widget.type && element.gain == true)
-                          .toList();
-                  if (listOfTotalGain.isNotEmpty) {
-                    totalGain = listOfTotalGain.map((e) => e.percentChange)
-                        .toList()
-                        .reduce((value, element) => value! + element!)!;
-                  }
-                  setState(() {
-
-                  });
-                },
-                child: Text(
-                  'Try again',
-                  style: richTextRegular,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ) :
-    SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      child: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 10.h,
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                left: 16.w,
-              ),
-              child: Row(
+    return listOfOpenSignals.isEmpty
+        ? Container(
+            child: Center(
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Free signal',
-                    style: textStyleHeader,
+                    'Network error.',
+                    style: richTextRegular,
                   ),
-                  Spacer(),
-                  CupertinoButton(
-                      child: SvgPicture.asset(
-                        'assets/questionmark.svg',
-                        height: 24.r,
-                        width: 24.r,
-                        color: bottomNavBarColor,
+                  SizedBox(height: 10.w),
+                  Container(
+                    width: 90.w,
+                    height: 37.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.w),
+                      gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          buttonGradientStart,
+                          buttonGradientEnd,
+                        ],
                       ),
-                      onPressed: () {
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute<void>(
-                          builder: (context) => const HowToUseAppPage(),
-                        ),
-                      );})
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 12.h,
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                left: 16.w,
-                right: 15.w,
-              ),
-              child: SignalsWidget(listOfOpenSignals
-                  .where((element) =>
-              element.type!.toLowerCase() == widget.type)
-                  .first, 'open', true, true),
-            ),
-            SizedBox(
-              height: 30.h,
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                left: 16.w,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    listOfFilteredOpenSignals
-                        .where((element) =>
-                    element.type!.toLowerCase() == widget.type)
-                        .length
-                        .toString() +
-                        ' Open signals',
-                    style: textStyleHeader,
-                  ),
-                  Spacer(),
-                  CupertinoButton(
-                      child: SvgPicture.asset(
-                        'assets/questionmark.svg',
-                        height: 24.r,
-                        width: 24.r,
-                        color: bottomNavBarColor,
-                      ),
-                      onPressed: () {  Navigator.push(
-                        context,
-                        MaterialPageRoute<void>(
-                          builder: (context) => const HowToUseAppPage(),
-                        ),
-                      );})
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                left: 16.w,
-                right: 15.w,
-              ),
-              child: brokerAd(true, Hive.box<AppUser>('appuser').values.first.brokerAdURL),
-            ),
-            SizedBox(
-              height: 30.h,
-            ),
-            // Spacer(),
-            Padding(
-              padding: EdgeInsets.only(
-                left: 16.w,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    listOfFilteredClosedSignals
-                        .where((element) =>
-                    element.type!.toLowerCase() == widget.type)
-                        .length
-                        .toString() +
-                        ' Closed signals',
-                    style: textStyleHeader,
-                  ),
-                  Spacer(),
-                  CupertinoButton(
-                      child: SvgPicture.asset(
-                        'assets/questionmark.svg',
-                        height: 24.r,
-                        width: 24.r,
-                        color: bottomNavBarColor,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (context) => const HowToUseAppPage(),
-                          ),
-                        );
-                      })
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
-              child: Container(
-                height: 72.h,
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 19.h),
-                decoration: BoxDecoration(
-                    color: cardBackground,
-                    borderRadius: BorderRadius.circular(16.w)),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Total gain',
-                      style: textButtonStyle,
                     ),
-                    Spacer(),
-                    // if (true)
-                    Text(
-                      totalGain.toStringAsFixed(2) +
-                          '%',
-                      style: textStyleHeaderGreen,
-                    )
-                    // else
-                    //   Text(
-                    //     '-' '8.95' '%',
-                    //     style: textStyleHeaderRed,
-                    //   )
-                  ],
-                ),
-              ),
-            ),
-            ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: listOfFilteredClosedSignals.where((element) => element.type!.toLowerCase() ==
-                    widget.type).length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: EdgeInsets.only(
-                        left: 16.w, right: 16.w, bottom: 12.h),
                     child: CupertinoButton(
                       padding: EdgeInsets.zero,
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (context) => SignalDetails(
-                                listOfFilteredClosedSignals.where((element) => element.type!.toLowerCase() ==
-                                    widget.type).elementAt(index), 'closed'),
-                          ),
-                        );
+                        signalsFromFirestore =
+                            RemoteConfig.instance.getString('signals');
+                        getSignals();
+                        listOfTotalGain = listOfClosedSignals
+                            .where((element) =>
+                                element.type!.toLowerCase() == widget.type &&
+                                element.gain == true)
+                            .toList();
+                        if (listOfTotalGain.isNotEmpty) {
+                          totalGain = listOfTotalGain
+                              .map((e) => e.percentChange)
+                              .toList()
+                              .reduce((value, element) => value! + element!)!;
+                        }
+                        setState(() {});
                       },
-                      child: Container(
-                        height: 80.h,
-                        padding: EdgeInsets.fromLTRB(16.w, 16.h, 26.w, 16.h),
-                        decoration: BoxDecoration(
-                            color: cardBackground,
-                            borderRadius: BorderRadius.circular(16.w)),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/cryptoicons/' + listOfFilteredClosedSignals
-                                  .elementAt(index)
-                                  .symbol!
-                                  .toLowerCase() + '.svg',
-                              height: 48.r,
-                              width: 48.r,
-                            ),
-                            SizedBox(
-                              width: 12.w,
-                            ),
-                            Text(
-                              listOfFilteredClosedSignals
-                                  .elementAt(index)
-                                  .symbol!
-                                  .toUpperCase() + '/USD',
-                              style: textButtonStyle,
-                            ),
-                            Spacer(),
-                            SvgPicture.asset(
-                              'assets/arrowright.svg',
-                              height: 24.r,
-                              width: 24.r,
-                            ),
-                          ],
-                        ),
+                      child: Text(
+                        'Try again',
+                        style: richTextRegular,
                       ),
                     ),
-                  );
-                }),
-             brokerAd(false, Hive.box<AppUser>('appuser').values.first.brokerAdURL),
-          ],
-        ),
-      ),
-    );
+                  ),
+                ],
+              ),
+            ),
+          )
+        : SingleChildScrollView(
+            physics: ClampingScrollPhysics(),
+            child: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Free signal',
+                          style: textStyleHeader,
+                        ),
+                        Spacer(),
+                        CupertinoButton(
+                            child: SvgPicture.asset(
+                              'assets/questionmark.svg',
+                              height: 24.r,
+                              width: 24.r,
+                              color: bottomNavBarColor,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (context) => const HowToUseAppPage(),
+                                ),
+                              );
+                            })
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 12.h,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                      right: 15.w,
+                    ),
+                    child: SignalsWidget(
+                        listOfOpenSignals
+                            .where((element) =>
+                                element.type!.toLowerCase() == widget.type)
+                            .first,
+                        'open',
+                        true,
+                        true),
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          listOfFilteredOpenSignals
+                                  .where((element) =>
+                                      element.type!.toLowerCase() ==
+                                      widget.type)
+                                  .length
+                                  .toString() +
+                              ' Open signals',
+                          style: textStyleHeader,
+                        ),
+                        Spacer(),
+                        CupertinoButton(
+                            child: SvgPicture.asset(
+                              'assets/questionmark.svg',
+                              height: 24.r,
+                              width: 24.r,
+                              color: bottomNavBarColor,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (context) => const HowToUseAppPage(),
+                                ),
+                              );
+                            })
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                      right: 15.w,
+                    ),
+                    child: brokerAd(true,
+                        Hive.box<AppUser>('appuser').values.first.brokerAdURL),
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  // Spacer(),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          listOfFilteredClosedSignals
+                                  .where((element) =>
+                                      element.type!.toLowerCase() ==
+                                      widget.type)
+                                  .length
+                                  .toString() +
+                              ' Closed signals',
+                          style: textStyleHeader,
+                        ),
+                        Spacer(),
+                        CupertinoButton(
+                            child: SvgPicture.asset(
+                              'assets/questionmark.svg',
+                              height: 24.r,
+                              width: 24.r,
+                              color: bottomNavBarColor,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (context) => const HowToUseAppPage(),
+                                ),
+                              );
+                            })
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
+                    child: Container(
+                      height: 72.h,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.w, vertical: 19.h),
+                      decoration: BoxDecoration(
+                          color: cardBackground,
+                          borderRadius: BorderRadius.circular(16.w)),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Total gain',
+                            style: textButtonStyle,
+                          ),
+                          Spacer(),
+                          // if (true)
+                          Text(
+                            totalGain.toStringAsFixed(2) + '%',
+                            style: textStyleHeaderGreen,
+                          )
+                          // else
+                          //   Text(
+                          //     '-' '8.95' '%',
+                          //     style: textStyleHeaderRed,
+                          //   )
+                        ],
+                      ),
+                    ),
+                  ),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: listOfFilteredClosedSignals
+                          .where((element) =>
+                              element.type!.toLowerCase() == widget.type)
+                          .length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: EdgeInsets.only(
+                              left: 16.w, right: 16.w, bottom: 12.h),
+                          child: CupertinoButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              FirebaseAnalytics().logEvent(
+                                  name: 'closed_signal_widget_pressed',
+                                  parameters: null);
+                              Amplitude.getInstance(
+                                      instanceName: "crypto-signal")
+                                  .logEvent('closed_signal_widget_pressed');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (context) => SignalDetails(
+                                      listOfFilteredClosedSignals
+                                          .where((element) =>
+                                              element.type!.toLowerCase() ==
+                                              widget.type)
+                                          .elementAt(index),
+                                      'closed'),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              height: 80.h,
+                              padding:
+                                  EdgeInsets.fromLTRB(16.w, 16.h, 26.w, 16.h),
+                              decoration: BoxDecoration(
+                                  color: cardBackground,
+                                  borderRadius: BorderRadius.circular(16.w)),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/cryptoicons/' +
+                                        listOfFilteredClosedSignals
+                                            .elementAt(index)
+                                            .symbol!
+                                            .toLowerCase() +
+                                        '.svg',
+                                    height: 48.r,
+                                    width: 48.r,
+                                  ),
+                                  SizedBox(
+                                    width: 12.w,
+                                  ),
+                                  Text(
+                                    listOfFilteredClosedSignals
+                                            .elementAt(index)
+                                            .symbol!
+                                            .toUpperCase() +
+                                        '/USD',
+                                    style: textButtonStyle,
+                                  ),
+                                  Spacer(),
+                                  SvgPicture.asset(
+                                    'assets/arrowright.svg',
+                                    height: 24.r,
+                                    width: 24.r,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                  brokerAd(false,
+                      Hive.box<AppUser>('appuser').values.first.brokerAdURL),
+                ],
+              ),
+            ),
+          );
   }
+
 }

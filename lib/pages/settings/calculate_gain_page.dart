@@ -41,6 +41,8 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
 
   @override
   void initState() {
+    FirebaseAnalytics().logEvent(name: 'calculate_gain_page_opened', parameters: null);
+    Amplitude.getInstance(instanceName: "crypto-signal").logEvent('calculate_gain_page_opened');
     super.initState();
     if(listOfOpenSignals.isNotEmpty){
     unrealizedGains = listOfOpenSignals
@@ -67,8 +69,7 @@ class _CalculateGainPageState extends State<CalculateGainPage> {
     }
   }
   void calculateGainLogic(){
-    FirebaseAnalytics()
-        .logEvent(name: 'calculate_gain_button_pressed', parameters: null);
+    FirebaseAnalytics().logEvent(name: 'calculate_gain_button_pressed', parameters: null);
     Amplitude.getInstance(instanceName: "crypto-signal").logEvent('calculate_gain_button_pressed');
     _currentUserInvestment = _calculateGainTextController.text;
     if (_dropdownValue == 'Last month') {

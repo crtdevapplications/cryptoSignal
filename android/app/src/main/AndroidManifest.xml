@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
    <application
-        android:label="crypto_signal_app"
+        android:label="Crypto Signals"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

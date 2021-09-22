@@ -1,7 +1,9 @@
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:crypto_signal_app/home_page.dart';
 import 'package:crypto_signal_app/main.dart';
 import 'package:crypto_signal_app/pages/login_page/login_page.dart';
 import 'package:crypto_signal_app/user_preference.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,6 +32,9 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
       length: 3,
       initialIndex: 0,
     );
+    FirebaseAnalytics()
+        .logEvent(name: 'custom_first_start', parameters: null);
+    Amplitude.getInstance(instanceName: "crypto-signal").logEvent('custom_first_start');
     _tabControllerOnboarding.addListener(_switchTabIndex);
     super.initState();
   }
@@ -94,6 +99,8 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                                               style: textStyleShaded,
                                             ),
                                             onPressed: () {
+                                              FirebaseAnalytics().logEvent(name: 'skiped_onboarding', parameters: null);
+                                              Amplitude.getInstance(instanceName: "crypto-signal").logEvent('skiped_onboarding');
                                               addPreference(UserPreference(
                                                   sawOnboarding: true));
                                               if (Hive.box<UserPreference>(
@@ -163,6 +170,8 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                                               style: textStyleShaded,
                                             ),
                                             onPressed: () {
+                                              FirebaseAnalytics().logEvent(name: 'skiped_onboarding', parameters: null);
+                                              Amplitude.getInstance(instanceName: "crypto-signal").logEvent('skiped_onboarding');
                                               addPreference(UserPreference(
                                                   sawOnboarding: true));
                                               if (Hive.box<UserPreference>(
@@ -229,6 +238,8 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                                               style: textStyleShaded,
                                             ),
                                             onPressed: () {
+                                              FirebaseAnalytics().logEvent(name: 'watched_full_onboarding', parameters: null);
+                                              Amplitude.getInstance(instanceName: "crypto-signal").logEvent('watched_full_onboarding');
                                               addPreference(UserPreference(
                                                   sawOnboarding: true));
                                               if (Hive.box<UserPreference>(
@@ -418,6 +429,8 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                               ),
                               padding: EdgeInsets.zero,
                               onPressed: () {
+                                FirebaseAnalytics().logEvent(name: 'watched_full_onboarding', parameters: null);
+                                Amplitude.getInstance(instanceName: "crypto-signal").logEvent('watched_full_onboarding');
                                 addPreference(
                                     UserPreference(sawOnboarding: true));
                                 if (Hive.box<UserPreference>('userpreference')

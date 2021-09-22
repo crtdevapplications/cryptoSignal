@@ -81,6 +81,9 @@ class AuthService extends ChangeNotifier {
     on FirebaseAuthException catch (e) {
       isLoading = false;
       notifyListeners();
+      FirebaseAnalytics()
+          .logEvent(name: 'user_failed_to_login', parameters: null);
+      Amplitude.getInstance(instanceName: "crypto-signal").logEvent('user_failed_to_login');
       rethrow;
     }
     catch (e, s) {

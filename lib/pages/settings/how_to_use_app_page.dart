@@ -1,5 +1,7 @@
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:crypto_signal_app/background_widget.dart';
 import 'package:crypto_signal_app/home_page.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +18,14 @@ class HowToUseAppPage extends StatefulWidget {
 }
 
 class _HowToUseAppPageState extends State<HowToUseAppPage> {
+
+  @override
+  void initState() {
+    FirebaseAnalytics().logEvent(name: 'how_to_use_app_page_opened', parameters: null);
+    Amplitude.getInstance(instanceName: "crypto-signal").logEvent('how_to_use_app_page_opened');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -209,13 +219,7 @@ class _HowToUseAppPageState extends State<HowToUseAppPage> {
                           ),
                           padding: EdgeInsets.zero,
                           onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute<void>(
-                                builder: (context) => HomePage(0),
-                              ),
-                            );
-
+                            Navigator.of(context).pop();
                           }),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12.w),

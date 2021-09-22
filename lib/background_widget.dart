@@ -44,7 +44,7 @@ class Background_Widget extends StatelessWidget {
             color:  const Color.fromRGBO(20, 20, 34, 1),
           ),
           CustomPaint(painter: OpenPainter()),
-          BackdropFilter(child: Container(), filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100) ,
+          BackdropFilter(child: Container(), filter: ImageFilter.blur(sigmaX: 300, sigmaY: 300) ,
           ),
           child,
         ],
@@ -57,9 +57,9 @@ class OpenPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint1 = Paint()
-      ..color = Color.fromRGBO(74, 90, 255, 1)
+      ..color = Color(0xff4A5AFF).withOpacity(0.32)
       ..style = PaintingStyle.fill;
-    canvas.drawCircle(Offset(0, 0), 100, paint1);
+    canvas.drawCircle(Offset(0, 0), 200, paint1);
   }
 
   @override

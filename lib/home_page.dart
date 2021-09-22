@@ -27,8 +27,17 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
   late int _selectedIndex;
+  final PageController pageController = PageController();
+
+  void onPageChanged(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   List<StatefulWidget> listOfPages = [
     const SignalsPage(),
     const WatchlistPage(),
@@ -52,82 +61,104 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.transparent,
-      bottomNavigationBar: Theme(
-        data: ThemeData(
-          canvasColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-        ),
-        child: SizedBox(
-          height: 57.h,
-          child: BottomNavigationBar(
-            showUnselectedLabels: true,
-            backgroundColor:  const Color.fromRGBO(20, 20, 34, 1),
-            elevation: 0,
-            type: BottomNavigationBarType.fixed,
-            selectedFontSize: 14.sp,
-            unselectedFontSize: 14.sp,
-            currentIndex: _selectedIndex,
-            selectedItemColor: Colors.white,
-            unselectedItemColor: bottomNavBarColor,
-            selectedLabelStyle: bottomTabBarStyle,
-            unselectedLabelStyle: bottomTabBarStyle,
-            onTap: (int index) {
-              setState(() {
-                _selectedIndex = index;
-                Amplitude.getInstance(instanceName: "crypto-signal")
-                    .logEvent('screen_changed', eventProperties: <String, dynamic>{
-                  'screen': listOfPages.elementAt(_selectedIndex).toString()});
-                FirebaseAnalytics().logEvent(
-                    name: 'screen_changed',
-                    parameters: {
-                      'screen': listOfPages.elementAt(_selectedIndex).toString()
-                    });
-              });
-            },
-            items: [
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/signals.svg',
-                  color: _selectedIndex == 0 ? Colors.white : bottomNavBarColor,
-                  height: 24.r,
-                  width: 24.r,
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.transparent,
+        bottomNavigationBar: Theme(
+          data: ThemeData(
+            canvasColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+          ),
+          child: SizedBox(
+            height: 57.h,
+            child: BottomNavigationBar(
+              showUnselectedLabels: true,
+              backgroundColor: const Color.fromRGBO(20, 20, 34, 1),
+              elevation: 0,
+              type: BottomNavigationBarType.fixed,
+              selectedFontSize: 14.sp,
+              unselectedFontSize: 14.sp,
+              currentIndex: _selectedIndex,
+              selectedItemColor: Colors.white,
+              unselectedItemColor: bottomNavBarColor,
+              selectedLabelStyle: bottomTabBarStyle,
+              unselectedLabelStyle: bottomTabBarStyle,
+              onTap: (int index) {
+                setState(() {
+                  // _selectedIndex = index;
+                  pageController.jumpToPage(index);
+                  if (index == 0) {
+                    Amplitude.getInstance(instanceName: "crypto-signal")
+                        .logEvent('signals_tab_click');
+                    FirebaseAnalytics()
+                        .logEvent(name: 'signals_tab_click', parameters: null);
+                  }
+                  if (index == 1) {
+                    Amplitude.getInstance(instanceName: "crypto-signal")
+                        .logEvent('watchlist_tab_click');
+                    FirebaseAnalytics().logEvent(
+                        name: 'watchlist_tab_click', parameters: null);
+                  }
+                  if (index == 2) {
+                    Amplitude.getInstance(instanceName: "crypto-signal")
+                        .logEvent('settings_tab_click');
+                    FirebaseAnalytics()
+                        .logEvent(name: 'settings_tab_click', parameters: null);
+                  }
+                });
+              },
+              items: [
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    'assets/signals.svg',
+                    color:
+                        _selectedIndex == 0 ? Colors.white : bottomNavBarColor,
+                    height: 24.r,
+                    width: 24.r,
+                  ),
+                  label: 'Signals',
+                  tooltip: 'Signals',
                 ),
-                label: 'Signals',
-                tooltip: 'Signals',
-              ),
-              BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    'assets/watchlist.svg',
-                    color:
-                        _selectedIndex == 1 ? Colors.white : bottomNavBarColor,
-                    height: 24.r,
-                    width: 24.r,
-                  ),
-                  label: 'Watchlist'),
-              //алерты пока выключены
-              // BottomNavigationBarItem(icon: SvgPicture.asset('assets/alerts.svg', color: _selectedIndex == 2 ? Colors.white : bottomNavBarColor, width: 24.r,), label: 'Alerts'),
-              BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    'assets/settings.svg',
-                    color:
-                        _selectedIndex == 2 ? Colors.white : bottomNavBarColor,
-                    height: 24.r,
-                    width: 24.r,
-                  ),
-                  label: 'Settings'),
-            ],
+                BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      'assets/watchlist.svg',
+                      color: _selectedIndex == 1
+                          ? Colors.white
+                          : bottomNavBarColor,
+                      height: 24.r,
+                      width: 24.r,
+                    ),
+                    label: 'Watchlist'),
+                //алерты пока выключены
+                // BottomNavigationBarItem(icon: SvgPicture.asset('assets/alerts.svg', color: _selectedIndex == 2 ? Colors.white : bottomNavBarColor, width: 24.r,), label: 'Alerts'),
+                BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      'assets/settings.svg',
+                      color: _selectedIndex == 2
+                          ? Colors.white
+                          : bottomNavBarColor,
+                      height: 24.r,
+                      width: 24.r,
+                    ),
+                    label: 'Settings'),
+              ],
+            ),
           ),
         ),
-      ),
-      body: Background_Widget(
-        SafeArea(
-          child: listOfPages.elementAt(_selectedIndex),
-        ),
-      ),
-    );
+        body: Background_Widget(
+          SafeArea(
+            child: PageView(
+              children: listOfPages,
+              controller: pageController,
+              onPageChanged: onPageChanged,
+            ),
+          ),
+        ));
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

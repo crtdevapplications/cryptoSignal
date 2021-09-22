@@ -66,6 +66,7 @@ class _LoginPageTabBarState extends State<LoginPageTabBar> with TickerProviderSt
                         tabs: [
                           Tab(
                             child: Container(
+                              height: 42.h,
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Text('Sign Up', style: toggleButtonStyle,),
@@ -74,6 +75,7 @@ class _LoginPageTabBarState extends State<LoginPageTabBar> with TickerProviderSt
                           ),
                           Tab(
                             child: Container(
+                              height: 42.h,
                               child:  Align(
                                 alignment: Alignment.center,
                                 child: Text('Login', style: toggleButtonStyle),
