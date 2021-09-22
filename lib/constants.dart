@@ -8,6 +8,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
  List<Signal> listOfFilteredOpenSignals = [];
  List<Signal> listOfFilteredClosedSignals = [];
+NumberFormat numberFormat = NumberFormat('#,###.########', 'en_US');
 String signalsFromFirestore = '';
 bool correctCredentials = true;
 Map<String, dynamic> listOfID = <String, dynamic>{};
@@ -59,7 +60,7 @@ Map<String, String> listOfCryptos = {
   "BCH": "Bitcoin-Cash",
   "BCIO": "Blockchain_com",
   "BCN": "Bytecoin",
-  "BCO": "Banana",
+  // "BCO": "Banana",
   "BCPT": "BlockMason-Credit-Protocol",
   // "BDL": "Bitdeal",
   "BEAM": "Beam",

@@ -173,7 +173,7 @@ class _AddToWatchlistPageState extends State<AddToWatchlistPage> {
                                 ),
                               ),
                               Text(
-                                searchList.values.elementAt(index),
+                                searchList.values.elementAt(index).replaceAll('-', ' '),
                                 style: textStyleWhite,
                               ),
                               Spacer(),
