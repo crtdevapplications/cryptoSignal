@@ -27,8 +27,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with AutomaticKeepAliveClientMixin {
+class _HomePageState extends State<HomePage> {
   late int _selectedIndex;
   final PageController pageController = PageController();
 
@@ -61,7 +60,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+    // super.build(context);
     return Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: Colors.transparent,
@@ -150,6 +149,7 @@ class _HomePageState extends State<HomePage>
         body: Background_Widget(
           SafeArea(
             child: PageView(
+              physics: NeverScrollableScrollPhysics(),
               children: listOfPages,
               controller: pageController,
               onPageChanged: onPageChanged,
@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePage>
         ));
   }
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
-}
+//   @override
+//   // TODO: implement wantKeepAlive
+//   bool get wantKeepAlive => true;
+ }
